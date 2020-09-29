@@ -10,7 +10,7 @@ const Icon = styled.i`
     top: 3rem;
     z-index: 20;
     display: ${({ active, isVisible }) => (isVisible && active ? "block" : "none")};
-    width: 55%;
+    width: 70%;
     margin: 0 auto;
 `;
 

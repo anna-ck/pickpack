@@ -13,7 +13,7 @@ const ResultsWrapper = styled.div`
     border-left: 3px solid rgb(18, 186, 216);
     
     @media (max-width: 690px) {
-      width: 60%;
+      width: 80%;
       margin: 0 auto;
       border: 0;
       display: none;

@@ -9,7 +9,7 @@ const Menu = styled.div`
 
     @media (max-width: 690px) {
         display: block;
-        width: 60%;
+        width: 80%;
     }
 `;
 

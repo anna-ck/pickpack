@@ -39,11 +39,6 @@ const TdXLarge = styled.td`
     width: 63%
 `;
 
-const TdArrows = styled.div`
-    display: flex;
-    flex-direction: column;
-`;
-
 const Input = styled.input`
     width:100%;
     padding:0;
