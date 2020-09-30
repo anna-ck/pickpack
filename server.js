@@ -1,30 +1,66 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
+const cors = require("cors");
+let corsOptions = {
+  origin: "http://localhost:8081"
+};
+
 const app = express();
-const port = process.env.PORT || 5000;
+const PORT = process.env.PORT || 8080;
+app.listen(PORT, () => {
+  console.log(`Server is running on port ${PORT}.`);
+});
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cookieParser());
 const { body, validationResult } = require('express-validator');
-//const bcrypt = require('bcrypt');
+const bcrypt = require('bcrypt');
 //const saltRounds = 10;
 const crypto = require('crypto');
+const dotenv = require('dotenv');
+dotenv.config();
+//const mongoose = require("mongoose");
+const { checkDuplicateUsernameOrEmail } = require('./middlewares');
+const controller = require('./controllers/auth.controller');
 
+//mongoose.set("useFindAndModify", false);
+//mongoose.connect(process.env.DB_CONNECT, { useNewUrlParser: true, useUnifiedTopology: true }, () => {
+//console.log("Successfully connect to MongoDB!");
+//});
 
+const db = require("./models");
+
+db.mongoose
+  .connect(process.env.DB_CONNECT, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true
+  })
+  .then(() => {
+    console.log("Successfully connect to MongoDB.");
+  })
+  .catch(err => {
+    console.error("Connection error", err);
+    process.exit();
+  });
+
+//app.listen(port, () => console.log("Server Up and running"));
+
+const User = db.user
+
+/*
 const getHashedPassword = (password) => {
     const sha256 = crypto.createHash('sha256');
     const hashedPassword = sha256.update(password).digest('base64');
     return hashedPassword;
 }
+*/
 
 
 const arrayOfPickedItems = [];
-const users = [
-  {email: 'example@example.com',
-  password: 'secret'}
-];
 
+
+/*
 app.post('/register', [
   body('name').exists(),
   body('email').isEmail(),
@@ -32,25 +68,27 @@ app.post('/register', [
 ], (req, res, next) => {
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
-    return res.status(400).send({message:'data is invalid', error: errors});
+    return res.status(400).send({error:'data is invalid'});
   }
       const { name, email, password, confirmPassword } = req.body;
       const index = users.findIndex(user => user.email === email)
       if (password !== confirmPassword) {
-        return res.status(404).send({message:'passwords are not equal'});
+        return res.status(404).send({error:'passwords are not equal'});
       }
       if (index !== -1) {
-        return res.status(404).send({message:'user already exists'});
+        return res.status(404).send({error:'user already exists'});
       }
         const hashedPassword = getHashedPassword(password);
-        const newUser = {email: email, password: hashedPassword}
+        const newUser = {name: name, email: email, password: hashedPassword}
         users.push(newUser)
         res.send({newUser: newUser, message:'success'})
     })
 
+
     app.get('/register', (req, res, next) => {
       res.send(users)
     })
+        */
 
 app.get('/picked', (req, res, next) => {
   res.send(arrayOfPickedItems)
@@ -84,4 +122,8 @@ app.delete('/picked/:itemId', (req, res, next) => {
 })
 
 
-app.listen(port, () => console.log(`Listening on port ${port}`));
+app.post('/register', checkDuplicateUsernameOrEmail, controller.register)
+app.post('/login', controller.login)
+
+
+

@@ -14,7 +14,7 @@ import {ThemeProvider} from "styled-components";
 import GlobalStyle from '../theme/globalStyles';
 import { lightTheme, darkTheme } from "../theme/Themes";
 import PickedItemsApi from '../api/fetchPickedItems';
-import AuthenticationApi from '../api/fetchAuthentication';
+import UserGreeting from './UserGreeting'
 import { v4 as uuidv4 } from 'uuid';
 
 
@@ -131,7 +131,7 @@ const PrintButton = styled.button`
 `;
 
 
-function AppContent() {
+function AppContent(props) {
     const [theme, setTheme] = useState('light');
     const [pickedItems, setPickedItems] =  useState([]);
     const [searchResults, setSearchResults] = useState([]);
@@ -204,6 +204,7 @@ function AppContent() {
     return (
 <ThemeProvider theme={theme === 'light' ? lightTheme : darkTheme}>  
 <GlobalStyle />
+<UserGreeting currentUser={props.currentUser} onAuthChange={props.onAuthChange}/>
 <Header/>
 <ToggleButton onClick={toggleTheme}/>
 <Content>

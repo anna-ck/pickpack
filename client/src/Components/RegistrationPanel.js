@@ -10,10 +10,10 @@ const RegistrationPageWrapper = styled.form`
 `;
 
 function RegistrationPanel (props) {
-    const nameRef = useRef();
+    const loginRef = useRef();
     const emailRef = useRef();
     const passwordRef = useRef();
-    const confirmPasswordRef = useRef();
+    //const confirmPasswordRef = useRef();
 
     const [message, setMessage] = useState(props.registerMessage);
     useEffect(() => {
@@ -23,15 +23,15 @@ function RegistrationPanel (props) {
     const handleSubmit = (event) => {
         event.preventDefault();
         props.onRegister({
-            name: nameRef.current.value,
+            login: loginRef.current.value,
             email: emailRef.current.value,
             password: passwordRef.current.value,
-            confirmPassword: confirmPasswordRef.current.value,
+            //confirmPassword: confirmPasswordRef.current.value,
         });
-        nameRef.current.value='';
+        loginRef.current.value='';
         emailRef.current.value = '';
         passwordRef.current.value = '';
-        confirmPasswordRef.current.value = '';
+        //confirmPasswordRef.current.value = '';
     }
 
     return (
@@ -39,7 +39,7 @@ function RegistrationPanel (props) {
                 <br/>
                 <br/>
                 <label>name
-                    <input ref={nameRef} type='text' defaultValue='Jane Doe'/>
+                    <input ref={loginRef} type='text' defaultValue='Jane Doe'/>
                 </label>
                 <br/>
                 <label>email
@@ -50,15 +50,12 @@ function RegistrationPanel (props) {
                     <input ref={passwordRef} type='password' defaultValue='secret'/>
                 </label>
                 <br/>
-                <label>confirm password
-                    <input ref={confirmPasswordRef} type='password' defaultValue='secret'/>
-                </label>
                 <br/>
                 <button onClick={handleSubmit}>Register</button>
                 <br/>
                 <br/>
                 <div>{message? message : null}</div>
-                <button onClick={props.onPanelChange}>{message === 'success' ? 'log in' : 'already registered? go back to logging panel'}</button>
+                <button onClick={props.onPanelChange}>{message === 'You have been successfully registered!' ? 'log in' : 'already registered? go back to logging panel'}</button>
         </RegistrationPageWrapper>
     )
 }

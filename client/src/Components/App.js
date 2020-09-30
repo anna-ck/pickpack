@@ -10,15 +10,31 @@ import { v4 as uuidv4 } from 'uuid';
 
 function App() {
 
-    const [isLoggedIn, setIsLoggedIn] = useState(false);
+    const [accessToken, setAccessToken] = useState(null);
+    const [currentUser, setCurrentUser] = useState(null)
     const [registerMessage, setRegisterMessage] = useState(null);
+    const [isAuthorizationPanelHidden, setAuthorizationPanelHidden] = useState(true)
 
     useEffect(() => {setRegisterMessage();}, []);
 
+    useEffect(() => {
+      const login = localStorage.getItem('login');
+      const accessToken = localStorage.getItem('accessToken');
+      if (login && accessToken) {
+        setAccessToken(accessToken)
+        setCurrentUser(login)
+      }
+    }, [localStorage]);
 
     const handleLogging = (userInfo) => {
       AuthenticationApi.login(userInfo)
-      .then((response) => console.log(response))
+      .then((response) => {
+        localStorage.setItem("login", response.login);
+        localStorage.setItem("accessToken", response.accessToken);
+        setAccessToken(localStorage.getItem('accessToken'))
+        setCurrentUser(localStorage.getItem('login'))
+        setAuthorizationPanelHidden(true)
+      })
       .catch((error) => console.log(error))
     }
 
@@ -30,8 +46,21 @@ function App() {
       })
     }
 
+    const handleAuthChange = () => {
+      if (accessToken) {
+      localStorage.removeItem("login");
+      localStorage.removeItem("accessToken");
+      setAccessToken(null)
+      setCurrentUser(null)
+      setAuthorizationPanelHidden(true)
+      }
+      else {
+        setAuthorizationPanelHidden(false)
+      }
+    }
+
     return (
-      isLoggedIn ? <AppContent /> : <AuthenticationPage onLogin={handleLogging} onRegister={handleRegistration} registerMessage={registerMessage}/>
+      isAuthorizationPanelHidden ? <AppContent currentUser={currentUser} onAuthChange={handleAuthChange}/> : <AuthenticationPage onLogin={handleLogging} onRegister={handleRegistration} registerMessage={registerMessage}/>
     )
 }
 

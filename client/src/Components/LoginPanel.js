@@ -10,23 +10,23 @@ const LoginPageWrapper = styled.form`
 `;
 
 function LoginPanel (props) {
-    const emailRef = useRef();
+    const loginRef = useRef();
     const passwordRef = useRef();
 
     const handleSubmit = (event) => {
         event.preventDefault();
         props.onLogin({
-            email: emailRef.current.value,
+            login: loginRef.current.value,
             password: passwordRef.current.value
         });
-        emailRef.current.value = '';
+        loginRef.current.value = '';
         passwordRef.current.value = '';
     }
 
     return (
         <LoginPageWrapper>
-                <label>email
-                    <input ref={emailRef} type='text' defaultValue='example@example.com'/>
+                <label>login
+                    <input ref={loginRef} type='text' defaultValue='login'/>
                 </label>
                 <br/>
                 <label>password
