@@ -26,11 +26,11 @@ function LoginPanel (props) {
     return (
         <LoginPageWrapper>
                 <label>login
-                    <input ref={loginRef} type='text' defaultValue='login'/>
+                    <input ref={loginRef} type='text' defaultValue='anna'/>
                 </label>
                 <br/>
                 <label>password
-                    <input ref={passwordRef} type='password' defaultValue='secret'/>
+                    <input ref={passwordRef} type='password' defaultValue='secret123'/>
                 </label>
                 <br/>
                 <button onClick={handleSubmit}>Log in</button>

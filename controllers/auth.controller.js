@@ -54,7 +54,8 @@ login = (req, res) => {
           id: user._id,
           login: user.login,
           email: user.email,
-          accessToken: token
+          accessToken: token,
+          savedLists: user.savedLists
         });
       });
   };

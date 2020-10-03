@@ -54,11 +54,11 @@ function SearchMenu (props, ref) {
         <Header>Categories</Header>
         <Underline />
         <List>
-            <SearchCategory currentList={props.currentList} items={Object.keys(categories[0])} lists={Object.values(categories[0])} onClick={props.handleChoice}/>
-            <SearchCategory currentList={props.currentList} items={Object.keys(categories[1])} lists={Object.values(categories[1])} onClick={props.handleChoice}/>
-            <SearchCategory currentList={props.currentList} items={Object.keys(categories[2])} lists={Object.values(categories[2])} onClick={props.handleChoice}/>
-            <SearchCategory currentList={props.currentList} items={Object.keys(categories[3])} lists={Object.values(categories[3])} onClick={props.handleChoice}/>
-            <SearchCategory currentList={props.currentList} items={Object.keys(categories[4])} lists={Object.values(categories[4])} onClick={props.handleChoice}/>
+            <SearchCategory currentSearchList={props.currentSearchList} items={Object.keys(categories[0])} lists={Object.values(categories[0])} onClick={props.handleChoice}/>
+            <SearchCategory currentSearchList={props.currentSearchList} items={Object.keys(categories[1])} lists={Object.values(categories[1])} onClick={props.handleChoice}/>
+            <SearchCategory currentSearchList={props.currentSearchList} items={Object.keys(categories[2])} lists={Object.values(categories[2])} onClick={props.handleChoice}/>
+            <SearchCategory currentSearchList={props.currentSearchList} items={Object.keys(categories[3])} lists={Object.values(categories[3])} onClick={props.handleChoice}/>
+            <SearchCategory currentSearchList={props.currentSearchList} items={Object.keys(categories[4])} lists={Object.values(categories[4])} onClick={props.handleChoice}/>
         </List>
       </MenuDropdown>
     </Menu>

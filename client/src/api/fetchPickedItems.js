@@ -39,8 +39,19 @@ const PickedItemsApi = {
             body: JSON.stringify(itemToDelete)
         });
         if (!response.ok) throw Error('Something went wrong!');
-    }
+    },
 
-}
+    deleteAllPickedItems: async function (arrayToDelete) {
+        console.log(arrayToDelete)
+        const response = await fetch(`/picked/${arrayToDelete[0].id}`, {
+            method: 'DELETE',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(arrayToDelete[0])
+        });
+        if (!response.ok) throw Error('Something went wrong!');
+        return []
+}}
 
 export default PickedItemsApi

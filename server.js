@@ -22,7 +22,9 @@ const dotenv = require('dotenv');
 dotenv.config();
 //const mongoose = require("mongoose");
 const { checkDuplicateUsernameOrEmail } = require('./middlewares');
+const { addNewListToUserAccount, getSavedLists } = require('./middlewares');
 const controller = require('./controllers/auth.controller');
+//const {addNewListToUserAccount} = require('./middlewares')
 
 //mongoose.set("useFindAndModify", false);
 //mongoose.connect(process.env.DB_CONNECT, { useNewUrlParser: true, useUnifiedTopology: true }, () => {
@@ -121,9 +123,27 @@ app.delete('/picked/:itemId', (req, res, next) => {
   res.status(204).send(arrayOfPickedItems);
 })
 
-
 app.post('/register', checkDuplicateUsernameOrEmail, controller.register)
 app.post('/login', controller.login)
 
 
+app.put('/users/:login', function(req, res) {
+  const login = req.params.login
+  const listName = req.body.name
+  const listContent = req.body.newList
+  User.findOneAndUpdate({login: login}, {$push:{savedLists: {listName: listName, items: listContent}}}, {new: true}, (err, obj) => {
+    if (err) {
+        console.log("Something wrong when updating data!");
+        return;
+    }
+    res.send(obj);
+})
+})
 
+app.get('/users/:login', function(req, res) {
+  User.find({login: 'anna'}, function(err, result) {
+    if (err) throw err;
+    res.send(result);
+  });
+}
+)

@@ -10,7 +10,7 @@ function Menu (props, ref) {
         window.addEventListener("resize", handleWindowResize);
         return () => window.removeEventListener("resize", handleWindowResize);
     }, []);
-    return width > breakpoint ? <SearchMenu ref={ref} currentList={props.currentList} handleChoice={props.handleChoice}/> : <BurgerMenu ref={ref} currentList={props.currentList} handleChoice={props.handleChoice}/>;
+    return width > breakpoint ? <SearchMenu ref={ref} currentSearchList={props.currentSearchList} handleChoice={props.handleChoice}/> : <BurgerMenu ref={ref} currentSearchList={props.currentSearchList} handleChoice={props.handleChoice}/>;
 };
 
 export default React.forwardRef(Menu);

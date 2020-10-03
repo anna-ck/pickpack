@@ -94,7 +94,7 @@ function BurgerResults (props, ref) {
   
   return (
       <ResultsWrapper ref={ref}>
-        <ListName>{items.currentList || <Info/>}</ListName>
+        <ListName>{items.currentSearchList || <Info/>}</ListName>
         <ListWrapper>
           {items.searchResults.map((item, i) => {
               return (

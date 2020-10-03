@@ -77,7 +77,7 @@ function SearchResults (props, ref) {
   
   return (
       <ResultsWrapper ref={ref}>
-        <ListName>{props.currentList || <Info/>}</ListName>
+        <ListName>{props.currentSearchList || <Info/>}</ListName>
         <ListWrapper>
           {searchResults.map((item, i) => {
               return (

@@ -15,6 +15,8 @@ import GlobalStyle from '../theme/globalStyles';
 import { lightTheme, darkTheme } from "../theme/Themes";
 import PickedItemsApi from '../api/fetchPickedItems';
 import UserGreeting from './UserGreeting'
+import SaveListButton from './SaveListButton'
+import SavedPackingLists from './SavedPackingLists'
 import { v4 as uuidv4 } from 'uuid';
 
 
@@ -130,24 +132,52 @@ const PrintButton = styled.button`
    }
 `;
 
+function usePrevious(value) {
+  const ref = useRef();
+  useEffect(() => {
+    ref.current = value;
+  });
+  return ref.current;
+}
 
 function AppContent(props) {
+
     const [theme, setTheme] = useState('light');
     const [pickedItems, setPickedItems] =  useState([]);
     const [searchResults, setSearchResults] = useState([]);
-    const [currentList, setCurrentList] = useState('');
+    const [currentSearchList, setCurrentSearchList] = useState('');
     const [isActive, setIsActive] = useState(true);
+    const [currentUser, setCurrentUser] = useState(props.currentUser)
+    const [currentListName, setCurrentListName] = useState('')
 
     const menuRef = useRef(0);
     const resultsRef = useRef(0);
+
+    const prevCurrentUser = usePrevious(currentUser)
+
+    useEffect (() => {
+      setCurrentUser(props.currentUser)}, [props])
+      //localStorage.setItem("previousUser", currentUser)
+
+    //useEffect (() => {
+    //  prevUserRef.current = currentUser
+    //})
+    //const prevUser = prevUserRef.current
+    //if (prevUser) {localStorage.setItem("previousUser", prevUser.login)};
+    //const previousUser = localStorage.getItem('previousUser')
     
     useEffect (() => {
+      //const previous = localStorage.getItem('previousUser')
+      //if (currentUser) {localStorage.setItem("previousUser", currentUser.login)} else {localStorage.setItem("previousUser", null)}
+      //const previous = localStorage.getItem('previousUser')
+      //const currentPrevious = localStorage.getItem('previousUser')
       const fetchData = async () => {
         const result = await PickedItemsApi.getAllPickedItems()
         setPickedItems(result)
       };
       fetchData();
     }, []);
+
 
     const changeNumberInput = (item) => {
       if (item.number !== '0') {
@@ -185,7 +215,7 @@ function AppContent(props) {
     const search = (listName) => {
         const result = itemLists.searchList(listName);
         setSearchResults(result);
-        setCurrentList(listName);
+        setCurrentSearchList(listName);
         if (window.innerWidth < 690) {
           openBurger()
         }
@@ -201,10 +231,27 @@ function AppContent(props) {
       setIsActive(!isActive)
     }
 
+    const handleListSaving = () => {
+      props.onClick(pickedItems, currentListName)
+    }
+
+    const handleCurrentListNameChange = (name) => {
+      setCurrentListName(name)
+    }
+
+    const changeCurrentList = (e) => {
+      const listName = e.currentTarget.value
+      const savedLists = currentUser.savedLists
+      const listToReturn = savedLists.find(list => list.listName === listName).items
+      setPickedItems(listToReturn)
+      setCurrentListName(listName)
+    }
+
     return (
 <ThemeProvider theme={theme === 'light' ? lightTheme : darkTheme}>  
 <GlobalStyle />
-<UserGreeting currentUser={props.currentUser} onAuthChange={props.onAuthChange}/>
+<UserGreeting currentUser={currentUser} onAuthChange={props.onAuthChange}/>
+{currentUser ? <SavedPackingLists currentUser={currentUser} onListChoice={changeCurrentList}/> : null}
 <Header/>
 <ToggleButton onClick={toggleTheme}/>
 <Content>
@@ -214,13 +261,14 @@ function AppContent(props) {
     </ContentLeftTop>
     <BurgerIcon onClick={openBurger} burgerIsActive={isActive}></BurgerIcon>
     <ContentLeftBottom>
-      <Menu ref={menuRef} currentList={currentList} handleChoice={search} />
-      <Results ref={resultsRef} currentList={currentList} searchResults={searchResults} pickedItems={pickedItems} onCheck={changeNumberInput} />
+      <Menu ref={menuRef} currentSearchList={currentSearchList} handleChoice={search} />
+      <Results ref={resultsRef} currentSearchList={currentSearchList} searchResults={searchResults} pickedItems={pickedItems} onCheck={changeNumberInput} />
     </ContentLeftBottom>
   </ContentLeft>
   <ContentRight>
-    <FinalList pickedItems={pickedItems} onChange={changeNumberInput}/>
+    <FinalList pickedItems={pickedItems} currentListName={currentListName} onChange={changeNumberInput} onCurrentListNameChange={handleCurrentListNameChange}/>
     <PrintButton onClick={window.print}>print list</PrintButton>
+    <SaveListButton onClick={handleListSaving} currentUser={currentUser}/>
   </ContentRight>
 </Content> 
 <Footer/>

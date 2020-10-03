@@ -19,7 +19,7 @@ function UserGreeting(props) {
     useEffect(() => {setUser(props.currentUser);}, [props]);
     return (
         <Greeting>
-            <Message>Hello {user? user : 'stranger'}!</Message>
+            <Message>Hello {user? user.login : 'stranger'}!</Message>
             <LogoutButton onClick={props.onAuthChange}>{user ? 'log out' : 'log in'}</LogoutButton>
         </Greeting>
     )

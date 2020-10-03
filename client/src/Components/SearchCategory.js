@@ -61,9 +61,9 @@ const List = styled.ul`
 function SearchCategory (props) {
     const [items] = React.useState(props.items);
     const [lists] = React.useState(props.lists);
-    const [currentList, setCurrentList] = React.useState(props.currentList)
+    const [currentSearchList, setCurrentSearchList] = React.useState(props.currentSearchList)
     const [open, setOpen] = React.useState(false);
-    React.useEffect(() => {setCurrentList(props.currentList);}, [props])
+    React.useEffect(() => {setCurrentSearchList(props.currentSearchList);}, [props])
 
 
     const handleChoice =  (e, listName) => {
@@ -71,7 +71,7 @@ function SearchCategory (props) {
     };
 
     const handleActive = (lst) => {
-        if (lst === currentList) {
+        if (lst === currentSearchList) {
           return true
         }
         else {

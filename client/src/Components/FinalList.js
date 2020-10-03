@@ -81,7 +81,7 @@ const Row = styled.table`
 
 function FinalList (props) {
   const [items, setItems] = useState(props) || [];
-  useEffect(() => {setItems(props);}, [props, setItems]);
+  useEffect(() => {setItems(props);}, [props]);
 
 
   return (
@@ -89,7 +89,7 @@ function FinalList (props) {
       <Header>
         <HeaderLarge>
           <Icon className="far fa-star"></Icon>
-          <Input defaultValue='My Packing List' maxLength='12'/>
+          <Input defaultValue={items.currentListName} placeholder='Add list name' maxLength='12' onChange={(e) => props.onCurrentListNameChange(e.target.value)}/>
           <Icon className="far fa-star"></Icon>
         </HeaderLarge>
         <HeaderSmall className='my-list__header-small'>
