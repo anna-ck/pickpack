@@ -15,9 +15,10 @@ import GlobalStyle from '../theme/globalStyles';
 import { lightTheme, darkTheme } from "../theme/Themes";
 import PickedItemsApi from '../api/fetchPickedItems';
 import UserGreeting from './UserGreeting'
-import SaveListButton from './SaveListButton'
-import SavedPackingLists from './SavedPackingLists'
 import { v4 as uuidv4 } from 'uuid';
+
+const SavedPackingLists = React.lazy(() => import('./SavedPackingLists'))
+const SaveListButton = React.lazy(() => import('./SaveListButton'))
 
 
 const Content = styled.div`
@@ -241,7 +242,7 @@ const changeInputItem = (item) => {
 <ThemeProvider theme={theme === 'light' ? lightTheme : darkTheme}>  
 <GlobalStyle />
 <UserGreeting currentUser={currentUser} onAuthChange={props.onAuthChange}/>
-{currentUser ? <SavedPackingLists currentUser={currentUser} onListChoice={changeCurrentList}/> : null}
+{currentUser ? <React.Suspense fallback={'... loading saved lists'}><SavedPackingLists currentUser={currentUser} onListChoice={changeCurrentList}/></React.Suspense> : null}
 {currentUser ?  <button onClick={handleNewListOpening}>Open new list</button> : null}
 <Header/>
 <ToggleButton onClick={toggleTheme}/>
@@ -259,7 +260,7 @@ const changeInputItem = (item) => {
   <ContentRight>
     <FinalList pickedItems={pickedItems} currentList={currentList} onChange={changeInputItem} onCurrentListNameChange={handleCurrentListNameChange} onNewListOpening={handleNewListOpening}/>
     <PrintButton onClick={window.print}>print list</PrintButton>
-    <SaveListButton onClick={handleListSaving} onEdit={editSavedList} currentUser={currentUser} currentList={currentList}/>
+    <React.Suspense fallback={'...'}><SaveListButton onClick={handleListSaving} onEdit={editSavedList} currentUser={currentUser} currentList={currentList}/></React.Suspense>
   </ContentRight>
 </Content> 
 <Footer/>
