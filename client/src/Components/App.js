@@ -13,6 +13,7 @@ function App() {
 
     //const [accessToken, setAccessToken] = useState(null);
     const [currentUser, setCurrentUser] = useState(null)
+    const [accessToken, setAccessToken] = useState(null)
     const [registerMessage, setRegisterMessage] = useState(null);
     const [isAuthorizationPanelHidden, setAuthorizationPanelHidden] = useState(true)
 
@@ -20,11 +21,12 @@ function App() {
     //useEffect(() => {setCurrentUser(currentUser);}, []);
 
     useEffect(() => {
-      //const login = localStorage.getItem('login');
+      const accessToken = localStorage.getItem('accessToken');
       const user = JSON.parse(localStorage.getItem('user'))
-      if (user && user.accessToken) {
+      if (user && accessToken) {
         //setAccessToken(useraccessToken)
         setCurrentUser(user)
+        setAccessToken(accessToken)
       }
     }, []);
 
@@ -32,11 +34,14 @@ function App() {
       AuthenticationApi.login(userInfo)
       .then((response) => {
         localStorage.setItem("user", JSON.stringify(response));
+        localStorage.setItem("accessToken", response.accessToken);
         //localStorage.setItem("accessToken", response.accessToken);
         const user = JSON.parse(localStorage.getItem('user'))
+        const accessToken = localStorage.getItem('accessToken')
         //setAccessToken(localStorage.getItem('accessToken'))
         //setCurrentUser(response)
         setCurrentUser(user)
+        setAccessToken(accessToken)
         setAuthorizationPanelHidden(true)
       })
       .catch((error) => console.log(error))
@@ -51,17 +56,13 @@ function App() {
     }
 
     const handleAuthChange = () => {
-      const fetchData = async () => {
-        const result = await PickedItemsApi.getAllPickedItems()
-        if (result.length > 0) {
-        PickedItemsApi.deleteAllPickedItems(result)}
-      };
-      fetchData();
+      localStorage.removeItem("pickedItems");
+      localStorage.removeItem("currentList");
       if (currentUser) {
       localStorage.removeItem("user");
-      //localStorage.removeItem("accessToken");
-      //setAccessToken(null)
+      localStorage.removeItem('accessToken')
       setCurrentUser(null)
+      setAccessToken(null)
       setAuthorizationPanelHidden(true)
       }
       else {
@@ -69,8 +70,25 @@ function App() {
       }
     }
 
-    const addCurrentPackingListToSavedLists = (pickedItems, currentListName) => {
-      HandleSavedListsApi.addList(pickedItems, currentUser, currentListName)
+    const addCurrentPackingListToSavedLists = (pickedItems, currentList) => {
+      HandleSavedListsApi.addList(pickedItems, currentUser, currentList)
+      .then((response) => {
+        console.log(response)
+        localStorage.setItem("user", JSON.stringify(response));
+        const user = JSON.parse(localStorage.getItem('user'))
+        setCurrentUser(user)
+        localStorage.removeItem("pickedItems");
+        localStorage.removeItem("currentList");
+      })
+      .catch((error) => {
+        console.log(error.message)
+      })
+    }
+
+    const editCurrentSavedList = (pickedItems, currentList) => {
+      console.log(currentList)
+      console.log(currentUser)
+      HandleSavedListsApi.updateList(pickedItems, currentUser, currentList)
       .then((response) => {
         console.log(response)
         localStorage.setItem("user", JSON.stringify(response));
@@ -83,7 +101,7 @@ function App() {
     }
 
     return (
-      isAuthorizationPanelHidden ? <AppContent currentUser={currentUser} onAuthChange={handleAuthChange} onClick={addCurrentPackingListToSavedLists}/> : <AuthenticationPage onLogin={handleLogging} onRegister={handleRegistration} registerMessage={registerMessage}/>
+      isAuthorizationPanelHidden ? <AppContent currentUser={currentUser} onAuthChange={handleAuthChange} onClick={addCurrentPackingListToSavedLists} onEdit={editCurrentSavedList}/> : <AuthenticationPage onLogin={handleLogging} onRegister={handleRegistration} registerMessage={registerMessage}/>
     )
 }
 

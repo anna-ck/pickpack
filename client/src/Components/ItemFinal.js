@@ -90,29 +90,54 @@ function ItemFinal (props) {
   //const [number, setNumber] = useState('');
 
   const finalNumberRef = useRef()
-  useEffect(() => {setItem(props.item);}, [props]);
+  //useEffect(() => {setItem(props.item);}, [props]);
 
   const handleRemove = () => {
-    const number = 0
-    handleChange(number)
+    setItem({...item, number: 0})
+    //const number = 0
+    //handleChange()
   }
 
 const handlePlus = () => {
-  const number = +item.number + 1
-  handleChange(number)
+  setItem({...item, number: +item.number + 1})
+  //const number = +item.number + 1
+  //handleChange()
 }
 
 const handleMinus = () => {
-  const number = +item.number -1
-  handleChange(number)
+  setItem({...item, number: +item.number - 1})
+  //const number = +item.number + 1
+  //handleChange()
 }
 
-const handleChange = (number) => {
-  const finalItem = {}
-  finalItem.name = item.name
-  finalItem.number = number
-  finalItem.id = item.id
-  props.onChange(finalItem)
+const handleChange = () => {
+  //const finalItem = {}
+  //finalItem.name = item.name
+  //finalItem.number = number
+  //finalItem.id = item.id
+    props.onChange(item)
+  //console.log(item)
+  }
+
+useEffect(() => {
+  handleChange() 
+  console.log('1')
+  console.log('2')}, [item]);
+//useEffect(() => {setItem(props.item)}, [props.item]);
+
+useEffect(() => {
+  if (props.item.id !== item.id || props.item.number !== item.number) {
+  console.log('1')
+  setItem(props.item)
+  console.log('2')}}, [props.item]);
+
+const addItemDescription = (e) => {
+  //const finalItem = {}
+  //finalItem.name = item.name
+  //finalItem.number = number
+  //finalItem.id = item.id
+  //props.onChange(finalItem)
+  setItem({...item, description: e.target.value})
 }
 
 
@@ -127,7 +152,7 @@ const handleChange = (number) => {
           <Arrow hide={true} up={true} onClick={handlePlus}/>
           <Arrow hide={true} up={false} onClick={handleMinus}/>
           <TdXLarge>
-            <Input type='text' maxLength='21' placeholder='describe items'/>
+            <Input type='text' maxLength='21' placeholder='describe item(s)' onChange={addItemDescription} value={item.description}/>
           </TdXLarge>
         </Item>
       </RowWrapper>

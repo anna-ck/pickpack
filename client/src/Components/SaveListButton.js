@@ -6,11 +6,13 @@ function SaveListButton (props) {
 
     const Button = (props) => {
         return (
-            <button onClick={props.onClick}>Save</button>
+            <>
+            <button onClick={props.onClick}>{props.text}</button>
+            </>
         )
     }
     return (
-        props.currentUser ? <Button /> : null
+        props.currentUser ? props.currentList.id ? <Button onClick={props.onEdit} text={'save changes'} /> : <Button onClick={props.onClick} text={'save new list'}/> : null
     )
 }
 

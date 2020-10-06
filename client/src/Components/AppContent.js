@@ -132,85 +132,60 @@ const PrintButton = styled.button`
    }
 `;
 
-function usePrevious(value) {
-  const ref = useRef();
-  useEffect(() => {
-    ref.current = value;
-  });
-  return ref.current;
-}
-
 function AppContent(props) {
 
     const [theme, setTheme] = useState('light');
-    const [pickedItems, setPickedItems] =  useState([]);
+    const [pickedItems, setPickedItems] =  useState([]) || [];
     const [searchResults, setSearchResults] = useState([]);
     const [currentSearchList, setCurrentSearchList] = useState('');
     const [isActive, setIsActive] = useState(true);
     const [currentUser, setCurrentUser] = useState(props.currentUser)
-    const [currentListName, setCurrentListName] = useState('')
+    const [currentList, setCurrentList] = useState({listName: '', id: ''})
 
     const menuRef = useRef(0);
     const resultsRef = useRef(0);
 
-    const prevCurrentUser = usePrevious(currentUser)
-
     useEffect (() => {
-      setCurrentUser(props.currentUser)}, [props])
-      //localStorage.setItem("previousUser", currentUser)
+      setCurrentUser(props.currentUser)
+      const pickedItemsFromStorage = JSON.parse(localStorage.getItem('pickedItems')) || []
+      const currentListFromStorage = JSON.parse(localStorage.getItem('currentList')) || {listName: '', id: ''}
+      setPickedItems(pickedItemsFromStorage || [])
+      setCurrentList(currentListFromStorage || {listName: '', id: ''})
+    }, [props.currentUser])
 
-    //useEffect (() => {
-    //  prevUserRef.current = currentUser
-    //})
-    //const prevUser = prevUserRef.current
-    //if (prevUser) {localStorage.setItem("previousUser", prevUser.login)};
-    //const previousUser = localStorage.getItem('previousUser')
-    
-    useEffect (() => {
-      //const previous = localStorage.getItem('previousUser')
-      //if (currentUser) {localStorage.setItem("previousUser", currentUser.login)} else {localStorage.setItem("previousUser", null)}
-      //const previous = localStorage.getItem('previousUser')
-      //const currentPrevious = localStorage.getItem('previousUser')
-      const fetchData = async () => {
-        const result = await PickedItemsApi.getAllPickedItems()
-        setPickedItems(result)
-      };
-      fetchData();
-    }, []);
-
-
-    const changeNumberInput = (item) => {
-      if (item.number !== '0') {
-        const indexOfItemToUpdate = pickedItems.findIndex((picked) => picked.name === item.name);
-        if (indexOfItemToUpdate > -1) {
-            PickedItemsApi.updateItem(item)
-            .then((updatedItem) => {
-            if (updatedItem.number !== 0) {
-              let newPickedItems = [...pickedItems];
-              let item = {...newPickedItems[indexOfItemToUpdate]}
-              item.number = updatedItem.number
-              newPickedItems[indexOfItemToUpdate] = item;
-              setPickedItems(newPickedItems)
-            }
-            else {
-              setPickedItems([...pickedItems.filter((picked => picked.name !== item.name))])
-              PickedItemsApi.deleteItem(item)
-            }
-          })
+const changeInputItem = (item) => {
+  if (item.number !== '0') {
+    const indexOfItemToUpdate = pickedItems.findIndex((picked) => picked.name === item.name);
+    if (indexOfItemToUpdate > -1) {
+        if (item.number !== 0) {
+          let newPickedItems = [...pickedItems];
+          let newItem = {...newPickedItems[indexOfItemToUpdate]}
+          newItem.number = item.number
+          newItem.description = item.description || ''
+          newPickedItems[indexOfItemToUpdate] = newItem;
+          setPickedItems(newPickedItems)
+          localStorage.setItem("pickedItems", JSON.stringify(newPickedItems))
         }
         else {
-          item.id = uuidv4()
-          PickedItemsApi.pickItem(item)
-          .then((pickedItem) => {
-          setPickedItems([...pickedItems, pickedItem])
-          })
+          const newPickedItems = [...pickedItems.filter((picked => picked.name !== item.name))]
+          setPickedItems(newPickedItems)
+          localStorage.setItem("pickedItems", JSON.stringify(newPickedItems))
         }
-      }
-      else {
-        setPickedItems([...pickedItems.filter((picked => picked.name !== item.name))])
-        PickedItemsApi.deleteItem(item)
-      }
-    };
+    }
+    else {
+      item.id = uuidv4()
+      item.description = ''
+        const newPickedItems = [...pickedItems, item]
+        setPickedItems(newPickedItems)
+        localStorage.setItem("pickedItems", JSON.stringify(newPickedItems))
+    }
+  }
+  else {
+    const newPickedItems = [...pickedItems.filter((picked => picked.name !== item.name))]
+    setPickedItems(newPickedItems)
+    localStorage.setItem("pickedItems", JSON.stringify(newPickedItems))
+  }
+}
 
     const search = (listName) => {
         const result = itemLists.searchList(listName);
@@ -232,19 +207,34 @@ function AppContent(props) {
     }
 
     const handleListSaving = () => {
-      props.onClick(pickedItems, currentListName)
+      props.onClick(pickedItems, currentList)
+      setCurrentList({listName: '', id: ''})
+      localStorage.setItem("currentList", JSON.stringify({listName: '', id: ''}))
+    }
+
+    const editSavedList = () => {
+      console.log(pickedItems)
+      props.onEdit(pickedItems, currentList)
     }
 
     const handleCurrentListNameChange = (name) => {
-      setCurrentListName(name)
+      setCurrentList({listName: name, id: currentList.id})
+      localStorage.setItem("currentList", JSON.stringify({listName: name, id: currentList.id}))
     }
 
     const changeCurrentList = (e) => {
-      const listName = e.currentTarget.value
+      const listId = e.currentTarget.value
       const savedLists = currentUser.savedLists
-      const listToReturn = savedLists.find(list => list.listName === listName).items
-      setPickedItems(listToReturn)
-      setCurrentListName(listName)
+      const listToReturn = savedLists.find(list => list.id === listId)
+      setPickedItems(listToReturn.items)
+      setCurrentList({listName: listToReturn.listName, id: listToReturn.id})
+      localStorage.setItem("pickedItems", JSON.stringify(listToReturn.items))
+      localStorage.setItem("currentList", JSON.stringify({listName: listToReturn.listName, id: listToReturn.id}))
+    }
+
+    const handleNewListOpening = () => {
+      setPickedItems([])
+      setCurrentList({listName: '', id: ''})
     }
 
     return (
@@ -252,23 +242,24 @@ function AppContent(props) {
 <GlobalStyle />
 <UserGreeting currentUser={currentUser} onAuthChange={props.onAuthChange}/>
 {currentUser ? <SavedPackingLists currentUser={currentUser} onListChoice={changeCurrentList}/> : null}
+{currentUser ?  <button onClick={handleNewListOpening}>Open new list</button> : null}
 <Header/>
 <ToggleButton onClick={toggleTheme}/>
 <Content>
   <ContentLeft id='toHide'>
     <ContentLeftTop>
-      <SearchInput pickedItems={pickedItems} onAdd={changeNumberInput}/>
+      <SearchInput pickedItems={pickedItems} onAdd={changeInputItem}/>
     </ContentLeftTop>
     <BurgerIcon onClick={openBurger} burgerIsActive={isActive}></BurgerIcon>
     <ContentLeftBottom>
       <Menu ref={menuRef} currentSearchList={currentSearchList} handleChoice={search} />
-      <Results ref={resultsRef} currentSearchList={currentSearchList} searchResults={searchResults} pickedItems={pickedItems} onCheck={changeNumberInput} />
+      <Results ref={resultsRef} currentSearchList={currentSearchList} searchResults={searchResults} pickedItems={pickedItems} onCheck={changeInputItem} />
     </ContentLeftBottom>
   </ContentLeft>
   <ContentRight>
-    <FinalList pickedItems={pickedItems} currentListName={currentListName} onChange={changeNumberInput} onCurrentListNameChange={handleCurrentListNameChange}/>
+    <FinalList pickedItems={pickedItems} currentList={currentList} onChange={changeInputItem} onCurrentListNameChange={handleCurrentListNameChange} onNewListOpening={handleNewListOpening}/>
     <PrintButton onClick={window.print}>print list</PrintButton>
-    <SaveListButton onClick={handleListSaving} currentUser={currentUser}/>
+    <SaveListButton onClick={handleListSaving} onEdit={editSavedList} currentUser={currentUser} currentList={currentList}/>
   </ContentRight>
 </Content> 
 <Footer/>

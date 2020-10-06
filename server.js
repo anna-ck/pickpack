@@ -127,11 +127,27 @@ app.post('/register', checkDuplicateUsernameOrEmail, controller.register)
 app.post('/login', controller.login)
 
 
+app.post('/users/:login', function(req, res) {
+  const login = req.params.login
+  const listName = req.body.name
+  const listContent = req.body.items
+  const listId = req.body.id
+  User.findOneAndUpdate({login: login}, {$push:{savedLists: {listName: listName, items: listContent, id: listId}}}, {new: true}, (err, obj) => {
+    if (err) {
+        console.log("Something wrong when updating data!");
+        return;
+    }
+    res.send(obj);
+})
+})
+
+
 app.put('/users/:login', function(req, res) {
   const login = req.params.login
   const listName = req.body.name
-  const listContent = req.body.newList
-  User.findOneAndUpdate({login: login}, {$push:{savedLists: {listName: listName, items: listContent}}}, {new: true}, (err, obj) => {
+  const listContent = req.body.items
+  const listId = req.body.id
+  User.findOneAndUpdate({'login': login, 'savedLists.id': listId}, {'$set': {'savedLists.$.items': listContent, 'savedLists.$.listName': listName}}, {new: true}, (err, obj) => {
     if (err) {
         console.log("Something wrong when updating data!");
         return;

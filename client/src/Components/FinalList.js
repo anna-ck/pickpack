@@ -80,24 +80,31 @@ const Row = styled.table`
 `;
 
 function FinalList (props) {
-  const [items, setItems] = useState(props) || [];
-  useEffect(() => {setItems(props);}, [props]);
+  const [pickedItems, setPickedItems] = useState(props.pickedItems) || [];
+  const [currentList, setCurrentList] = useState({listName: '', id: ''});
 
+  useEffect(() => {setPickedItems(props.pickedItems);}, [setPickedItems, props.pickedItems]);
+  useEffect(() => {setCurrentList(props.currentList);}, [props.currentList]);
+
+  const handleChange = (e) => {
+    props.onCurrentListNameChange(e.target.value)
+  }
 
   return (
     <FinalListWrapper>
       <Header>
-        <HeaderLarge>
+        <HeaderLarge >
           <Icon className="far fa-star"></Icon>
-          <Input defaultValue={items.currentListName} placeholder='Add list name' maxLength='12' onChange={(e) => props.onCurrentListNameChange(e.target.value)}/>
+          <Input value={currentList.listName} placeholder='Add list name' maxLength='12' onChange={handleChange}/>
           <Icon className="far fa-star"></Icon>
+          <button onClick={props.onNewListOpening}>Open new list</button>
         </HeaderLarge>
         <HeaderSmall className='my-list__header-small'>
             Tip: you can change the number of items to pack and describe them
         </HeaderSmall>
       </Header>
       <List id='toPrint'>
-          {items.pickedItems.map((item, i) => {
+          {pickedItems.map((item, i) => {
               return (
                   <Row key={'item_' + i}>
                       <ItemFinal item={item} onChange={props.onChange}/>
