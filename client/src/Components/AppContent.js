@@ -1,25 +1,29 @@
-import React, { useState, useEffect, useRef }  from 'react';
-import AuthenticationPage from '../Components/AuthenticationPage';
+import React, { useState, useEffect, useRef, useContext }  from 'react';
+
+import {ThemeProvider} from "styled-components";
+import GlobalStyle from '../theme/globalStyles';
+import { lightTheme, darkTheme } from "../theme/Themes";
+
 import Header from '../Components/Header';
-import ToggleButton from '../Components/ToggleButton'
+import ToggleButton from '../Components/ToggleButton';
 import SearchInput from '../Components/SearchInput';
 import BurgerIcon from '../Components/BurgerIcon';
 import Menu from '../Components/Menu';
 import Results from './Results';
 import FinalList from '../Components/FinalList';
-import Footer from '../Components/Footer'
+import Footer from '../Components/Footer';
+import UserGreeting from './UserGreeting';
+
 import { itemLists } from '../Utilities/Helper'
 import styled from 'styled-components';
-import {ThemeProvider} from "styled-components";
-import GlobalStyle from '../theme/globalStyles';
-import { lightTheme, darkTheme } from "../theme/Themes";
-import PickedItemsApi from '../api/fetchPickedItems';
-import UserGreeting from './UserGreeting'
 import { v4 as uuidv4 } from 'uuid';
+
+import CurrentUserContext from '../Contexts/CurrentUserContext'
+import CurrentListContext from '../Contexts/CurrentListContext';
 
 const SavedPackingLists = React.lazy(() => import('./SavedPackingLists'))
 const SaveListButton = React.lazy(() => import('./SaveListButton'))
-
+const DeleteListButton = React.lazy(() => import('./DeleteListButton'))
 
 const Content = styled.div`
     display: flex;
@@ -140,53 +144,55 @@ function AppContent(props) {
     const [searchResults, setSearchResults] = useState([]);
     const [currentSearchList, setCurrentSearchList] = useState('');
     const [isActive, setIsActive] = useState(true);
-    const [currentUser, setCurrentUser] = useState(props.currentUser)
-    const [currentList, setCurrentList] = useState({listName: '', id: ''})
+    const {currentUser, onCurrentUserChange} = useContext(CurrentUserContext);
+    const [currentList, setCurrentList] = useState({listName: '', id: ''});
+    const [wasCurrentListModified, setWasCurrentListModified] = useState(false)
 
     const menuRef = useRef(0);
     const resultsRef = useRef(0);
 
     useEffect (() => {
-      setCurrentUser(props.currentUser)
       const pickedItemsFromStorage = JSON.parse(localStorage.getItem('pickedItems')) || []
       const currentListFromStorage = JSON.parse(localStorage.getItem('currentList')) || {listName: '', id: ''}
       setPickedItems(pickedItemsFromStorage || [])
       setCurrentList(currentListFromStorage || {listName: '', id: ''})
-    }, [props.currentUser])
+    }, [currentUser])
 
-const changeInputItem = (item) => {
-  if (item.number !== '0') {
-    const indexOfItemToUpdate = pickedItems.findIndex((picked) => picked.name === item.name);
-    if (indexOfItemToUpdate > -1) {
-        if (item.number !== 0) {
-          let newPickedItems = [...pickedItems];
-          let newItem = {...newPickedItems[indexOfItemToUpdate]}
-          newItem.number = item.number
-          newItem.description = item.description || ''
-          newPickedItems[indexOfItemToUpdate] = newItem;
-          setPickedItems(newPickedItems)
-          localStorage.setItem("pickedItems", JSON.stringify(newPickedItems))
+
+    const changeInputItem = (item) => {
+      if (item.number !== '0') {
+        const indexOfItemToUpdate = pickedItems.findIndex((picked) => picked.name === item.name);
+        if (indexOfItemToUpdate > -1) {
+            if (item.number !== 0) {
+              let newPickedItems = [...pickedItems];
+              let newItem = {...newPickedItems[indexOfItemToUpdate]}
+              newItem.number = item.number
+              newItem.description = item.description || ''
+              newPickedItems[indexOfItemToUpdate] = newItem;
+              setPickedItems(newPickedItems)
+              localStorage.setItem("pickedItems", JSON.stringify(newPickedItems))
+            }
+            else {
+              const newPickedItems = [...pickedItems.filter((picked => picked.name !== item.name))]
+              setPickedItems(newPickedItems)
+              localStorage.setItem("pickedItems", JSON.stringify(newPickedItems))
+            }
         }
         else {
-          const newPickedItems = [...pickedItems.filter((picked => picked.name !== item.name))]
+          item.id = uuidv4()
+          item.description = ''
+          const newPickedItems = [...pickedItems, item]
           setPickedItems(newPickedItems)
           localStorage.setItem("pickedItems", JSON.stringify(newPickedItems))
+          setWasCurrentListModified(true)
         }
-    }
-    else {
-      item.id = uuidv4()
-      item.description = ''
-        const newPickedItems = [...pickedItems, item]
+      }
+      else {
+        const newPickedItems = [...pickedItems.filter((picked => picked.name !== item.name))]
         setPickedItems(newPickedItems)
         localStorage.setItem("pickedItems", JSON.stringify(newPickedItems))
+      }
     }
-  }
-  else {
-    const newPickedItems = [...pickedItems.filter((picked => picked.name !== item.name))]
-    setPickedItems(newPickedItems)
-    localStorage.setItem("pickedItems", JSON.stringify(newPickedItems))
-  }
-}
 
     const search = (listName) => {
         const result = itemLists.searchList(listName);
@@ -208,18 +214,25 @@ const changeInputItem = (item) => {
     }
 
     const handleListSaving = () => {
-      props.onClick(pickedItems, currentList)
-      setCurrentList({listName: '', id: ''})
-      localStorage.setItem("currentList", JSON.stringify({listName: '', id: ''}))
+      if (pickedItems.length > 0) {
+        const name = currentList.listName
+        const id = uuidv4()
+        currentList.id = id
+        props.onSave(pickedItems, currentList)
+        setWasCurrentListModified(false)
+        setCurrentList({listName: name, id: id})
+        localStorage.setItem("currentList", JSON.stringify({listName: name, id: id}))
+      }
     }
 
     const editSavedList = () => {
-      console.log(pickedItems)
       props.onEdit(pickedItems, currentList)
+      setWasCurrentListModified(false)
     }
 
     const handleCurrentListNameChange = (name) => {
       setCurrentList({listName: name, id: currentList.id})
+      setWasCurrentListModified(true)
       localStorage.setItem("currentList", JSON.stringify({listName: name, id: currentList.id}))
     }
 
@@ -231,40 +244,69 @@ const changeInputItem = (item) => {
       setCurrentList({listName: listToReturn.listName, id: listToReturn.id})
       localStorage.setItem("pickedItems", JSON.stringify(listToReturn.items))
       localStorage.setItem("currentList", JSON.stringify({listName: listToReturn.listName, id: listToReturn.id}))
+      setWasCurrentListModified(false)
     }
 
     const handleNewListOpening = () => {
       setPickedItems([])
       setCurrentList({listName: '', id: ''})
+      setWasCurrentListModified(false)
+    }
+
+    const handleSaveAndProceed = async () => {
+      if (currentList.id) {
+        editSavedList()
+        setCurrentList({listName: '', id: ''})
+        localStorage.setItem("currentList", JSON.stringify({listName: '', id: ''}))
+        localStorage.removeItem("pickedItems");
+      }
+      else {
+        handleListSaving()
+        setCurrentList({listName: '', id: ''})
+        localStorage.setItem("currentList", JSON.stringify({listName: '', id: ''}))
+        localStorage.removeItem("pickedItems");
+      }
+      setWasCurrentListModified(false)
+    }
+
+    const handleListDeleting = () => {
+      props.onDelete(currentList)
+      setWasCurrentListModified(false)
+      setCurrentList({listName: '', id: ''})
+      localStorage.setItem("currentList", JSON.stringify({listName: '', id: ''}))
+      localStorage.removeItem("pickedItems");
     }
 
     return (
-<ThemeProvider theme={theme === 'light' ? lightTheme : darkTheme}>  
-<GlobalStyle />
-<UserGreeting currentUser={currentUser} onAuthChange={props.onAuthChange}/>
-{currentUser ? <React.Suspense fallback={'... loading saved lists'}><SavedPackingLists currentUser={currentUser} onListChoice={changeCurrentList}/></React.Suspense> : null}
-{currentUser ?  <button onClick={handleNewListOpening}>Open new list</button> : null}
-<Header/>
-<ToggleButton onClick={toggleTheme}/>
-<Content>
-  <ContentLeft id='toHide'>
-    <ContentLeftTop>
-      <SearchInput pickedItems={pickedItems} onAdd={changeInputItem}/>
-    </ContentLeftTop>
-    <BurgerIcon onClick={openBurger} burgerIsActive={isActive}></BurgerIcon>
-    <ContentLeftBottom>
-      <Menu ref={menuRef} currentSearchList={currentSearchList} handleChoice={search} />
-      <Results ref={resultsRef} currentSearchList={currentSearchList} searchResults={searchResults} pickedItems={pickedItems} onCheck={changeInputItem} />
-    </ContentLeftBottom>
-  </ContentLeft>
-  <ContentRight>
-    <FinalList pickedItems={pickedItems} currentList={currentList} onChange={changeInputItem} onCurrentListNameChange={handleCurrentListNameChange} onNewListOpening={handleNewListOpening}/>
-    <PrintButton onClick={window.print}>print list</PrintButton>
-    <React.Suspense fallback={'...'}><SaveListButton onClick={handleListSaving} onEdit={editSavedList} currentUser={currentUser} currentList={currentList}/></React.Suspense>
-  </ContentRight>
-</Content> 
-<Footer/>
-</ThemeProvider>
-    )}
+      <ThemeProvider theme={theme === 'light' ? lightTheme : darkTheme}> 
+        <CurrentListContext.Provider value={{currentList:currentList, onCurrentListChange: setCurrentList}} >
+        <GlobalStyle />
+          <UserGreeting onAuthChange={props.onAuthChange}/>
+          {currentUser ? <React.Suspense fallback={'... loading saved lists'}><SavedPackingLists onListChoice={changeCurrentList}/></React.Suspense> : null}
+          <Header/>
+          <ToggleButton onClick={toggleTheme}/>
+          <Content>
+            <ContentLeft>
+              <ContentLeftTop>
+                <SearchInput pickedItems={pickedItems} onAdd={changeInputItem}/>
+              </ContentLeftTop>
+              <BurgerIcon onClick={openBurger} burgerIsActive={isActive}></BurgerIcon>
+              <ContentLeftBottom>
+                <Menu ref={menuRef} currentSearchList={currentSearchList} handleChoice={search} />
+                <Results ref={resultsRef} currentSearchList={currentSearchList} searchResults={searchResults} pickedItems={pickedItems} onCheck={changeInputItem} />
+              </ContentLeftBottom>
+            </ContentLeft>
+            <ContentRight>
+              <FinalList pickedItems={pickedItems} onChange={changeInputItem} onCurrentListNameChange={handleCurrentListNameChange} onNewListOpening={handleNewListOpening} onSaveAndProceed={handleSaveAndProceed} wasCurrentListModified={wasCurrentListModified} onCurrentListModification={() => setWasCurrentListModified(true)}/>
+              <PrintButton onClick={window.print}>print list</PrintButton>
+              <React.Suspense fallback={'...'}><SaveListButton onClick={handleListSaving} onEdit={editSavedList}/></React.Suspense>
+              <React.Suspense fallback={'...'}><DeleteListButton onClick={handleListDeleting}/></React.Suspense>
+            </ContentRight>
+          </Content> 
+          <Footer/>
+        </CurrentListContext.Provider>
+      </ThemeProvider>
+    )
+}
 
 export default AppContent

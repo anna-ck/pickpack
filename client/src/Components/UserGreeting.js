@@ -1,5 +1,6 @@
-import React, {useEffect, useState} from 'react';
+import React, {useContext} from 'react';
 import styled from 'styled-components';
+import CurrentUserContext from '../Contexts/CurrentUserContext'
 
 const Greeting = styled.div`
     max-width: 100%;
@@ -15,12 +16,11 @@ const LogoutButton = styled.button`
 `;
 
 function UserGreeting(props) {
-    const [user, setUser] = useState('');
-    useEffect(() => {setUser(props.currentUser);}, [props]);
+    const {currentUser} = useContext(CurrentUserContext);
     return (
         <Greeting>
-            <Message>Hello {user? user.login : 'stranger'}!</Message>
-            <LogoutButton onClick={props.onAuthChange}>{user ? 'log out' : 'log in'}</LogoutButton>
+            <Message>Hello {currentUser? currentUser.login : 'stranger'}!</Message>
+            <LogoutButton onClick={props.onAuthChange}>{currentUser ? 'log out' : 'log in'}</LogoutButton>
         </Greeting>
     )
 } 
