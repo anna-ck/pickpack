@@ -1,10 +1,8 @@
-import { v4 as uuidv4 } from 'uuid';
-
 const HandleSavedListsApi = {
     addList: async function (pickedItems, currentUser, currentList) {
         let date = new Date().toISOString().slice(0, 10)  
         const listName = currentList.listName ? currentList.listName : 'New list ' + date
-        const id = uuidv4()
+        const id = currentList.id
         console.log(id)
         const response = await fetch(`/users/${currentUser.login}`, {
             method: 'POST',
@@ -35,7 +33,20 @@ const HandleSavedListsApi = {
         const updatedUser = await response.json()
         if (response.status !== 200) throw Error('Something went wrong');
         return updatedUser
-    }
+    },
+    deleteList: async function (currentUser, listToUpdate) {
+        const response = await fetch(`/users/${currentUser.login}`, {
+            method: 'DELETE',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({id:listToUpdate.id})
+        });
+        console.log(response)
+        const updatedUser = await response.json()
+        if (response.status !== 200) throw Error('Something went wrong');
+        return updatedUser
+    },
 }
 
 export default HandleSavedListsApi

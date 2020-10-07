@@ -1,7 +1,10 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import ItemFinal from './ItemFinal';
+import OpenNewListButton from './OpenNewListButton';
+import ModalWarning from './ModalWarning'
 import styled from 'styled-components';
 import { AppSalmon } from '../theme/Colors';
+import CurrentListContext from '../Contexts/CurrentListContext'
 
 const FinalListWrapper = styled.div`
   @media (max-width: 690px) {
@@ -81,13 +84,50 @@ const Row = styled.table`
 
 function FinalList (props) {
   const [pickedItems, setPickedItems] = useState(props.pickedItems) || [];
-  const [currentList, setCurrentList] = useState({listName: '', id: ''});
+  const {currentList, onCurrentListChange} = useContext(CurrentListContext);
+  const [wasCurrentListModified, setWasCurrentListModified] = useState(props.wasCurrentListModified)
+  const [listToBeSaved, setListToBeSaved] = useState(false)
 
-  useEffect(() => {setPickedItems(props.pickedItems);}, [setPickedItems, props.pickedItems]);
-  useEffect(() => {setCurrentList(props.currentList);}, [props.currentList]);
+  useEffect(() => {
+    setPickedItems(props.pickedItems);
+  }, [setPickedItems, props.pickedItems]);
 
-  const handleChange = (e) => {
+  useEffect(() => {setWasCurrentListModified(props.wasCurrentListModified);});
+
+  const handleListNameChange = (e) => {
+    setListToBeSaved(false)
     props.onCurrentListNameChange(e.target.value)
+  }
+
+  const handleItemModification = () => {
+    setListToBeSaved(false)
+    props.onCurrentListModification()
+  }
+
+  const handleListContentChange = (item) => {
+    props.onChange(item)
+  }
+
+  const openNewListWithoutSavingCurrent = () => {
+    setListToBeSaved(false)
+    setWasCurrentListModified(false)
+    props.onNewListOpening()
+  }
+
+  const handleListSaving = () => {
+    if (!wasCurrentListModified) {
+      props.onNewListOpening()
+      setListToBeSaved(false)
+    }
+    else {
+      setListToBeSaved(true)
+    }
+  }
+
+  const saveCurrenListAndOpenNew = () => {
+    setListToBeSaved(false)
+    setWasCurrentListModified(false)
+    props.onSaveAndProceed()
   }
 
   return (
@@ -95,9 +135,9 @@ function FinalList (props) {
       <Header>
         <HeaderLarge >
           <Icon className="far fa-star"></Icon>
-          <Input value={currentList.listName} placeholder='Add list name' maxLength='12' onChange={handleChange}/>
+          <Input value={currentList.listName} placeholder='Add list name' maxLength='12' onChange={handleListNameChange}/>
           <Icon className="far fa-star"></Icon>
-          <button onClick={props.onNewListOpening}>Open new list</button>
+          <OpenNewListButton onClick={handleListSaving}>Create new list</OpenNewListButton>
         </HeaderLarge>
         <HeaderSmall className='my-list__header-small'>
             Tip: you can change the number of items to pack and describe them
@@ -107,11 +147,14 @@ function FinalList (props) {
           {pickedItems.map((item, i) => {
               return (
                   <Row key={'item_' + i}>
-                      <ItemFinal item={item} onChange={props.onChange}/>
+                      <ItemFinal item={item} onChange={handleListContentChange} onItemModification={handleItemModification}/>
                   </Row>
               )
           })}
       </List>
+      {wasCurrentListModified && listToBeSaved && (
+        <ModalWarning onConfirmWithoutSaving={openNewListWithoutSavingCurrent} onSaveAndConfirm={saveCurrenListAndOpenNew} onCloseModalWarning={() => {setListToBeSaved(false)}}/>
+      )}
     </FinalListWrapper>
   )
 }
