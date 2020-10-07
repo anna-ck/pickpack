@@ -87,58 +87,35 @@ const Txt = styled.p`
 
 function ItemFinal (props) {
   const [item, setItem] = useState(props.item);
-  //const [number, setNumber] = useState('');
 
-  const finalNumberRef = useRef()
-  //useEffect(() => {setItem(props.item);}, [props]);
+  useEffect(() => {
+    props.onChange(item) 
+  }, [item]);
+
+  useEffect(() => {
+    if (props.item.id !== item.id || props.item.number !== item.number) {
+      setItem(props.item)
+  }}, [props.item]);
 
   const handleRemove = () => {
     setItem({...item, number: 0})
-    //const number = 0
-    //handleChange()
+    props.onItemModification()
   }
 
-const handlePlus = () => {
-  setItem({...item, number: +item.number + 1})
-  //const number = +item.number + 1
-  //handleChange()
-}
-
-const handleMinus = () => {
-  setItem({...item, number: +item.number - 1})
-  //const number = +item.number + 1
-  //handleChange()
-}
-
-const handleChange = () => {
-  //const finalItem = {}
-  //finalItem.name = item.name
-  //finalItem.number = number
-  //finalItem.id = item.id
-    props.onChange(item)
-  //console.log(item)
+  const handlePlus = () => {
+    setItem({...item, number: +item.number + 1})
+    props.onItemModification()
   }
 
-useEffect(() => {
-  handleChange() 
-  console.log('1')
-  console.log('2')}, [item]);
-//useEffect(() => {setItem(props.item)}, [props.item]);
+  const handleMinus = () => {
+    setItem({...item, number: +item.number - 1})
+    props.onItemModification()
+  }
 
-useEffect(() => {
-  if (props.item.id !== item.id || props.item.number !== item.number) {
-  console.log('1')
-  setItem(props.item)
-  console.log('2')}}, [props.item]);
-
-const addItemDescription = (e) => {
-  //const finalItem = {}
-  //finalItem.name = item.name
-  //finalItem.number = number
-  //finalItem.id = item.id
-  //props.onChange(finalItem)
-  setItem({...item, description: e.target.value})
-}
+  const addItemDescription = (e) => {
+    setItem({...item, description: e.target.value})
+    props.onItemModification()
+  }
 
 
     return (
@@ -147,7 +124,7 @@ const addItemDescription = (e) => {
           <TdSmall hide={true} className="fas fa-times" onClick={handleRemove}></TdSmall>
           <TdLarge>{item.name}</TdLarge>
           <TdSmall hide={false}>
-            <Txt ref={finalNumberRef}>{item.number}</Txt>
+            <Txt>{item.number}</Txt>
           </TdSmall>
           <Arrow hide={true} up={true} onClick={handlePlus}/>
           <Arrow hide={true} up={false} onClick={handleMinus}/>

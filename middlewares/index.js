@@ -1,7 +1,7 @@
 const verifyToken = require("./verifyToken");
-const checkDuplicateUsernameOrEmail = require("./checkDuplicateUsernameOrEmail");
+const checkDuplicates = require("./checkDuplicates");
 
 module.exports = {
     verifyToken,
-    checkDuplicateUsernameOrEmail
+    checkDuplicates
 };

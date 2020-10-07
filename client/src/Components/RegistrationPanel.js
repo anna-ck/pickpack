@@ -13,9 +13,10 @@ function RegistrationPanel (props) {
     const loginRef = useRef();
     const emailRef = useRef();
     const passwordRef = useRef();
-    //const confirmPasswordRef = useRef();
+    const confirmPasswordRef = useRef();
 
     const [message, setMessage] = useState(props.registerMessage);
+
     useEffect(() => {
         setMessage(props.registerMessage)
     }, [props])
@@ -26,12 +27,12 @@ function RegistrationPanel (props) {
             login: loginRef.current.value,
             email: emailRef.current.value,
             password: passwordRef.current.value,
-            //confirmPassword: confirmPasswordRef.current.value,
+            confirmPassword: confirmPasswordRef.current.value
         });
         loginRef.current.value='';
         emailRef.current.value = '';
         passwordRef.current.value = '';
-        //confirmPasswordRef.current.value = '';
+        confirmPasswordRef.current.value = '';
     }
 
     return (
@@ -50,6 +51,9 @@ function RegistrationPanel (props) {
                     <input ref={passwordRef} type='password' defaultValue='secret'/>
                 </label>
                 <br/>
+                <label>confirm password
+                    <input ref={confirmPasswordRef} type='password' defaultValue='secret'/>
+                </label>
                 <br/>
                 <button onClick={handleSubmit}>Register</button>
                 <br/>

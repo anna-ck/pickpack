@@ -61,20 +61,25 @@ const Img = styled.img`
     height: auto;
 `;
 
+const Info = () => {
+  return (
+    <InfoWrapper>
+      <Img src={suitcase}/>
+      <InfoLarge>Ooops! It's <span>empty</span>!</InfoLarge>
+      <InfoSmall>Your recent searches will appear here.</InfoSmall>
+    </InfoWrapper>
+  )
+}
+
 function SearchResults (props, ref) {
   const [searchResults, setsearchResults] = useState(props.searchResults) || [];
   useEffect(() => {setsearchResults(props.searchResults);});
 
-  const Info = () => {
-    return (
-      <InfoWrapper>
-        <Img src={suitcase}/>
-        <InfoLarge>Ooops! It's <span>empty</span>!</InfoLarge>
-        <InfoSmall>Your recent searches will appear here.</InfoSmall>
-      </InfoWrapper>
-    )
+  const handleResultChange = (item) => {
+    console.log(ref)
+    props.onCheck(item)
   }
-  
+
   return (
       <ResultsWrapper ref={ref}>
         <ListName>{props.currentSearchList || <Info/>}</ListName>
@@ -82,7 +87,7 @@ function SearchResults (props, ref) {
           {searchResults.map((item, i) => {
               return (
                   <ItemWrapper key={'item_' + i}>
-                      <ItemResult item={item} pickedItems={props.pickedItems} onCheck={props.onCheck} />
+                      <ItemResult item={item} pickedItems={props.pickedItems} onCheck={handleResultChange} />
                   </ItemWrapper>
               )
           })}

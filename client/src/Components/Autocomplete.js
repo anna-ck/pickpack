@@ -72,18 +72,11 @@ function Autocomplete (props) {
     props.onChange(e.target.value)
   }
   
-    
   const handleClick = (e) => {
     setPropositions([])
     setUserInput(e.target.innerText)
     props.onChange(e.target.innerText)
     }
-
-    /*window.addEventListener("click", function(event) {
-      setPropositions([])
-      setUserInput('')
-    })
-    */
 
   const autocomplete = () => {
     if (userInput) {
@@ -98,7 +91,10 @@ function Autocomplete (props) {
               )
             })}
           </AutocompleteList>
-        )}}}
+        )
+      }
+    }
+  }
 
   return (
     <AutocompleteDiv>
