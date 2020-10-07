@@ -5,19 +5,26 @@ const jwt = require("jsonwebtoken");
 const bcrypt = require("bcryptjs");
 
 register = (req, res) => {
+  const password = req.body.password;
+  const confirmPassword = req.body.confirmPassword;
+  if (password === confirmPassword) {
     const user = new User({
       login: req.body.login,
       email: req.body.email,
       password: bcrypt.hashSync(req.body.password, 8)
     });
-  
     user.save((err, user) => {
       if (err) {
         res.status(500).send({ message: err });
         return;
       }
-    res.send({ message: "You have been successfully registered!" });
-  })
+      res.send({ message: "You have been successfully registered!" });
+    })
+  }
+  else {
+    res.status(500).send({ message: 'Provided passwords are not identical' });
+    return;
+  }
 }
 
 login = (req, res) => {
