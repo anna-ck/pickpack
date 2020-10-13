@@ -21,6 +21,8 @@ import { v4 as uuidv4 } from 'uuid';
 import CurrentUserContext from '../Contexts/CurrentUserContext'
 import CurrentListContext from '../Contexts/CurrentListContext';
 
+import handleSearchResultsApi from '../api/fetchSearchResults'
+
 const SavedPackingLists = React.lazy(() => import('./SavedPackingLists'))
 const SaveListButton = React.lazy(() => import('./SaveListButton'))
 const DeleteListButton = React.lazy(() => import('./DeleteListButton'))
@@ -144,7 +146,7 @@ function AppContent(props) {
     const [searchResults, setSearchResults] = useState([]);
     const [currentSearchList, setCurrentSearchList] = useState('');
     const [isActive, setIsActive] = useState(true);
-    const {currentUser, onCurrentUserChange} = useContext(CurrentUserContext);
+    const {currentUser} = useContext(CurrentUserContext);
     const [currentList, setCurrentList] = useState({listName: '', id: ''});
     const [wasCurrentListModified, setWasCurrentListModified] = useState(false)
 
@@ -156,7 +158,7 @@ function AppContent(props) {
       const currentListFromStorage = JSON.parse(localStorage.getItem('currentList')) || {listName: '', id: ''}
       setPickedItems(pickedItemsFromStorage || [])
       setCurrentList(currentListFromStorage || {listName: '', id: ''})
-    }, [currentUser])
+    }, [currentUser, setPickedItems])
 
 
     const changeInputItem = (item) => {
@@ -195,12 +197,16 @@ function AppContent(props) {
     }
 
     const search = (listName) => {
-        const result = itemLists.searchList(listName);
-        setSearchResults(result);
+       handleSearchResultsApi.getItemsByListName(listName)
+       .then((result) => {
+       const items = result[0].items
+        setSearchResults(items);
         setCurrentSearchList(listName);
         if (window.innerWidth < 690) {
           openBurger()
         }
+       }
+       )
     };
 
     const toggleTheme = () => {

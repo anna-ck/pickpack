@@ -84,7 +84,7 @@ const Row = styled.table`
 
 function FinalList (props) {
   const [pickedItems, setPickedItems] = useState(props.pickedItems) || [];
-  const {currentList, onCurrentListChange} = useContext(CurrentListContext);
+  const {currentList} = useContext(CurrentListContext);
   const [wasCurrentListModified, setWasCurrentListModified] = useState(props.wasCurrentListModified)
   const [listToBeSaved, setListToBeSaved] = useState(false)
 
@@ -92,7 +92,7 @@ function FinalList (props) {
     setPickedItems(props.pickedItems);
   }, [setPickedItems, props.pickedItems]);
 
-  useEffect(() => {setWasCurrentListModified(props.wasCurrentListModified);});
+  useEffect(() => {setWasCurrentListModified(props.wasCurrentListModified);}, [props.wasCurrentListModified]);
 
   const handleListNameChange = (e) => {
     setListToBeSaved(false)
@@ -143,7 +143,7 @@ function FinalList (props) {
             Tip: you can change the number of items to pack and describe them
         </HeaderSmall>
       </Header>
-      <List id='toPrint'>
+      <List>
           {pickedItems.map((item, i) => {
               return (
                   <Row key={'item_' + i}>

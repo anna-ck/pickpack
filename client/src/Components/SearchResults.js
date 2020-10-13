@@ -76,7 +76,6 @@ function SearchResults (props, ref) {
   useEffect(() => {setsearchResults(props.searchResults);});
 
   const handleResultChange = (item) => {
-    console.log(ref)
     props.onCheck(item)
   }
 

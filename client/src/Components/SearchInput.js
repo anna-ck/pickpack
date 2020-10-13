@@ -1,8 +1,8 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Autocomplete from './Autocomplete'
-import { itemLists } from '../Utilities/Helper';
 import styled from 'styled-components'
 import { AppSalmon, AppBlue } from '../theme/Colors';
+import handleSearchResultsApi from '../api/fetchSearchResults'
 
 const SearchContainer = styled.div`
     width: 90%;
@@ -51,6 +51,7 @@ const TipTxt = styled.p`
 
 function SearchInput (props) {
     const [value, setValue] = useState('')
+    const [itemsToAutocomplete, setItemsToAutocomplete] = useState([])
 
     const handleValue = (item) => {
         setValue(item)
@@ -73,7 +74,17 @@ function SearchInput (props) {
         }
     }
     
-    const itemsToAutocomplete = itemLists.concatItems()
+    useEffect(() => {
+        function onlyUnique(value, index, self) {
+            return self.indexOf(value) === index;
+          };
+          handleSearchResultsApi.getAllItems()
+          .then((response) => {
+              const results = response[0].items
+              const uniqResults = results.filter(onlyUnique)
+              setItemsToAutocomplete(uniqResults)
+          })
+    }, [])
     
     return (
         <SearchContainer>

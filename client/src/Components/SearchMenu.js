@@ -41,11 +41,11 @@ const List = styled.ul`
 function SearchMenu (props, ref) {
 
   const categories = [
-    {'Clothes': ['Male Clothes', 'Female Clothes']},
-    {'Shoes': ['Male Shoes', 'Female Shoes']},
-    {'Accessories': ['Male Accessories', 'Female Accessories']},
-    {'Cosmetics': ['Male Cosmetics', 'Female Cosmetics']},
-    {'Others': ['Electronics', 'Entertainment', 'Documents']}
+    {items: 'Clothes', lists: ['Male Clothes', 'Female Clothes']},
+    {items: 'Shoes', lists: ['Male Shoes', 'Female Shoes']},
+    {items: 'Accessories', lists: ['Male Accessories', 'Female Accessories']},
+    {items: 'Cosmetics', lists: ['Male Cosmetics', 'Female Cosmetics']},
+    {items: 'Others', lists: ['Electronics', 'Entertainment', 'Documents']}
   ];
 
   return (
@@ -54,11 +54,11 @@ function SearchMenu (props, ref) {
         <Header>Categories</Header>
         <Underline />
         <List>
-            <SearchCategory currentSearchList={props.currentSearchList} items={Object.keys(categories[0])} lists={Object.values(categories[0])} onClick={props.handleChoice}/>
-            <SearchCategory currentSearchList={props.currentSearchList} items={Object.keys(categories[1])} lists={Object.values(categories[1])} onClick={props.handleChoice}/>
-            <SearchCategory currentSearchList={props.currentSearchList} items={Object.keys(categories[2])} lists={Object.values(categories[2])} onClick={props.handleChoice}/>
-            <SearchCategory currentSearchList={props.currentSearchList} items={Object.keys(categories[3])} lists={Object.values(categories[3])} onClick={props.handleChoice}/>
-            <SearchCategory currentSearchList={props.currentSearchList} items={Object.keys(categories[4])} lists={Object.values(categories[4])} onClick={props.handleChoice}/>
+            <SearchCategory currentSearchList={props.currentSearchList} items={categories[0].items} lists={categories[0].lists} onClick={props.handleChoice}/>
+            <SearchCategory currentSearchList={props.currentSearchList} items={categories[1].items} lists={categories[1].lists} onClick={props.handleChoice}/>
+            <SearchCategory currentSearchList={props.currentSearchList} items={categories[2].items} lists={categories[2].lists} onClick={props.handleChoice}/>
+            <SearchCategory currentSearchList={props.currentSearchList} items={categories[3].items} lists={categories[3].lists} onClick={props.handleChoice}/>
+            <SearchCategory currentSearchList={props.currentSearchList} items={categories[4].items} lists={categories[4].lists} onClick={props.handleChoice}/>
         </List>
       </MenuDropdown>
     </Menu>

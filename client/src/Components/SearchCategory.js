@@ -59,8 +59,8 @@ const List = styled.ul`
 `;
 
 function SearchCategory (props) {
-    const [items] = React.useState(props.items);
-    const [lists] = React.useState(props.lists);
+    const [items, setItems] = React.useState(props.items);
+    const [lists, setLists] = React.useState(props.lists);
     const [currentSearchList, setCurrentSearchList] = React.useState(props.currentSearchList)
     const [open, setOpen] = React.useState(false);
     React.useEffect(() => {setCurrentSearchList(props.currentSearchList);}, [props])
@@ -88,7 +88,7 @@ function SearchCategory (props) {
                 </IconDiv>
                 <RowMainContent open={open}>
                     <List>
-                      {lists[0].map((list) => {
+                      {lists.map((list) => {
                           return (
                             <RowSecondary key={list} active={handleActive(list)} onClick={(e) => handleChoice(e, list)}>
                               <Icon large={false} className="fas fa-search"></Icon>

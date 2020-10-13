@@ -14,13 +14,9 @@ app.listen(PORT, () => {
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cookieParser());
-const { body, validationResult } = require('express-validator');
-const bcrypt = require('bcrypt');
-const crypto = require('crypto');
 const dotenv = require('dotenv');
 dotenv.config();
-const { checkDuplicateUsernameOrEmail } = require('./middlewares');
-const { addNewListToUserAccount, getSavedLists } = require('./middlewares');
+const { checkDuplicates } = require('./middlewares');
 const controller = require('./controllers/auth.controller');
 
 const db = require("./models");
@@ -39,6 +35,7 @@ db.mongoose
   });
 
 const User = db.user
+const Items = db.items
 
 app.post('/register', checkDuplicates, controller.register)
 app.post('/login', controller.login)
@@ -84,8 +81,40 @@ app.delete('/users/:login', function(req, res) {
 })
 })
 
-app.get('/users/:login', function(req, res) {
+/*app.get('/users/:login', function(req, res) {
   User.find({login: 'anna'}, function(err, result) {
+    if (err) throw err;
+    res.send(result);
+  });
+}
+)
+*/
+
+app.get('/items', function(req, res) {
+  Items.aggregate([
+    { "$group": {
+      "_id": null,
+      "items": { "$push": "$items" }
+    }},
+    { "$project": {
+      "_id": 0,
+      "items": {
+        "$reduce": {
+          "input": "$items",
+          "initialValue": [],
+          "in": { "$concatArrays": ["$$this", "$$value"] }
+        }
+      }
+    }}], function(err, result) {
+      if (err) throw err;
+      res.send(result);
+    })
+}
+)
+
+app.get('/items/:listName', function(req, res) {
+  const listName = req.params.listName
+  Items.find({name: listName}, function(err, result) {
     if (err) throw err;
     res.send(result);
   });

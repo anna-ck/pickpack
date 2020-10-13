@@ -3,7 +3,6 @@ const HandleSavedListsApi = {
         let date = new Date().toISOString().slice(0, 10)  
         const listName = currentList.listName ? currentList.listName : 'New list ' + date
         const id = currentList.id
-        console.log(id)
         const response = await fetch(`/users/${currentUser.login}`, {
             method: 'POST',
             headers: {
@@ -29,7 +28,6 @@ const HandleSavedListsApi = {
             },
             body: JSON.stringify({name: listToUpdate.listName, items: pickedItems, id:listToUpdate.id})
         });
-        console.log(response)
         const updatedUser = await response.json()
         if (response.status !== 200) throw Error('Something went wrong');
         return updatedUser
@@ -42,7 +40,6 @@ const HandleSavedListsApi = {
             },
             body: JSON.stringify({id:listToUpdate.id})
         });
-        console.log(response)
         const updatedUser = await response.json()
         if (response.status !== 200) throw Error('Something went wrong');
         return updatedUser
