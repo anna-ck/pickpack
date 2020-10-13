@@ -3,9 +3,6 @@ import styled from 'styled-components';
 import { AppSalmon, AppBlue } from '../theme/Colors';
 
 const ButtonWrapper = styled.div`
-    position: absolute;
-    top: 1.5rem;
-    right: 3rem;
     width: 65px;
     height: 28px;
     border: 1.5px solid ${AppBlue};

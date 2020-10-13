@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef, useContext }  from 'react';
+import { useHistory } from "react-router-dom";
 
 import {ThemeProvider} from "styled-components";
 import GlobalStyle from '../theme/globalStyles';
@@ -26,6 +27,14 @@ import handleSearchResultsApi from '../api/fetchSearchResults'
 const SavedPackingLists = React.lazy(() => import('./SavedPackingLists'))
 const SaveListButton = React.lazy(() => import('./SaveListButton'))
 const DeleteListButton = React.lazy(() => import('./DeleteListButton'))
+
+const NavBar = styled.div`
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-content: center;
+    width: 100%;
+`;
 
 const Content = styled.div`
     display: flex;
@@ -153,6 +162,8 @@ function AppContent(props) {
     const menuRef = useRef(0);
     const resultsRef = useRef(0);
 
+    const history = useHistory();
+
     useEffect (() => {
       const pickedItemsFromStorage = JSON.parse(localStorage.getItem('pickedItems')) || []
       const currentListFromStorage = JSON.parse(localStorage.getItem('currentList')) || {listName: '', id: ''}
@@ -217,6 +228,16 @@ function AppContent(props) {
       resultsRef.current.style.display === 'none' || resultsRef.current.style.display === '' ? resultsRef.current.style.display = 'block' : resultsRef.current.style.display = 'none';
       menuRef.current.style.display === '' ||  menuRef.current.style.display === 'block' ? menuRef.current.style.display = 'none' : menuRef.current.style.display = 'block';
       setIsActive(!isActive)
+    }
+
+    const handleAuthChange = () => {
+      props.onAuthChange();
+      if (currentUser) {
+        history.push("/");
+      }
+      else {
+        history.push("/login");
+      }
     }
 
     const handleListSaving = () => {
@@ -287,10 +308,12 @@ function AppContent(props) {
       <ThemeProvider theme={theme === 'light' ? lightTheme : darkTheme}> 
         <CurrentListContext.Provider value={{currentList:currentList, onCurrentListChange: setCurrentList}} >
         <GlobalStyle />
-          <UserGreeting onAuthChange={props.onAuthChange}/>
-          {currentUser ? <React.Suspense fallback={'... loading saved lists'}><SavedPackingLists onListChoice={changeCurrentList}/></React.Suspense> : null}
-          <Header/>
-          <ToggleButton onClick={toggleTheme}/>
+          <NavBar>
+            <UserGreeting onAuthChange={handleAuthChange}/>
+            {currentUser ? <React.Suspense fallback={'... loading saved lists'}><SavedPackingLists onListChoice={changeCurrentList}/></React.Suspense> : null}
+            <Header/>
+            <ToggleButton onClick={toggleTheme}/>
+          </NavBar>
           <Content>
             <ContentLeft>
               <ContentLeftTop>

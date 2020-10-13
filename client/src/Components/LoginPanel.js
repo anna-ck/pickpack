@@ -1,4 +1,5 @@
 import React, {useRef} from 'react';
+import { useHistory } from "react-router-dom";
 import styled from 'styled-components';
 
 const LoginPageWrapper = styled.form`
@@ -13,6 +14,8 @@ function LoginPanel (props) {
     const loginRef = useRef();
     const passwordRef = useRef();
 
+    const history = useHistory();
+
     const handleSubmit = (event) => {
         event.preventDefault();
         props.onLogin({
@@ -21,6 +24,11 @@ function LoginPanel (props) {
         });
         loginRef.current.value = '';
         passwordRef.current.value = '';
+        history.push('/')
+    }
+
+    const handlePanelChange = () => {
+        history.push('/register')
     }
 
     return (
@@ -36,7 +44,7 @@ function LoginPanel (props) {
                 <button onClick={handleSubmit}>Log in</button>
                 <br/>
                 <br/>
-                <button onClick={props.onPanelChange}>not registered yet? register now</button>
+                <button onClick={handlePanelChange}>not registered yet? register now</button>
         </LoginPageWrapper>
     )
 }

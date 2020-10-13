@@ -1,4 +1,5 @@
 import React, {useRef, useState, useEffect} from 'react';
+import { useHistory } from "react-router-dom";
 import styled from 'styled-components';
 
 const RegistrationPageWrapper = styled.form`
@@ -17,6 +18,8 @@ function RegistrationPanel (props) {
 
     const [message, setMessage] = useState(props.registerMessage);
 
+    const history = useHistory();
+
     useEffect(() => {
         setMessage(props.registerMessage)
     }, [props])
@@ -33,6 +36,11 @@ function RegistrationPanel (props) {
         emailRef.current.value = '';
         passwordRef.current.value = '';
         confirmPasswordRef.current.value = '';
+        handlePanelChange()
+    }
+
+    const handlePanelChange = () => {
+        history.push('/login')
     }
 
     return (
@@ -59,7 +67,7 @@ function RegistrationPanel (props) {
                 <br/>
                 <br/>
                 <div>{message? message : null}</div>
-                <button onClick={props.onPanelChange}>{message === 'You have been successfully registered!' ? 'log in' : 'already registered? go back to logging panel'}</button>
+                <button onClick={handlePanelChange}>{message === 'You have been successfully registered!' ? 'log in' : 'already registered? go back to logging panel'}</button>
         </RegistrationPageWrapper>
     )
 }

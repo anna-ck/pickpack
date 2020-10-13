@@ -1,7 +1,9 @@
 import React, { useState, useEffect }  from 'react';
+import { BrowserRouter as Router, Switch, Route} from "react-router-dom";
 
-import AuthenticationPage from '../Components/AuthenticationPage';
 import AppContent from '../Components/AppContent';
+import LoginPanel from '../Components/LoginPanel';
+import RegistrationPanel from '../Components/RegistrationPanel';
 
 import AuthenticationApi from '../api/fetchAuthentication';
 import HandleSavedListsApi from '../api/fetchSavedLists';
@@ -14,7 +16,6 @@ function App() {
     const [currentUser, setCurrentUser] = useState(null)
     const [accessToken, setAccessToken] = useState(null)
     const [registerMessage, setRegisterMessage] = useState(null);
-    const [isAuthorizationPanelHidden, setAuthorizationPanelHidden] = useState(true)
 
     useEffect(() => {setRegisterMessage();}, []);
 
@@ -36,7 +37,6 @@ function App() {
         const accessToken = localStorage.getItem('accessToken')
         setCurrentUser(user)
         setAccessToken(accessToken)
-        setAuthorizationPanelHidden(true)
       })
       .catch((error) => console.log(error))
     }
@@ -57,10 +57,6 @@ function App() {
         localStorage.removeItem('accessToken')
         setCurrentUser(null)
         setAccessToken(null)
-        setAuthorizationPanelHidden(true)
-      }
-      else {
-        setAuthorizationPanelHidden(false)
       }
     }
 
@@ -101,11 +97,21 @@ function App() {
     }
 
     return (
-      isAuthorizationPanelHidden ? 
-      <CurrentUserContext.Provider value={{currentUser:currentUser, onCurrentUserChange: setCurrentUser}}>
-        <AppContent onAuthChange={handleAuthChange} onSave={addCurrentPackingListToSavedLists} onEdit={editCurrentSavedList} onDelete={deleteCurrentSavedList}/> 
-      </CurrentUserContext.Provider> : 
-      <AuthenticationPage onLogin={handleLogging} onRegister={handleRegistration} registerMessage={registerMessage}/>
+      <Router>
+      <Switch>
+        <Route exact path="/">
+            <CurrentUserContext.Provider value={{currentUser:currentUser, onCurrentUserChange: setCurrentUser}}>
+                <AppContent onAuthChange={handleAuthChange} onSave={addCurrentPackingListToSavedLists} onEdit={editCurrentSavedList} onDelete={deleteCurrentSavedList}/> 
+            </CurrentUserContext.Provider>
+        </Route>
+        <Route path="/login">
+              <LoginPanel onLogin={handleLogging}/>
+        </Route>
+        <Route path="/register">
+              <RegistrationPanel onRegister={handleRegistration} registerMessage={registerMessage}/>
+        </Route>
+      </Switch>
+      </Router>
     )
 }
 
