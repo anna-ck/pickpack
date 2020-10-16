@@ -7,7 +7,13 @@ const bcrypt = require("bcryptjs");
 register = (req, res) => {
   const password = req.body.password;
   const confirmPassword = req.body.confirmPassword;
+  const login = req.body.login;
+  const email = req.body.email;
   if (password === confirmPassword) {
+    if (login.length >= 5) {
+      let regex = /\S+@\S+\.\S+/;
+      if (regex.test(email)) {
+        if (password.length >= 5) {
     const user = new User({
       login: req.body.login,
       email: req.body.email,
@@ -22,8 +28,20 @@ register = (req, res) => {
     })
   }
   else {
+    res.status(500).send({ message: 'Your password must be at least 5 characters long' });
+  }
+}
+  else {
+    res.status(500).send({ message: "Invalid email address!" });
+  }
+}
+  else {
+    res.status(500).send({ message: "Your login must be at least 5 characters long" });
+  }
+}
+  else {
     res.status(500).send({ message: 'Provided passwords are not identical' });
-    return;
+    return
   }
 }
 
