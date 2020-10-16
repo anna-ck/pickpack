@@ -10,14 +10,16 @@ const Icon = styled.i`
     top: 3rem;
     z-index: 20;
     display: ${({ active, isVisible }) => (isVisible && active ? "block" : "none")};
-    width: 70%;
+    width: 45%;
     margin: 0 auto;
+    @media (max-width: 550px) {
+        width: 65%;
 `;
 
 function BurgerIcon (props, ref) {
     const [width, setWidth] = React.useState(window.innerWidth);
     const [active, setActive] = React.useState(!props.burgerIsActive);
-    const breakpoint = 690;
+    const breakpoint = 760;
 
     React.useEffect(() => {setActive(active => !active);}, [props.burgerIsActive]);
 
@@ -33,8 +35,8 @@ function BurgerIcon (props, ref) {
 
     return (
         <IconContainer>
-            <Icon active={active} isVisible={width < breakpoint} ref={ref} className="fas fa-list" onClick={handleClick}></Icon>
-            <Icon active={!active} isVisible={width < breakpoint} ref={ref} className="fas fa-arrow-left" onClick={handleClick}></Icon>
+            <Icon active={active} isVisible={width <= breakpoint} ref={ref} className="fas fa-list" onClick={handleClick}></Icon>
+            <Icon active={!active} isVisible={width <= breakpoint} ref={ref} className="fas fa-arrow-left" onClick={handleClick}></Icon>
         </IconContainer>
     )
 }

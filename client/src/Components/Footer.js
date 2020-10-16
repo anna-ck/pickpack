@@ -2,10 +2,12 @@ import React from 'react';
 import styled from 'styled-components'
 
 const DivFooter = styled.footer`
+width: 100%;
     color: ${({ theme }) => theme.txt};
     font-size: 0.8rem;
-    padding: 0rem 0rem 1rem 0.5rem;
-
+    text-align: left;
+    padding: 0.5rem 1rem;
+    margin-left: 0.5rem;
     @media print {
         display: none;
         visibility:hidden

@@ -1,6 +1,13 @@
 import React, { useState, useEffect }  from 'react';
 import { BrowserRouter as Router, Switch, Route} from "react-router-dom";
+import { useHistory } from "react-router-dom";
 
+import {ThemeProvider} from "styled-components";
+import GlobalStyle from '../theme/globalStyles';
+import { lightTheme, darkTheme } from "../theme/Themes";
+import styled from 'styled-components';
+
+import ToggleButton from '../Components/ToggleButton';
 import AppContent from '../Components/AppContent';
 import LoginPanel from '../Components/LoginPanel';
 import RegistrationPanel from '../Components/RegistrationPanel';
@@ -13,11 +20,14 @@ import CurrentUserContext from '../Contexts/CurrentUserContext';
 
 function App() {
 
+    const [theme, setTheme] = useState('light');
     const [currentUser, setCurrentUser] = useState(null)
     const [accessToken, setAccessToken] = useState(null)
-    const [registerMessage, setRegisterMessage] = useState(null);
+    //const [registerMessage, setRegisterMessage] = useState(null);
 
-    useEffect(() => {setRegisterMessage();}, []);
+    const history = useHistory();
+
+    //useEffect(() => {setRegisterMessage();}, []);
 
     useEffect(() => {
       const accessToken = localStorage.getItem('accessToken');
@@ -28,25 +38,13 @@ function App() {
       }
     }, []);
 
-    const handleLogging = (userInfo) => {
-      AuthenticationApi.login(userInfo)
-      .then((response) => {
+    const handleLogging = (response) => {
         localStorage.setItem("user", JSON.stringify(response));
         localStorage.setItem("accessToken", response.accessToken);
         const user = JSON.parse(localStorage.getItem('user'))
         const accessToken = localStorage.getItem('accessToken')
         setCurrentUser(user)
         setAccessToken(accessToken)
-      })
-      .catch((error) => console.log(error))
-    }
-
-    const handleRegistration = (userInfo) => {
-      AuthenticationApi.register(userInfo)
-      .then((response) => setRegisterMessage(response.message))
-      .catch((error) => {
-        setRegisterMessage(error.message)
-      })
     }
 
     const handleAuthChange = () => {
@@ -96,7 +94,14 @@ function App() {
       })
     }
 
+    const toggleTheme = () => {
+      theme === 'light' ? setTheme('dark') : setTheme('light')
+    };
+
     return (
+      <ThemeProvider theme={theme === 'light' ? lightTheme : darkTheme}> 
+      <GlobalStyle />
+      <ToggleButton onClick={toggleTheme}/>
       <Router>
       <Switch>
         <Route exact path="/">
@@ -108,10 +113,11 @@ function App() {
               <LoginPanel onLogin={handleLogging}/>
         </Route>
         <Route path="/register">
-              <RegistrationPanel onRegister={handleRegistration} registerMessage={registerMessage}/>
+              <RegistrationPanel/>
         </Route>
       </Switch>
       </Router>
+      </ThemeProvider>
     )
 }
 

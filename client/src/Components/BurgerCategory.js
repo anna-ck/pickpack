@@ -10,7 +10,7 @@ const RowMain = styled.li`
         display:flex;
     };
 
-    @media (max-width: 690px) {
+    @media (max-width: 760px) {
         display: flex;
         flex-direction: column;
         justify-content: center;
@@ -31,7 +31,7 @@ const CatName = styled.p`
     border: ${({ hovered }) => hovered? '1px solid grey' : 'none'};
     border-radius: 4px;
 
-    @media (max-width: 690px) {
+    @media (max-width: 760px) {
         text-align: center;
         width: 6.5rem;
         font-size: 0.97rem;
@@ -67,7 +67,7 @@ const List = styled.ul`
     padding: 0rem;
     margin: 0;
 
-    @media (max-width: 690px) {
+    @media (max-width: 760px) {
         display: flex;
         flex-direction: row;
         flex-wrap: wrap;

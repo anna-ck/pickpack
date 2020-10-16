@@ -8,6 +8,7 @@ const SearchContainer = styled.div`
     width: 90%;
     margin: 0 auto;
     border-radius:3px;
+    padding-top: 0.5rem;
 `;
 
 const Input = styled.div`

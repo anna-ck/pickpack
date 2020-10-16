@@ -5,6 +5,7 @@ import ModalWarning from './ModalWarning'
 import styled from 'styled-components';
 import { AppSalmon } from '../theme/Colors';
 import CurrentListContext from '../Contexts/CurrentListContext'
+import CurrentUserContext from '../Contexts/CurrentUserContext';
 
 const FinalListWrapper = styled.div`
   @media (max-width: 690px) {
@@ -35,7 +36,7 @@ const Header = styled.div`
 
 const List = styled.div`
     background: repeating-linear-gradient( ${({ theme }) => theme.menu}, ${({ theme }) => theme.menu} 34px, ${({ theme }) => theme.results} 34px, ${({ theme }) => theme.results} 35px); 
-    height: 462px; 
+    height: ${({ currentUser }) => (currentUser ? '432px' : '452px')};
     width: 100%;
     border: 1px solid inherit;
     border-radius:2px;
@@ -44,9 +45,7 @@ const List = styled.div`
     margin:0rem;
 `;
 
-const HeaderLarge = styled.div``;
-
-const HeaderSmall= styled.div`
+const Tip= styled.p`
     font-size: 0.85rem;
     text-align: center;
     padding: 0.5rem 0.3rem 0rem 0.3rem;
@@ -59,12 +58,6 @@ const HeaderSmall= styled.div`
       display: none;
       visibility:hidden
    }
-`;
-
-const Icon = styled.i`
-    &:hover {
-      color: ${AppSalmon}
-    }
 `;
 
 const Input = styled.input`
@@ -82,11 +75,13 @@ const Row = styled.table`
     width: 100%;
 `;
 
-function FinalList (props) {
+function FinalList (props, ref) {
   const [pickedItems, setPickedItems] = useState(props.pickedItems) || [];
   const {currentList} = useContext(CurrentListContext);
   const [wasCurrentListModified, setWasCurrentListModified] = useState(props.wasCurrentListModified)
   const [listToBeSaved, setListToBeSaved] = useState(false)
+
+  const {currentUser} = useContext(CurrentUserContext);
 
   useEffect(() => {
     setPickedItems(props.pickedItems);
@@ -124,7 +119,7 @@ function FinalList (props) {
     }
   }
 
-  const saveCurrenListAndOpenNew = () => {
+  const saveCurrentListAndOpenNew = () => {
     setListToBeSaved(false)
     setWasCurrentListModified(false)
     props.onSaveAndProceed()
@@ -132,18 +127,12 @@ function FinalList (props) {
 
   return (
     <FinalListWrapper>
+                {currentUser ? <OpenNewListButton onClick={handleListSaving}>Create new list</OpenNewListButton> : null }
       <Header>
-        <HeaderLarge >
-          <Icon className="far fa-star"></Icon>
           <Input value={currentList.listName} placeholder='Add list name' maxLength='12' onChange={handleListNameChange}/>
-          <Icon className="far fa-star"></Icon>
-          <OpenNewListButton onClick={handleListSaving}>Create new list</OpenNewListButton>
-        </HeaderLarge>
-        <HeaderSmall className='my-list__header-small'>
-            Tip: you can change the number of items to pack and describe them
-        </HeaderSmall>
+          <Tip>Tip: you can change the number of items and describe them</Tip>
       </Header>
-      <List>
+      <List currentUser={currentUser}>
           {pickedItems.map((item, i) => {
               return (
                   <Row key={'item_' + i}>
@@ -153,10 +142,10 @@ function FinalList (props) {
           })}
       </List>
       {wasCurrentListModified && listToBeSaved && (
-        <ModalWarning onConfirmWithoutSaving={openNewListWithoutSavingCurrent} onSaveAndConfirm={saveCurrenListAndOpenNew} onCloseModalWarning={() => {setListToBeSaved(false)}}/>
+        <ModalWarning onConfirmWithoutSaving={openNewListWithoutSavingCurrent} onSaveAndConfirm={saveCurrentListAndOpenNew} onCloseModalWarning={() => {setListToBeSaved(false)}} textSave={'Save current list before creating a new one'} textDoNotSave={'Create a new empty list without saving changes'} textMain={'Creating new list '}/>
       )}
     </FinalListWrapper>
   )
 }
 
-export default FinalList;
+export default React.forwardRef(FinalList);

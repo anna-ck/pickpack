@@ -15,9 +15,11 @@ export const lightTheme = {
     autocomplete2: 'white',
     autoTxt: 'salmon',
     burgerResults: 'white',
+    userPanel: 'gainsboro',
+    userHover: 'rgb(245,245,245)',
 }
 export const darkTheme = {
-    body: 'linear-gradient(225deg, rgba(8,1,1,1) 0%, rgba(85,85,85,1) 29%, rgba(0,0,0,1) 100%);',
+    body: 'rgb(92, 92, 92)',
     appHeader: 'rgb(243, 243, 243)',
     span: 'rgb(243, 147, 136)',
     searchInput: 'rgb(78, 78, 78)',
@@ -33,4 +35,6 @@ export const darkTheme = {
     autocomplete2: 'rgb(163, 163, 163)',
     autoTxt: 'white',
     burgerResults: 'rgb(118, 118, 118)',
+    userPanel: 'rgb(32,32,32)',
+    userHover: 'rgb(136,136,136)',
 }

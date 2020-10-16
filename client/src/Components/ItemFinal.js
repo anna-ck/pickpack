@@ -57,8 +57,8 @@ const Input = styled.input`
 const Arrow = styled.td`
     border-left: 7px solid transparent;
     border-right: 7px solid transparent;
-    border-top: ${({ up }) => (up ? 'none' : '10px solid black')};
-    border-bottom: ${({ up }) => (up ? '10px solid black' : 'none')};
+    border-top: ${({ up, theme }) => (up ? 'none' : `10px solid ${theme.txt}`)};
+    border-bottom: ${({ up, theme }) => (up ? `10px solid ${theme.txt}` : 'none')};
     width: 0;
     height: 0;
 
@@ -70,8 +70,8 @@ const Arrow = styled.td`
     @media (max-width: 600px) {
       border-left: 4px solid transparent;
       border-right: 4px solid transparent;
-      border-top: ${({ up }) => (up ? 'none' : '6px solid black')};
-      border-bottom: ${({ up }) => (up ? '6px solid black' : 'none')};
+      border-top: ${({ up, theme }) => (up ? 'none' : `6px solid ${theme.txt}`)};
+      border-bottom: ${({ up, theme }) => (up ? `6px solid ${theme.txt}` : 'none')};
 
       &:hover {
         border-top: ${({ up, theme }) => (up ? 'none' : `6px solid ${theme.span}`)};

@@ -4,7 +4,7 @@ import BurgerMenu from '../Components/BurgerMenu';
 
 function Menu (props, ref) {
     const [width, setWidth] = React.useState(window.innerWidth);
-    const breakpoint = 690;
+    const breakpoint = 760;
     React.useEffect(() => {
         const handleWindowResize = () => setWidth(window.innerWidth)
         window.addEventListener("resize", handleWindowResize);

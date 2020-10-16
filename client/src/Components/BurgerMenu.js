@@ -7,10 +7,13 @@ const Menu = styled.div`
     width: 50%;
     margin: 0 auto;
 
-    @media (max-width: 690px) {
+    @media (max-width: 760px) {
         display: block;
-        width: 80%;
+        width: 50%;
     }
+    @media (max-width: 550px) {
+      width: 70%;
+  }
 `;
 
 const MenuDropdown = styled.div`
@@ -22,7 +25,7 @@ const MenuDropdown = styled.div`
     justify-content: center;
     align-items: center;
 
-    @media (max-width: 690px) {
+    @media (max-width: 760px) {
       height: 342px;
       padding: 3rem 0rem;
       overflow: scroll;
@@ -37,7 +40,7 @@ const List = styled.ul`
     padding-left: 1rem;
     padding-top: 0.4rem;
 
-    @media (max-width: 690px) {
+    @media (max-width: 760px) {
         padding-left: 0;
         height: 342px;
     }

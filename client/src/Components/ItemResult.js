@@ -16,7 +16,7 @@ const Item = styled.label`
     margin: 0.2rem auto;
     font-size: 1rem;
 
-    @media (max-width: 600px) {
+    @media (max-width: 760px) {
         font-size: 0.9rem;
     }
 `;

@@ -1,7 +1,12 @@
-import React from 'react';
-import styled from 'styled-components'
+import React, {useContext} from 'react';
+import CurrentUserContext from '../Contexts/CurrentUserContext';
+import styled from 'styled-components';
 
 const DivHeader = styled.div`
+text-align: center;
+padding: 1rem 0rem 2.5rem 0rem;
+margin: 0 auto;
+margin-top:  ${({ currentUser }) => (currentUser ? '0rem' : '2rem')};
     color: ${({ theme }) => theme.appHeader};
 `
 const LargeHeader = styled.h1`
@@ -9,7 +14,7 @@ const LargeHeader = styled.h1`
     font-size: 3.5rem;
     letter-spacing: 0.1rem;
     text-align: center;
-    padding-top: 3.7rem;
+    padding-top: 1.7rem;
     font-weight: 400;
 
     @media (max-width: 690px) {
@@ -37,8 +42,9 @@ const SmallHeader = styled.p`
 `;
 
 function Header() {
+    const {currentUser} = useContext(CurrentUserContext);
     return (
-        <DivHeader>
+        <DivHeader currentUser={currentUser}>
             <LargeHeader>Pick &amp; Pack</LargeHeader>
             <SmallHeader>Pick items to add them to your <span>packing list</span>!</SmallHeader>
         </DivHeader>

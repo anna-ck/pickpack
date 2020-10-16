@@ -12,12 +12,14 @@ const ResultsWrapper = styled.div`
     width: 50%;
     border-left: 3px solid rgb(18, 186, 216);
     
-    @media (max-width: 690px) {
-      width: 80%;
+    @media (max-width: 760px) {
+      width: 50%;
       margin: 0 auto;
       border: 0;
       display: none;
   }
+  @media (max-width: 550px) {
+    width: 70%;
 `;
 
 const ListName = styled.h2`
@@ -42,8 +44,7 @@ const ItemWrapper = styled.li`
 
 const InfoWrapper = styled.div`
     padding: 3rem 0rem;
-
-    @media (max-width: 690px) {
+    @media (max-width: 760px) {
       padding-top: 1.5rem;
       padding-bottom: 0rem;
   }
@@ -72,7 +73,7 @@ const Img = styled.img`
     width: 110px;
     height: auto;
 
-    @media (max-width: 690px) {
+    @media (max-width: 760px) {
       width: 70px;
       margin: 0 auto;
   }
