@@ -8,7 +8,7 @@ const AuthenticationApi = {
             body: JSON.stringify(userInfo)
         });
         const body = await response.json();
-        if (response.status !== 200) throw Error('Something went wrong!');
+        if (response.status !== 200) throw Error(body.message);
         return body;
     },
     register: async function (userInfo) {
@@ -20,7 +20,8 @@ const AuthenticationApi = {
             body: JSON.stringify(userInfo)
         });
         const newUser = await response.json()
-        if (response.status !== 200) throw Error('Something went wrong');
+        console.log(newUser)
+        if (response.status !== 200) throw Error(newUser.message);
         return newUser
     }
 }
