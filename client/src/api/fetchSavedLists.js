@@ -14,12 +14,6 @@ const HandleSavedListsApi = {
         if (response.status !== 200) throw Error('Something went wrong');
         return updatedUser
     },
-    getLists: async function (currentUser) {
-        const response = await fetch(`/users/${currentUser.login}`);
-        const body = await response.json();
-        if (response.status !== 200) throw Error('Something went wrong!');
-        return body;
-    },
     updateList: async function (pickedItems, currentUser, listToUpdate) {
         const response = await fetch(`/users/${currentUser.login}`, {
             method: 'PUT',

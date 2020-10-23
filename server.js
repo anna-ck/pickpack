@@ -16,7 +16,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cookieParser());
 const dotenv = require('dotenv');
 dotenv.config();
-const { checkDuplicates } = require('./middlewares');
+const { checkDuplicates, verifyToken } = require('./middlewares');
 const controller = require('./controllers/auth.controller');
 
 const db = require("./models");
@@ -37,8 +37,18 @@ db.mongoose
 const User = db.user
 const Items = db.items
 
+app.use(function(req, res, next) {
+  res.header(
+    "Access-Control-Allow-Headers",
+    "x-access-token, Origin, Content-Type, Accept"
+  );
+  next();
+});
+
 app.post('/register', checkDuplicates, controller.register)
 app.post('/login', controller.login)
+
+app.get('/users/:login', verifyToken)
 
 app.post('/users/:login', function(req, res) {
   const login = req.params.login

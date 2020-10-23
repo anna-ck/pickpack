@@ -227,11 +227,11 @@ function AppContent(props) {
     }, [isUserBarActive])
     */
 
-    const changeInputItem = (item) => {
-      if (item.number !== '0') {
+    const changePickedItems = (item) => {
         const indexOfItemToUpdate = pickedItems.findIndex((picked) => picked.name === item.name);
         if (indexOfItemToUpdate > -1) {
             if (item.number !== 0) {
+              console.log('edit')
               let newPickedItems = [...pickedItems];
               let newItem = {...newPickedItems[indexOfItemToUpdate]}
               newItem.number = item.number
@@ -242,24 +242,20 @@ function AppContent(props) {
             }
             else {
               const newPickedItems = [...pickedItems.filter((picked => picked.name !== item.name))]
+              console.log('delete')
               setPickedItems(newPickedItems)
               localStorage.setItem("pickedItems", JSON.stringify(newPickedItems))
             }
         }
         else {
           item.id = uuidv4()
+          console.log('add')
           item.description = ''
           const newPickedItems = [...pickedItems, item]
           setPickedItems(newPickedItems)
           localStorage.setItem("pickedItems", JSON.stringify(newPickedItems))
           setWasCurrentListModified(true)
         }
-      }
-      else {
-        const newPickedItems = [...pickedItems.filter((picked => picked.name !== item.name))]
-        setPickedItems(newPickedItems)
-        localStorage.setItem("pickedItems", JSON.stringify(newPickedItems))
-      }
     }
 
     const search = (listName) => {
@@ -334,6 +330,8 @@ function AppContent(props) {
     const handleNewListOpening = () => {
       setPickedItems([])
       setCurrentList({listName: '', id: ''})
+      localStorage.setItem("currentList", JSON.stringify({listName: '', id: ''}))
+      localStorage.removeItem("pickedItems");
       setWasCurrentListModified(false)
     }
 
@@ -359,10 +357,13 @@ function AppContent(props) {
       }
       const savedLists = currentUser.savedLists
       const listToReturn = savedLists.find(list => list.id === isModalWarningVisible)
-      setPickedItems(listToReturn.items)
-      setCurrentList({listName: listToReturn.listName, id: listToReturn.id})
-      localStorage.setItem("pickedItems", JSON.stringify(listToReturn.items))
-      localStorage.setItem("currentList", JSON.stringify({listName: listToReturn.listName, id: listToReturn.id}))
+      //setPickedItems(listToReturn.items)
+      //setCurrentList({listName: listToReturn.listName, id: listToReturn.id})
+      //localStorage.setItem("pickedItems", JSON.stringify(listToReturn.items))
+      //localStorage.setItem("currentList", JSON.stringify({listName: listToReturn.listName, id: listToReturn.id}))
+      setCurrentList({listName: '', id: ''})
+      localStorage.setItem("currentList", JSON.stringify({listName: '', id: ''}))
+      localStorage.removeItem("pickedItems");
       setWasCurrentListModified(false)
       setUserBarActive(false)
       setModalWarningVisible(null)
@@ -371,10 +372,13 @@ function AppContent(props) {
     const OpenSavedListAfterWarningWithoutSavingCurrent = async () => {
       const savedLists = currentUser.savedLists
       const listToReturn = savedLists.find(list => list.id === isModalWarningVisible)
-      setPickedItems(listToReturn.items)
-      setCurrentList({listName: listToReturn.listName, id: listToReturn.id})
-      localStorage.setItem("pickedItems", JSON.stringify(listToReturn.items))
-      localStorage.setItem("currentList", JSON.stringify({listName: listToReturn.listName, id: listToReturn.id}))
+      //setPickedItems(listToReturn.items)
+      //setCurrentList({listName: listToReturn.listName, id: listToReturn.id})
+      //localStorage.setItem("pickedItems", JSON.stringify(listToReturn.items))
+      //localStorage.setItem("currentList", JSON.stringify({listName: listToReturn.listName, id: listToReturn.id}))
+      setCurrentList({listName: '', id: ''})
+      localStorage.setItem("currentList", JSON.stringify({listName: '', id: ''}))
+      localStorage.removeItem("pickedItems");
       setWasCurrentListModified(false)
       setUserBarActive(false)
       setModalWarningVisible(null)
@@ -406,16 +410,16 @@ function AppContent(props) {
               <MainContent>
                 <ContentLeft>
                   <ContentLeftTop>
-                    <SearchInput pickedItems={pickedItems} onAdd={changeInputItem}/>
+                    <SearchInput pickedItems={pickedItems} onAdd={changePickedItems}/>
                   </ContentLeftTop>
                   <BurgerIcon onClick={openBurger} burgerIsActive={isActive}></BurgerIcon>
                   <ContentLeftBottom>
                     <Menu ref={menuRef} currentSearchList={currentSearchList} handleChoice={search} />
-                    <Results ref={resultsRef} currentSearchList={currentSearchList} searchResults={searchResults} pickedItems={pickedItems} onCheck={changeInputItem} />
+                    <Results ref={resultsRef} currentSearchList={currentSearchList} searchResults={searchResults} pickedItems={pickedItems} onCheck={changePickedItems} />
                   </ContentLeftBottom>
                 </ContentLeft>
                 <ContentRight ref={finalListRef}>
-                  <FinalList pickedItems={pickedItems} onChange={changeInputItem} onCurrentListNameChange={handleCurrentListNameChange} onNewListOpening={handleNewListOpening} onSaveAndProceed={handleSaveAndCreateNew} wasCurrentListModified={wasCurrentListModified} onCurrentListModification={() => setWasCurrentListModified(true)}/>
+                  <FinalList pickedItems={pickedItems} onChange={changePickedItems} onCurrentListNameChange={handleCurrentListNameChange} onNewListOpening={handleNewListOpening} onSaveAndProceed={handleSaveAndCreateNew} wasCurrentListModified={wasCurrentListModified} onCurrentListModification={() => setWasCurrentListModified(true)}/>
                   <ButtonsWrapper>
                     <React.Suspense fallback={'...'}><SaveListButton onClick={handleListSaving} onEdit={editSavedList}/></React.Suspense>
                     <React.Suspense fallback={'...'}><DeleteListButton onClick={handleListDeleting}/></React.Suspense>

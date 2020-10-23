@@ -23,7 +23,20 @@ const AuthenticationApi = {
         console.log(newUser)
         if (response.status !== 200) throw Error(newUser.message);
         return newUser
-    }
+    },
+    getCurrentUser: async function (currentUser) {
+        const response = await fetch(`/users/${currentUser.login}`, {
+            headers: {
+                'x-access-token': currentUser.accessToken
+            }
+        });
+        if (response.status !== 200) {
+            return ''
+        }
+        else {
+            return currentUser;
+        }
+    },
 }
 
 export default AuthenticationApi
