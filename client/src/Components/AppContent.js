@@ -12,7 +12,6 @@ import UserPanel from './UserPanel';
 import StrangerGreeting from './StrangerGreeting';
 import ModalWarning from './ModalWarning'
 
-import { itemLists } from '../Utilities/Helper'
 import styled from 'styled-components';
 import { AppSalmon, AppBlue } from '../theme/Colors';
 import { v4 as uuidv4 } from 'uuid';
@@ -41,12 +40,15 @@ const ToggleUserButton = styled.button`
   background-color: white;
   border: 2px solid ${AppBlue};;
   border-radius: 50px;
+
   &:hover {
     border-color: ${AppSalmon};
   }
+
   @media (max-width: 760px) {
     display: ${({ isActive, currentUser }) => (isActive && currentUser ? 'block' : 'none')};
   };
+
   @media print {
     display: none;
     visibility:hidden
@@ -54,143 +56,158 @@ const ToggleUserButton = styled.button`
 `;
 
 const Icon = styled.i`
-font-size: 1.5rem;
-padding: 0rem 0.2rem;
+  font-size: 1.5rem;
+  padding: 0rem 0.2rem;
 `;
 
 const UserBar = styled.div`
-position: fixed;
-width: ${({ currentUser }) => (currentUser ? '13rem' : '0rem')};
-background-color:  ${({ theme }) => theme.userPanel};
-    flex-direction: column;
-    justify-content: left;
-    align-content: center;
-    height: 100vh;
-    overflow: auto;
+  position: fixed;
+  width: ${({ currentUser }) => (currentUser ? '13rem' : '0rem')};
+  background-color:  ${({ theme }) => theme.userPanel};
+  flex-direction: column;
+  justify-content: left;
+  align-content: center;
+  height: 100vh;
+  overflow: auto;
 
-    @media (max-width: 760px) {
-      display: ${({ isActive }) => (isActive ? 'flex' : 'none')};
-      width: 100%;
-      height: 100vh;
-      position: sticky;
-      left: 0;
-      top: 0;
-    };
-    @media print {
-      display: none;
-      visibility:hidden
-   }
+  @media (max-width: 760px) {
+    display: ${({ isActive }) => (isActive ? 'flex' : 'none')};
+    width: 100%;
+    height: 100vh;
+    position: sticky;
+    left: 0;
+    top: 0;
+  };
+
+  @media print {
+    display: none;
+    visibility:hidden
+  }
 `;
 
 const Content = styled.div`
-    width: 100%;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    margin-left: ${({ currentUser }) => (currentUser ? '13rem' : '0rem')};
-    @media (max-width: 760px) {
-      margin: 0;
-      display: ${({ isActive }) => (isActive ? 'flex' : 'none')};
-    }
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin-left: ${({ currentUser }) => (currentUser ? '13rem' : '0rem')};
+
+  @media (max-width: 760px) {
+    margin: 0;
+    display: ${({ isActive }) => (isActive ? 'flex' : 'none')};
+  }
 `;
 
 const MainContent = styled.div`
-display: flex;
-width: 100%;
-@media (max-width: 1290px) {
-  flex-direction: column;
-}
+  display: flex;
+  width: 100%;
+
+  @media (max-width: 1290px) {
+    flex-direction: column;
+  }
 `;
 
 const ContentLeft = styled.div`
-    display: flex;
-    flex-direction: column;
-    flex: 50%;
-    margin: 0rem 0.75rem 0rem 1.5rem;
-    @media (max-width: 1290px) {
-        width: 70%;
-        margin: 0 auto;
-        padding:0;
-        padding-bottom: 2.5rem;
-    }
-    @media (max-width: 1090px) {
-      width: 70%;
-    }
-    @media (max-width: 950px) {
-      width: 85%;
-    }
-    @media (max-width: 820px) {
-      width: 95%;
-    }
-    @media print {
-      display: none;
-      visibility:hidden
-   }
+  display: flex;
+  flex-direction: column;
+  flex: 50%;
+  margin: 0rem 0.75rem 0rem 1.5rem;
+
+  @media (max-width: 1290px) {
+    width: 70%;
+    margin: 0 auto;
+    padding:0;
+    padding-bottom: 2.5rem;
+  }
+
+  @media (max-width: 1090px) {
+    width: 70%;
+  }
+
+  @media (max-width: 950px) {
+    width: 85%;
+  }
+
+  @media (max-width: 820px) {
+    width: 95%;
+  }
+
+  @media print {
+    display: none;
+    visibility:hidden
+  }
 `;
 
 const ContentLeftTop = styled.div`
-    max-width: 100%;
-    align-items: center;
-    justify-content: center;
-    text-align: center;
-    align-content: center;
-    z-index:2;
-    padding-bottom:0.5rem;
-    @media (max-width: 690px) {
-      padding-bottom: 0rem;
+  max-width: 100%;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  align-content: center;
+  z-index:2;
+  padding-bottom:0.5rem;
+
+  @media (max-width: 690px) {
+    padding-bottom: 0rem;
   }
-    @media (max-width: 1090px) {
-        width:100%;
-        display:inline-flex;
-    }
+
+  @media (max-width: 1090px) {
+      width:100%;
+      display:inline-flex;
+  }
 `;
 
 const ContentLeftBottom = styled.div`
-    max-width: 100%;
-    display: inline-flex;
-    flex-direction: row;
-    align-content: space-between;
+  max-width: 100%;
+  display: inline-flex;
+  flex-direction: row;
+  align-content: space-between;
 `;
 
 const ContentRight = styled.div`
-    width: 50%;
-    padding: 0rem;
-    margin: 0rem 1.5rem 0rem 0.75rem;
-    @media (max-width: 1290px) {
-        width: 70%;
-        margin: 0 auto;
-        text-align: center;
-        padding: 0rem
-    }
-    @media (max-width: 1090px) {
-      width: 70%;
-    }
-    @media (max-width: 950px) {
-      width: 85%;
-    }
-    @media (max-width: 820px) {
-      width: 95%;
-    }
-    @media (max-width: 760px) {
-      width: 85%;
-    }
+  width: 50%;
+  padding: 0rem;
+  margin: 0rem 1.5rem 0rem 0.75rem;
+
+  @media (max-width: 1290px) {
+    width: 70%;
+      margin: 0 auto;
+      text-align: center;
+      padding: 0rem
+  }
+
+  @media (max-width: 1090px) {
+    width: 70%;
+  }
+
+  @media (max-width: 950px) {
+    width: 85%;
+  }
+
+  @media (max-width: 820px) {
+    width: 95%;
+  }
+
+  @media (max-width: 760px) {
+    width: 85%;
+  }
 `;
 
 const ButtonsWrapper = styled.div`
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    margin-bottom: 0.5rem;
-    @media print {
-      display: none;
-      visibility:hidden
-   }
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  margin-bottom: 0.5rem;
+
+  @media print {
+    display: none;
+    visibility:hidden
+  }
 `;
 
 function AppContent(props) {
 
-    const [theme, setTheme] = useState('light');
     const [pickedItems, setPickedItems] =  useState([]) || [];
     const [searchResults, setSearchResults] = useState([]);
     const [currentSearchList, setCurrentSearchList] = useState('');
@@ -208,60 +225,51 @@ function AppContent(props) {
     const history = useHistory();
 
     useEffect (() => {
-      const pickedItemsFromStorage = JSON.parse(localStorage.getItem('pickedItems')) || []
-      const currentListFromStorage = JSON.parse(localStorage.getItem('currentList')) || {listName: '', id: ''}
+      const pickedItemsFromStorage = JSON.parse(sessionStorage.getItem('pickedItems')) || []
+      const currentListFromStorage = JSON.parse(sessionStorage.getItem('currentList')) || {listName: '', id: ''}
       setPickedItems(pickedItemsFromStorage || [])
       setCurrentList(currentListFromStorage || {listName: '', id: ''})
     }, [currentUser, setPickedItems]);
 
-    /*
-    useEffect (() => {
-      if(currentUser && window.innerWidth <= 760 && !isUserBarActive) {
-        finalListRef.current.scrollIntoView()
-        setUserBarActive(false)
-      }
-      else {
-        window.scrollTo(0,0)
-        setUserBarActive(false)
-      }
-    }, [isUserBarActive])
-    */
-
     const changePickedItems = (item) => {
+      if (item.number !== '0') {
         const indexOfItemToUpdate = pickedItems.findIndex((picked) => picked.name === item.name);
         if (indexOfItemToUpdate > -1) {
             if (item.number !== 0) {
-              console.log('edit')
               let newPickedItems = [...pickedItems];
               let newItem = {...newPickedItems[indexOfItemToUpdate]}
               newItem.number = item.number
               newItem.description = item.description || ''
               newPickedItems[indexOfItemToUpdate] = newItem;
               setPickedItems(newPickedItems)
-              localStorage.setItem("pickedItems", JSON.stringify(newPickedItems))
+              sessionStorage.setItem("pickedItems", JSON.stringify(newPickedItems))
             }
             else {
               const newPickedItems = [...pickedItems.filter((picked => picked.name !== item.name))]
-              console.log('delete')
               setPickedItems(newPickedItems)
-              localStorage.setItem("pickedItems", JSON.stringify(newPickedItems))
+              sessionStorage.setItem("pickedItems", JSON.stringify(newPickedItems))
             }
         }
         else {
           item.id = uuidv4()
-          console.log('add')
           item.description = ''
           const newPickedItems = [...pickedItems, item]
           setPickedItems(newPickedItems)
-          localStorage.setItem("pickedItems", JSON.stringify(newPickedItems))
+          sessionStorage.setItem("pickedItems", JSON.stringify(newPickedItems))
           setWasCurrentListModified(true)
         }
-    }
+      }
+      else {
+        const newPickedItems = [...pickedItems.filter((picked => picked.name !== item.name))]
+        setPickedItems(newPickedItems)
+        sessionStorage.setItem("pickedItems", JSON.stringify(newPickedItems))
+      }
+  }
 
     const search = (listName) => {
-       handleSearchResultsApi.getItemsByListName(listName)
-       .then((result) => {
-       const items = result[0].items
+        handleSearchResultsApi.getItemsByListName(listName)
+        .then((result) => {
+        const items = result[0].items
         setSearchResults(items);
         setCurrentSearchList(listName);
         if (window.innerWidth < 760) {
@@ -296,7 +304,7 @@ function AppContent(props) {
         props.onSave(pickedItems, currentList)
         setWasCurrentListModified(false)
         setCurrentList({listName: name, id: id})
-        localStorage.setItem("currentList", JSON.stringify({listName: name, id: id}))
+        sessionStorage.setItem("currentList", JSON.stringify({listName: name, id: id}))
       }
     }
 
@@ -308,7 +316,7 @@ function AppContent(props) {
     const handleCurrentListNameChange = (name) => {
       setCurrentList({listName: name, id: currentList.id})
       setWasCurrentListModified(true)
-      localStorage.setItem("currentList", JSON.stringify({listName: name, id: currentList.id}))
+      sessionStorage.setItem("currentList", JSON.stringify({listName: name, id: currentList.id}))
     }
 
     const changeCurrentList = (e) => {
@@ -321,8 +329,8 @@ function AppContent(props) {
         const listToReturn = savedLists.find(list => list.id === listId)
         setPickedItems(listToReturn.items)
         setCurrentList({listName: listToReturn.listName, id: listToReturn.id})
-        localStorage.setItem("pickedItems", JSON.stringify(listToReturn.items))
-        localStorage.setItem("currentList", JSON.stringify({listName: listToReturn.listName, id: listToReturn.id}))
+        sessionStorage.setItem("pickedItems", JSON.stringify(listToReturn.items))
+        sessionStorage.setItem("currentList", JSON.stringify({listName: listToReturn.listName, id: listToReturn.id}))
         setUserBarActive(false)
       }
     }
@@ -330,8 +338,8 @@ function AppContent(props) {
     const handleNewListOpening = () => {
       setPickedItems([])
       setCurrentList({listName: '', id: ''})
-      localStorage.setItem("currentList", JSON.stringify({listName: '', id: ''}))
-      localStorage.removeItem("pickedItems");
+      sessionStorage.setItem("currentList", JSON.stringify({listName: '', id: ''}))
+      sessionStorage.removeItem("pickedItems");
       setWasCurrentListModified(false)
     }
 
@@ -343,8 +351,8 @@ function AppContent(props) {
         handleListSaving()
       }
       setCurrentList({listName: '', id: ''})
-      localStorage.setItem("currentList", JSON.stringify({listName: '', id: ''}))
-      localStorage.removeItem("pickedItems");
+      sessionStorage.setItem("currentList", JSON.stringify({listName: '', id: ''}))
+      sessionStorage.removeItem("pickedItems");
       setWasCurrentListModified(false)
     }
 
@@ -355,15 +363,11 @@ function AppContent(props) {
       else {
         handleListSaving()
       }
-      const savedLists = currentUser.savedLists
-      const listToReturn = savedLists.find(list => list.id === isModalWarningVisible)
-      //setPickedItems(listToReturn.items)
-      //setCurrentList({listName: listToReturn.listName, id: listToReturn.id})
-      //localStorage.setItem("pickedItems", JSON.stringify(listToReturn.items))
-      //localStorage.setItem("currentList", JSON.stringify({listName: listToReturn.listName, id: listToReturn.id}))
+      //const savedLists = currentUser.savedLists
+      //const listToReturn = savedLists.find(list => list.id === isModalWarningVisible)
       setCurrentList({listName: '', id: ''})
-      localStorage.setItem("currentList", JSON.stringify({listName: '', id: ''}))
-      localStorage.removeItem("pickedItems");
+      sessionStorage.setItem("currentList", JSON.stringify({listName: '', id: ''}))
+      sessionStorage.removeItem("pickedItems");
       setWasCurrentListModified(false)
       setUserBarActive(false)
       setModalWarningVisible(null)
@@ -371,14 +375,14 @@ function AppContent(props) {
 
     const OpenSavedListAfterWarningWithoutSavingCurrent = async () => {
       const savedLists = currentUser.savedLists
-      const listToReturn = savedLists.find(list => list.id === isModalWarningVisible)
+      //const listToReturn = savedLists.find(list => list.id === isModalWarningVisible)
       //setPickedItems(listToReturn.items)
       //setCurrentList({listName: listToReturn.listName, id: listToReturn.id})
-      //localStorage.setItem("pickedItems", JSON.stringify(listToReturn.items))
-      //localStorage.setItem("currentList", JSON.stringify({listName: listToReturn.listName, id: listToReturn.id}))
+      //sessionStorage.setItem("pickedItems", JSON.stringify(listToReturn.items))
+      //sessionStorage.setItem("currentList", JSON.stringify({listName: listToReturn.listName, id: listToReturn.id}))
       setCurrentList({listName: '', id: ''})
-      localStorage.setItem("currentList", JSON.stringify({listName: '', id: ''}))
-      localStorage.removeItem("pickedItems");
+      sessionStorage.setItem("currentList", JSON.stringify({listName: '', id: ''}))
+      sessionStorage.removeItem("pickedItems");
       setWasCurrentListModified(false)
       setUserBarActive(false)
       setModalWarningVisible(null)
@@ -388,8 +392,8 @@ function AppContent(props) {
       props.onDelete(currentList)
       setWasCurrentListModified(false)
       setCurrentList({listName: '', id: ''})
-      localStorage.setItem("currentList", JSON.stringify({listName: '', id: ''}))
-      localStorage.removeItem("pickedItems");
+      sessionStorage.setItem("currentList", JSON.stringify({listName: '', id: ''}))
+      sessionStorage.removeItem("pickedItems");
     }
 
     const toggleUserBarState = () => {
@@ -397,7 +401,7 @@ function AppContent(props) {
     }
 
     return (
-        <CurrentListContext.Provider value={{currentList:currentList, onCurrentListChange: setCurrentList}} >
+      <CurrentListContext.Provider value={{currentList:currentList, onCurrentListChange: setCurrentList}} >
         <ToggleUserButton isActive={!isUserBarActive} currentUser={currentUser} onClick={toggleUserBarState}><Icon className="fas fa-user-circle"></Icon>{currentUser ? ` You are logged in as ${currentUser.login}` : null}</ToggleUserButton>
         <AppContentWrapper>
           {currentUser ? 
@@ -429,11 +433,11 @@ function AppContent(props) {
               </MainContent>
               <Footer/>
           </Content>
-          </AppContentWrapper>
-          {wasCurrentListModified && isModalWarningVisible && (
+        </AppContentWrapper>
+        {wasCurrentListModified && isModalWarningVisible && (
           <ModalWarning onConfirmWithoutSaving={OpenSavedListAfterWarningWithoutSavingCurrent} onSaveAndConfirm={saveCurrentAndOpenSavedListAfterWarning} onCloseModalWarning={() => {setModalWarningVisible(null)}} textSave={'Save current list before opening a new one'} textDoNotSave={'Do not save list before opening a new one'} textMain={'Opening selected list'}/>
-          )}
-          </CurrentListContext.Provider>
+        )}
+      </CurrentListContext.Provider>
     )
 }
 

@@ -22,6 +22,7 @@ const ModalContent= styled.div`
     border-radius: 7px;
     padding: 1rem;
     width: 50%;
+
     @media (max-width: 1000px) {
       width: 70%;
     }
@@ -35,6 +36,7 @@ const ButtonX = styled.button`
     margin: 0 auto;
     float: right;
     padding: 0rem 0rem 0.5rem 0.5rem;
+
     &:hover {
       color: red;
       font-weight: 900
@@ -48,6 +50,7 @@ const Text= styled.h1`
     margin: 0 auto;
     padding: 2.5rem 2rem 1rem 2rem;
     line-height: 1.2rem;
+
     @media (max-width: 1000px) {
       font-size: 0.8rem;
     }
@@ -60,6 +63,7 @@ const Buttons= styled.div`
     flex-wrap: wrap;
     justify-content: center;
     align-items: center;
+
     @media (max-width: 950px) {
       width: 90%
     }
@@ -74,10 +78,12 @@ const Button = styled.button`
     height: 3rem;
     margin: 0.5rem;
     padding: 0.5rem;
+
     &:hover {
       background-color: ${({ warning }) => (warning ? 'tomato' : 'seagreen')};
       color: white;
     }
+    
     @media (max-width: 1050px) {
       font-size: 0.75rem;
       width: 8rem;

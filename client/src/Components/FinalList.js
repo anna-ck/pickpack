@@ -3,14 +3,13 @@ import ItemFinal from './ItemFinal';
 import OpenNewListButton from './OpenNewListButton';
 import ModalWarning from './ModalWarning'
 import styled from 'styled-components';
-import { AppSalmon } from '../theme/Colors';
 import CurrentListContext from '../Contexts/CurrentListContext'
 import CurrentUserContext from '../Contexts/CurrentUserContext';
 
 const FinalListWrapper = styled.div`
   @media (max-width: 690px) {
-   margin: 0 auto;
-}
+    margin: 0 auto;
+  }
 `;
 
 const Header = styled.div`
@@ -52,12 +51,12 @@ const Tip= styled.p`
 
     @media (max-width: 690px) {
       font-size: 0.7rem
-  }
-
+    }
+    
     @media print {
       display: none;
       visibility:hidden
-   }
+    }
 `;
 
 const Input = styled.input`
@@ -127,7 +126,7 @@ function FinalList (props, ref) {
 
   return (
     <FinalListWrapper>
-                {currentUser ? <OpenNewListButton onClick={handleListSaving}>Create new list</OpenNewListButton> : null }
+      {currentUser ? <OpenNewListButton onClick={handleListSaving}>Create new list</OpenNewListButton> : null }
       <Header>
           <Input value={currentList.listName} placeholder='Add list name' maxLength='12' onChange={handleListNameChange}/>
           <Tip>Tip: you can change the number of items and describe them</Tip>

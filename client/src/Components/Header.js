@@ -3,10 +3,10 @@ import CurrentUserContext from '../Contexts/CurrentUserContext';
 import styled from 'styled-components';
 
 const DivHeader = styled.div`
-text-align: center;
-padding: 1rem 0rem 2.5rem 0rem;
-margin: 0 auto;
-margin-top:  ${({ currentUser }) => (currentUser ? '0rem' : '2rem')};
+    text-align: center;
+    padding: 1rem 0rem 2.5rem 0rem;
+    margin: 0 auto;
+    margin-top:  ${({ currentUser }) => (currentUser ? '0rem' : '2rem')};
     color: ${({ theme }) => theme.appHeader};
 `
 const LargeHeader = styled.h1`
@@ -38,7 +38,7 @@ const SmallHeader = styled.p`
     @media print {
         display: none;
         visibility:hidden
-     }
+    }
 `;
 
 function Header() {

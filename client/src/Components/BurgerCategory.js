@@ -57,7 +57,8 @@ const RowMainContent = styled.div`
     margin:0;
 
     &:hover {
-    cursor: pointer;
+        cursor: pointer;
+    }
 `;
 
 const List = styled.ul`
@@ -66,7 +67,7 @@ const List = styled.ul`
     width: 100%;
     padding: 0rem;
     margin: 0;
-
+    
     @media (max-width: 760px) {
         display: flex;
         flex-direction: row;
@@ -94,7 +95,7 @@ function BurgerCategory (props) {
                 <div id='cat-name'><CatName hovered={false} onClick={handleOpen}>{items}</CatName></div>
                 <RowMainContent open={open}>
                     <List>
-                      {lists[0].map((list) => {
+                      {lists.map((list) => {
                           return (
                             <RowSecondary key={list} onClick={(e) => handleChoice(e, list)}>
                               <CatName hovered={true}>{list.split(' ')[0]}</CatName>

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import styled from 'styled-components';
 
 const RowMain = styled.li`
@@ -63,20 +63,12 @@ function SearchCategory (props) {
     const [lists, setLists] = React.useState(props.lists);
     const [currentSearchList, setCurrentSearchList] = React.useState(props.currentSearchList)
     const [open, setOpen] = React.useState(false);
-    React.useEffect(() => {setCurrentSearchList(props.currentSearchList);}, [props])
+    
+    useEffect(() => {setCurrentSearchList(props.currentSearchList);}, [props])
 
 
-    const handleChoice =  (e, listName) => {
+    const handleChoice =  (listName) => {
         props.onClick(listName);
-    };
-
-    const handleActive = (lst) => {
-        if (lst === currentSearchList) {
-          return true
-        }
-        else {
-          return false
-        }
     };
 
     return (
@@ -90,7 +82,7 @@ function SearchCategory (props) {
                     <List>
                       {lists.map((list) => {
                           return (
-                            <RowSecondary key={list} active={handleActive(list)} onClick={(e) => handleChoice(e, list)}>
+                            <RowSecondary key={list} active={list === currentSearchList ? true : false} onClick={() => handleChoice(list)}>
                               <Icon large={false} className="fas fa-search"></Icon>
                               <CatName>{list}</CatName>
                             </RowSecondary>

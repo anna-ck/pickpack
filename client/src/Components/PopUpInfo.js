@@ -1,7 +1,7 @@
 import React, {useEffect} from 'react';
 import ReactDOM from 'react-dom';
 import styled from 'styled-components';
-import { ModalBlue, ModalBlueLight } from '../theme/Colors';
+import { ModalBlue} from '../theme/Colors';
 
 const PopUpBackground= styled.div`
     width: 100vw;
@@ -26,6 +26,7 @@ const PopUpContent= styled.div`
     flex-direction: column;
     align-items: center;
     justify-content: center;
+
     @media (max-width: 1000px) {
       width: 70%;
     }
@@ -38,6 +39,7 @@ const Text= styled.h1`
     margin: 0 auto;
     padding: 2.5rem 2rem 1rem 2rem;
     line-height: 1.2rem;
+
     @media (max-width: 1000px) {
       font-size: 0.8rem;
     }
@@ -52,10 +54,12 @@ const Button = styled.button`
     height: 3rem;
     margin: 0.5rem;
     padding: 0.5rem;
+
     &:hover {
       background-color: ${ModalBlue};
       color: white;
     }
+
     @media (max-width: 1050px) {
       font-size: 0.75rem;
       width: 8rem;
@@ -78,7 +82,7 @@ function PopUpInfo ({onClosePopUp}) {
       <Portal>
       <PopUpBackground>
         <PopUpContent>
-          <Text>You have been logged out because your session has expired</Text>
+            <Text>You have been logged out because your session has expired</Text>
             <Button onClick={onClosePopUp}>OK</Button>
         </PopUpContent>
       </PopUpBackground>

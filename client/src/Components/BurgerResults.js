@@ -17,9 +17,11 @@ const ResultsWrapper = styled.div`
       margin: 0 auto;
       border: 0;
       display: none;
-  }
-  @media (max-width: 550px) {
-    width: 70%;
+    }
+
+    @media (max-width: 550px) {
+      width: 70%;
+    }
 `;
 
 const ListName = styled.h2`
@@ -44,10 +46,11 @@ const ItemWrapper = styled.li`
 
 const InfoWrapper = styled.div`
     padding: 3rem 0rem;
+
     @media (max-width: 760px) {
       padding-top: 1.5rem;
       padding-bottom: 0rem;
-  }
+    }
 `;
 
 const InfoLarge = styled.h1`
@@ -72,7 +75,7 @@ const InfoSmall = styled.p`
 const Img = styled.img`
     width: 110px;
     height: auto;
-
+    
     @media (max-width: 760px) {
       width: 70px;
       margin: 0 auto;

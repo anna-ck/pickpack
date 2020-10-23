@@ -12,8 +12,10 @@ const Icon = styled.i`
     display: ${({ active, isVisible }) => (isVisible && active ? "block" : "none")};
     width: 45%;
     margin: 0 auto;
+
     @media (max-width: 550px) {
         width: 65%;
+    }
 `;
 
 function BurgerIcon (props, ref) {

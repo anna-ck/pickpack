@@ -11,6 +11,7 @@ const Menu = styled.div`
         display: block;
         width: 50%;
     }
+
     @media (max-width: 550px) {
       width: 70%;
   }
@@ -50,11 +51,11 @@ const List = styled.ul`
 function BurgerMenu (props, ref) {
 
   const categories = [
-    {'Clothes': ['Male Clothes', 'Female Clothes']},
-    {'Shoes': ['Male Shoes', 'Female Shoes']},
-    {'Accessories': ['Male Accessories', 'Female Accessories']},
-    {'Cosmetics': ['Male Cosmetics', 'Female Cosmetics']},
-    {'Others': ['Electronics', 'Entertainment', 'Documents']}
+    {items: 'Clothes', lists: ['Male Clothes', 'Female Clothes']},
+    {items: 'Shoes', lists: ['Male Shoes', 'Female Shoes']},
+    {items: 'Accessories', lists: ['Male Accessories', 'Female Accessories']},
+    {items: 'Cosmetics', lists: ['Male Cosmetics', 'Female Cosmetics']},
+    {items: 'Others', lists: ['Electronics', 'Entertainment', 'Documents']}
   ];
 
   const handleChoice = (listName) => {
@@ -65,11 +66,9 @@ function BurgerMenu (props, ref) {
     <Menu ref={ref}>
       <MenuDropdown>
         <List>
-            <BurgerCategory currentSearchList={props.currentSearchList} items={Object.keys(categories[0])} lists={Object.values(categories[0])} onClick={handleChoice}/>
-            <BurgerCategory currentSearchList={props.currentSearchList} items={Object.keys(categories[1])} lists={Object.values(categories[1])} onClick={handleChoice}/>
-            <BurgerCategory currentSearchList={props.currentSearchList} items={Object.keys(categories[2])} lists={Object.values(categories[2])} onClick={handleChoice}/>
-            <BurgerCategory currentSearchList={props.currentSearchList} items={Object.keys(categories[3])} lists={Object.values(categories[3])} onClick={handleChoice}/>
-            <BurgerCategory currentSearchList={props.currentSearchList} items={Object.keys(categories[4])} lists={Object.values(categories[4])} onClick={handleChoice}/>
+          {categories.map((category) => {
+            return <BurgerCategory currentSearchList={props.currentSearchList} items={category.items} lists={category.lists} onClick={handleChoice}/>
+          })}
         </List>
       </MenuDropdown>
     </Menu>

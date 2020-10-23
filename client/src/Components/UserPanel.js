@@ -6,10 +6,10 @@ import { AppSalmon, AppBlue } from '../theme/Colors';
 const SavedPackingLists = React.lazy(() => import('./SavedPackingLists'))
 
 const Greeting = styled.div`
-padding: 4rem 1rem 1rem 1rem;
-display: flex;
-flex-direction: column;
-align-items: center;
+    padding: 4rem 1rem 1rem 1rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 `;
 
 const Icon= styled.div`
@@ -23,34 +23,37 @@ const Message= styled.h4`
 `;
 
 const LogoutButton = styled.button`
-background-color: ${({ theme }) => theme.searchInput};
-margin-top: 3rem;
-padding: 0.3rem 0.9rem;
-border: 2px solid ${AppSalmon};
-border-radius: 5px;
-color: ${({ theme }) => theme.txt};
-&:hover {
-    border-color: ${AppBlue};
-}
+    background-color: ${({ theme }) => theme.searchInput};
+    margin-top: 3rem;
+    padding: 0.3rem 0.9rem;
+    border: 2px solid ${AppSalmon};
+    border-radius: 5px;
+    color: ${({ theme }) => theme.txt};
+    
+    &:hover {
+        border-color: ${AppBlue};
+    }
 `;
 
 const ToggleUserButton = styled.button`
-  position: fixed;
-  top: 1rem;
-  left: 1rem;
-  display: none;
-  padding: 1rem 1.3rem;
-  margin: 1rem 1rem 2.5rem 1rem;
-  font-size: 1rem;
-  border: none;
-  background-color: inherit;
-  color: ${({ theme }) => theme.txt};
-  &:hover {
-    color: ${({ theme }) => theme.span};
-  }
-  @media (max-width: 760px) {
-    display: block;
-  }
+    position: fixed;
+    top: 1rem;
+    left: 1rem;
+    display: none;
+    padding: 1rem 1.3rem;
+    margin: 1rem 1rem 2.5rem 1rem;
+    font-size: 1rem;
+    border: none;
+    background-color: inherit;
+    color: ${({ theme }) => theme.txt};
+
+    &:hover {
+      color: ${({ theme }) => theme.span};
+    }
+
+    @media (max-width: 760px) {
+      display: block;
+    }
 `;
 
 function UserPanel(props) {

@@ -77,7 +77,7 @@ const Arrow = styled.td`
         border-top: ${({ up, theme }) => (up ? 'none' : `6px solid ${theme.span}`)};
         border-bottom: ${({ up, theme }) => (up ? `6px solid ${theme.span}` : 'none')};
       }
-  }
+    }
 `;
 
 const Txt = styled.p`

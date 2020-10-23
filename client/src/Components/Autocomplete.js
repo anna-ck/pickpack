@@ -33,8 +33,9 @@ const Input = styled.input`
 `;
 
 const AutocompleteList = styled.ul`
-border: 0.5px solid ${AppSalmon};
-border-top: none;`;
+    border: 0.5px solid ${AppSalmon};
+    border-top: none;`
+;
 
 const AutocompleteRow = styled.li`
     font-size: 0.95rem;
@@ -46,7 +47,7 @@ const AutocompleteRow = styled.li`
     &:nth-of-type(odd) {
       background-color: ${({ theme }) => theme.autocomplete1};
     };
-
+    
     &:hover {
       font-size: 0.99rem;
       color: ${({ theme }) => theme.hover2};

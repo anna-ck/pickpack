@@ -61,9 +61,9 @@ const LoginButton = styled.button`
 `;
 
 const Message = styled.p`
-padding: 1rem 2rem 1rem 2rem;
-height: 1rem;
-color: red;
+    padding: 1rem 2rem 1rem 2rem;
+    height: 1rem;
+    color: red;
 `;
 
 const RegisterButton = styled.button`
@@ -92,6 +92,7 @@ const ReturnButton = styled.button`
     margin: 2rem 0.3rem 0rem 0.3rem;
     border: 2px solid grey;
     border-radius: 4px;
+    
     &:hover {
         border-color: ${AppBlue}
     }

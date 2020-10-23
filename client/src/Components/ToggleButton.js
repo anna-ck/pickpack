@@ -35,12 +35,12 @@ const DayIcon = styled.i`
 `;
 
 const NightIcon=styled.i`
-      &:before {
-        visibility: ${({ active }) => (active ? 'visible' : 'hidden')};
-        padding: 0px 4px 0px 4px;
-        font-size: 1.4rem;
-        color: white;
-      }
+    &:before {
+      visibility: ${({ active }) => (active ? 'visible' : 'hidden')};
+      padding: 0px 4px 0px 4px;
+      font-size: 1.4rem;
+      color: white;
+    }
 `;
 
 

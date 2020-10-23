@@ -20,7 +20,6 @@ const AuthenticationApi = {
             body: JSON.stringify(userInfo)
         });
         const newUser = await response.json()
-        console.log(newUser)
         if (response.status !== 200) throw Error(newUser.message);
         return newUser
     },
