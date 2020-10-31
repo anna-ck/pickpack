@@ -2,10 +2,12 @@ import React, {useRef, useState} from 'react';
 import { useHistory } from "react-router-dom";
 import styled from 'styled-components';
 import { AppBlue, AppSalmon } from '../theme/Colors';
+import {useDispatch} from 'react-redux'
+import { setUser } from '../actions';
 
 import AuthenticationApi from '../api/fetchAuthentication';
 
-const LoginPageWrapper = styled.form`
+const LoginPageWrapper = styled.div`
     margin: 0 auto;
     width: 100%;
     display: flex;
@@ -98,8 +100,10 @@ const ReturnButton = styled.button`
     }
 `;
 
-function LoginPanel (props) {
+function LoginPanel () {
     const [message, setMessage] = useState('');
+    const dispatch = useDispatch()
+
     const loginRef = useRef();
     const passwordRef = useRef();
 
@@ -107,12 +111,14 @@ function LoginPanel (props) {
 
     const handleSubmit = (event) => {
         event.preventDefault();
-        AuthenticationApi.login({
+        const credentials = {
             login: loginRef.current.value,
             password: passwordRef.current.value
-        })
+        }
+        AuthenticationApi.login(credentials)
         .then((response) => {
-            props.onLogin(response);
+            //sessionStorage.setItem("user", JSON.stringify(response));
+            dispatch(setUser(response))
             loginRef.current.value = '';
             passwordRef.current.value = '';
             history.push('/')
@@ -120,15 +126,6 @@ function LoginPanel (props) {
         .catch((error) => {
             setMessage(error.message)
         })
-    }
-
-    const goBackToApp = () => {
-        history.push('/')
-    }
-
-    const goToRegistrationPanel = () => {
-        history.push('/register');
-        
     }
 
     return (
@@ -139,8 +136,8 @@ function LoginPanel (props) {
                     <Input ref={passwordRef} type='password' placeholder='Password' />
                 <LoginButton onClick={handleSubmit}>Log in</LoginButton>
                 <Message>{message ? message : null}</Message>
-                <RegisterButton onClick={goToRegistrationPanel}>Not on Pick&Pack yet?  <span>Sign up</span></RegisterButton>
-                <ReturnButton onClick={goBackToApp}>Use Pick&Pack as an anonymous user</ReturnButton>
+                <RegisterButton onClick={() => history.push('/register')}>Not on Pick&Pack yet?  <span>Sign up</span></RegisterButton>
+                <ReturnButton onClick={() => history.push('/')}>Use Pick&Pack as an anonymous user</ReturnButton>
             </LoginWindow>
         </LoginPageWrapper>
     )

@@ -10,7 +10,7 @@ function Results (props, ref) {
         window.addEventListener("resize", handleWindowResize);
         return () => window.removeEventListener("resize", handleWindowResize);
     }, []);
-    return width > breakpoint ? <SearchResults ref={ref} currentSearchList={props.currentSearchList} searchResults={props.searchResults} pickedItems={props.pickedItems} onCheck={props.onCheck} /> : <BurgerResults ref={ref} openBurger={props.openBurger} currentSearchList={props.currentSearchList} searchResults={props.searchResults} pickedItems={props.pickedItems} onCheck={props.onCheck}/>;
+    return width > breakpoint ? <SearchResults ref={ref} onCheck={props.onCheck} /> : <BurgerResults ref={ref} openBurger={props.openBurger} onCheck={props.onCheck}/>;
 }
 
 export default React.forwardRef(Results);

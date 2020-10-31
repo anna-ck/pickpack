@@ -1,6 +1,9 @@
 import React from 'react';
 import styled from 'styled-components';
-import CurrentUserContext from '../Contexts/CurrentUserContext';
+//import CurrentUserContext from '../Contexts/CurrentUserContext';
+import {useDispatch, useSelector} from 'react-redux'
+import { setUser } from '../actions';
+import {getTheme, getPopupState, getUser} from '../reducers';
 import { AppSalmon, AppBlue } from '../theme/Colors';
 
 const Greeting = styled.div`

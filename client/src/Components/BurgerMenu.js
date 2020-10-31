@@ -66,8 +66,8 @@ function BurgerMenu (props, ref) {
     <Menu ref={ref}>
       <MenuDropdown>
         <List>
-          {categories.map((category) => {
-            return <BurgerCategory currentSearchList={props.currentSearchList} items={category.items} lists={category.lists} onClick={handleChoice}/>
+          {categories.map((category, index) => {
+            return <BurgerCategory key={index} items={category.items} lists={category.lists} onClick={handleChoice}/>
           })}
         </List>
       </MenuDropdown>

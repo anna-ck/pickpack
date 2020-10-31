@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react';
 import ItemResult from './ItemResult';
 import styled from 'styled-components';
 import suitcase from '../Images/suitcase.png';
+import {useSelector} from 'react-redux';
+import {getSearchResults, getCurrentSearchList} from '../reducers';
 
 const ResultsWrapper = styled.div`
     text-align: center;
@@ -72,8 +74,11 @@ const Info = () => {
 }
 
 function SearchResults (props, ref) {
-  const [searchResults, setsearchResults] = useState(props.searchResults) || [];
-  useEffect(() => {setsearchResults(props.searchResults);});
+  //const [searchResults, setsearchResults] = useState(props.searchResults) || [];
+  //useEffect(() => {setsearchResults(props.searchResults);});
+
+  const searchResults = useSelector(getSearchResults)
+  const currentSearchList = useSelector(getCurrentSearchList)
 
   const handleResultChange = (item) => {
     props.onCheck(item)
@@ -81,12 +86,12 @@ function SearchResults (props, ref) {
 
   return (
       <ResultsWrapper ref={ref}>
-        <ListName>{props.currentSearchList || <Info/>}</ListName>
+        <ListName>{currentSearchList || <Info/>}</ListName>
         <ListWrapper>
           {searchResults.map((item, i) => {
               return (
                   <ItemWrapper key={'item_' + i}>
-                      <ItemResult item={item} pickedItems={props.pickedItems} onCheck={handleResultChange} />
+                      <ItemResult item={item} onCheck={handleResultChange} />
                   </ItemWrapper>
               )
           })}

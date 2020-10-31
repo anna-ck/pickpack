@@ -1,7 +1,10 @@
 import React, { useContext, useState }  from 'react';
-import CurrentUserContext from '../Contexts/CurrentUserContext';
+//import CurrentUserContext from '../Contexts/CurrentUserContext';
 import styled from 'styled-components';
 import { AppSalmon } from '../theme/Colors';
+import {useDispatch, useSelector} from 'react-redux'
+import { setUser, setIdOfCurrentlyChangedList, setPickedItems, setCurrentList, setUserBar } from '../actions';
+import {getTheme, getPopupState, getUser, isCurrentListModified, getCurrentList, isUserBarVisible, getPickedItems, getIdOfCurrentlyChangedList} from '../reducers';
 
 const Button = styled.button`
 width: 100%;
@@ -39,14 +42,42 @@ font-size: 1rem;
 
 
 
-const SavedLists = ({savedLists, onListChoice }) => {
+function SavedLists ({savedLists }) {
+
+    const dispatch = useDispatch()
+    const currentUser = useSelector(getUser)
+    const pickedItems = useSelector(getPickedItems)
+    const currentList = useSelector(getCurrentList)
+    const wasCurrentListModified = useSelector(isCurrentListModified)
+    const isUserBarActive = useSelector(isUserBarVisible)
+    const idOfListBeingCurrentlyModified = useSelector(getIdOfCurrentlyChangedList)
+
+    const changeCurrentList = (e) => {
+        const listId = e.currentTarget.value
+        if (listId !== currentList.id) {
+          if (wasCurrentListModified) {
+            dispatch(setIdOfCurrentlyChangedList(listId))
+          }
+          else {
+            const savedLists = currentUser.savedLists
+            const listToReturn = savedLists.find(list => list.id === listId)
+            dispatch(setPickedItems(listToReturn.items))
+            dispatch(setCurrentList({listName: listToReturn.listName, id: listToReturn.id}))
+            //setCurrentList({listName: listToReturn.listName, id: listToReturn.id})
+            //sessionStorage.setItem("pickedItems", JSON.stringify(listToReturn.items))
+            //sessionStorage.setItem("currentList", JSON.stringify({listName: listToReturn.listName, id: listToReturn.id}))
+            dispatch(setUserBar(false))
+          }
+        }
+      }
+
     return (
         <>
         <Text >Your saved lists:</Text>
-        {savedLists.map((list, i) => {
+        {currentUser.savedLists.map((list, i) => {
             return (
                 <SavedList key={'list_' + i}>
-                    <Button onClick={(e) => onListChoice(e)} value={list.id}>{list.listName}</Button>
+                    <Button onClick={(e) => changeCurrentList(e)} value={list.id}>{list.listName}</Button>
                 </SavedList>
             )
         })}
@@ -54,13 +85,14 @@ const SavedLists = ({savedLists, onListChoice }) => {
     )
 }
 
-function SavedPackingLists (props) {
+function SavedPackingLists () {
 
-    const {currentUser} = useContext(CurrentUserContext);
+    //const {currentUser} = useContext(CurrentUserContext);
+    const currentUser = useSelector(getUser)
 
     return (
         <SavedListsWrapper>
-        {currentUser.savedLists.length >= 1 ? <SavedLists savedLists={currentUser.savedLists} onListChoice={props.onListChoice}/> : <Text >You have no saved lists yet</Text>}
+        {currentUser.savedLists.length >= 1 ? <SavedLists /> : <Text >You have no saved lists yet</Text>}
         </SavedListsWrapper>
     )
 }

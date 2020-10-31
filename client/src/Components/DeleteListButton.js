@@ -1,8 +1,11 @@
 import React, { useContext } from 'react';
 import styled from 'styled-components';
-import CurrentUserContext from '../Contexts/CurrentUserContext';
-import CurrentListContext from '../Contexts/CurrentListContext';
+//import CurrentUserContext from '../Contexts/CurrentUserContext';
+//import CurrentListContext from '../Contexts/CurrentListContext';
 import { AppSalmon, AppBlue } from '../theme/Colors';
+import {useDispatch, useSelector} from 'react-redux'
+import { setUser } from '../actions';
+import {getTheme, getPopupState, getUser, getCurrentList} from '../reducers';
 
 const StyledButton = styled.button`
     width: 9rem;
@@ -19,8 +22,10 @@ const StyledButton = styled.button`
 `;
 
 function DeleteListButton (props) {
-    const {currentUser} = useContext(CurrentUserContext);
-    const {currentList} = useContext(CurrentListContext);
+    //const {currentUser} = useContext(CurrentUserContext);
+    //const {currentList} = useContext(CurrentListContext);
+    const currentUser = useSelector(getUser)
+    const currentList = useSelector(getCurrentList)
 
     const Button = (props) => {
         return (

@@ -77,13 +77,13 @@ function Portal (props) {
     )
   }
 
-function PopUpInfo ({onClosePopUp}) {
+function PopUpInfo ({onClose}) {
     return (
       <Portal>
       <PopUpBackground>
         <PopUpContent>
             <Text>You have been logged out because your session has expired</Text>
-            <Button onClick={onClosePopUp}>OK</Button>
+            <Button onClick={onClose}>OK</Button>
         </PopUpContent>
       </PopUpBackground>
       </Portal>

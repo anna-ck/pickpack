@@ -1,6 +1,9 @@
 import React, {useContext} from 'react';
 import styled from 'styled-components';
-import CurrentUserContext from '../Contexts/CurrentUserContext';
+//import CurrentUserContext from '../Contexts/CurrentUserContext';
+import {useDispatch, useSelector} from 'react-redux'
+import { setUser } from '../actions';
+import {getTheme, getPopupState, getUser} from '../reducers';
 import { AppSalmon, AppBlue } from '../theme/Colors';
 
 const SavedPackingLists = React.lazy(() => import('./SavedPackingLists'))
@@ -57,13 +60,14 @@ const ToggleUserButton = styled.button`
 `;
 
 function UserPanel(props) {
-    const {currentUser} = useContext(CurrentUserContext);
+    //const {currentUser} = useContext(CurrentUserContext);
+    const currentUser = useSelector(getUser)
     return (
         <Greeting>
             <ToggleUserButton onClick={props.onClick}><i className="fas fa-angle-double-left"></i>&nbsp; Go back to app</ToggleUserButton>
             <Icon><i className="fas fa-user-circle"></i></Icon>
             <Message>{currentUser.login}</Message>
-            <React.Suspense fallback={'... loading saved lists'}><SavedPackingLists onListChoice={props.onListChoice}/></React.Suspense>
+            <React.Suspense fallback={'... loading saved lists'}><SavedPackingLists /></React.Suspense>
             <LogoutButton onClick={props.onAuthChange}><i className="fas fa-sign-out-alt" ></i>&nbsp; Logout</LogoutButton>
         </Greeting>
     )

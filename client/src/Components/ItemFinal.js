@@ -113,7 +113,8 @@ function ItemFinal (props) {
   }
 
   const addItemDescription = (e) => {
-    setItem({...item, description: e.target.value})
+    const desc = e.target.value || ''
+    setItem({...item, description: desc})
     props.onItemModification()
   }
 

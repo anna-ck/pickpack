@@ -54,8 +54,8 @@ function SearchMenu (props, ref) {
         <Header>Categories</Header>
         <Underline />
         <List>
-        {categories.map((category) => {
-              return <SearchCategory currentSearchList={props.currentSearchList} items={category.items} lists={category.lists} onClick={props.handleChoice}/>
+        {categories.map((category, index) => {
+              return <SearchCategory key={index} items={category.items} lists={category.lists} onClick={props.handleChoice}/>
           })}
         </List>
       </MenuDropdown>

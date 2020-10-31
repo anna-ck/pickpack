@@ -98,12 +98,13 @@ function RegistrationPanel (props) {
 
     const handleSubmit = (event) => {
         event.preventDefault();
-        AuthenticationApi.register({
+        const credentials = {
             login: loginRef.current.value,
             email: emailRef.current.value,
             password: passwordRef.current.value,
             confirmPassword: confirmPasswordRef.current.value
-        })
+        }
+        AuthenticationApi.register(credentials)
         .then((response) => {
             setMessage(response.message)
             loginRef.current.value='';

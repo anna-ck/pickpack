@@ -1,6 +1,9 @@
 import React, {useContext} from 'react';
-import CurrentUserContext from '../Contexts/CurrentUserContext';
+//import CurrentUserContext from '../Contexts/CurrentUserContext';
 import styled from 'styled-components';
+import {useDispatch, useSelector} from 'react-redux'
+import { setUser } from '../actions';
+import {getTheme, getPopupState, getUser} from '../reducers';
 
 const DivHeader = styled.div`
     text-align: center;
@@ -42,7 +45,8 @@ const SmallHeader = styled.p`
 `;
 
 function Header() {
-    const {currentUser} = useContext(CurrentUserContext);
+    //const {currentUser} = useContext(CurrentUserContext);
+    const currentUser = useSelector(getUser)
     return (
         <DivHeader currentUser={currentUser}>
             <LargeHeader>Pick &amp; Pack</LargeHeader>

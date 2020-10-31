@@ -3,6 +3,9 @@ import Autocomplete from './Autocomplete'
 import styled from 'styled-components'
 import { AppSalmon, AppBlue } from '../theme/Colors';
 import handleSearchResultsApi from '../api/fetchSearchResults'
+import {useDispatch, useSelector} from 'react-redux'
+import { setUser, setPickedItems } from '../actions';
+import {getTheme, getPopupState, getUser, getPickedItems} from '../reducers';
 
 const SearchContainer = styled.div`
     width: 90%;
@@ -46,7 +49,7 @@ const TipTxt = styled.p`
     }
 
     @media (max-width: 1090px) {
-        width: 80%;
+        width: 85%;
     }
 `;
 
@@ -54,13 +57,15 @@ function SearchInput (props) {
     const [value, setValue] = useState('')
     const [itemsToAutocomplete, setItemsToAutocomplete] = useState([])
 
+    const pickedItems = useSelector(getPickedItems)
+
     const handleValue = (item) => {
         setValue(item)
     }
 
     const handleAdd = () => {
         if (value.length) {
-            let itemToFind = props.pickedItems.find((picked => picked.name === value))
+            let itemToFind = pickedItems.find((picked => picked.name === value))
             const item = {};
             item.name = value;
             if (itemToFind) {

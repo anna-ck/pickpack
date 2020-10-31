@@ -1,6 +1,9 @@
-import React, { useState } from 'react';
+import React from 'react';
 import styled from 'styled-components';
 import { AppSalmon, AppBlue } from '../theme/Colors';
+import { changeTheme } from '../actions';
+import {getTheme} from '../reducers';
+import {useDispatch, useSelector} from 'react-redux'
 
 const ButtonWrapper = styled.div`
     position: absolute;
@@ -44,18 +47,16 @@ const NightIcon=styled.i`
 `;
 
 
-function ToggleButton(props) {
+function ToggleButton() {
 
-  const [active, setActive] = useState(true)
+  const dispatch = useDispatch()
 
-  const handleClick = () => {
-    setActive(!active);
-    props.onClick()
-  }
+  const theme = useSelector(getTheme)
+
     return (
-        <ButtonWrapper onClick={handleClick}>
-          <DayIcon active={active} className="fas fa-sun" samesite='none'/>
-          <NightIcon active={!active} className="fas fa-moon"/>
+        <ButtonWrapper onClick={() => dispatch(changeTheme())}>
+          <DayIcon active={theme === 'light'} className="fas fa-sun" samesite='none'/>
+          <NightIcon active={theme !== 'light'} className="fas fa-moon"/>
         </ButtonWrapper>
     )
 }

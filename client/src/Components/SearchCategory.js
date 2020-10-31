@@ -1,5 +1,7 @@
 import React, {useEffect} from 'react';
 import styled from 'styled-components';
+import {useSelector} from 'react-redux';
+import {getSearchResults, getCurrentSearchList} from '../reducers';
 
 const RowMain = styled.li`
     text-decoration: none;
@@ -61,18 +63,19 @@ const List = styled.ul`
 function SearchCategory (props) {
     const [items, setItems] = React.useState(props.items);
     const [lists, setLists] = React.useState(props.lists);
-    const [currentSearchList, setCurrentSearchList] = React.useState(props.currentSearchList)
+    //const [currentSearchList, setCurrentSearchList] = React.useState(props.currentSearchList)
+    const currentSearchList = useSelector(getCurrentSearchList)
     const [open, setOpen] = React.useState(false);
     
-    useEffect(() => {setCurrentSearchList(props.currentSearchList);}, [props])
-
+    //useEffect(() => {setCurrentSearchList(props.currentSearchList);}, [props])
+    useEffect(() => {setOpen(open)}, [props])
 
     const handleChoice =  (listName) => {
         props.onClick(listName);
     };
 
     return (
-        <RowMain setOpen={setOpen} >
+        <RowMain >
                 <IconDiv onClick={() => setOpen(!open)}>
                     <Icon open={open} large={true} className="fas fa-arrow-circle-down"/>
                     <Icon open={!open} large={true} className="fas fa-arrow-circle-right"/>

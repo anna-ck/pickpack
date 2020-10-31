@@ -1,5 +1,8 @@
 import React from 'react';
 import styled from 'styled-components';
+import {useDispatch, useSelector} from 'react-redux'
+import { setPickedItems, addPickedItem, deletePickedItem, updatePickedItem, setSearchResults, setCurrentSearchList, setBurger } from '../actions';
+import {getUser, getPickedItems, getCurrentSearchList, isBurgerActive} from '../reducers';
 
 const IconContainer = styled.div``;
 
@@ -9,7 +12,7 @@ const Icon = styled.i`
     position: relative;
     top: 3rem;
     z-index: 20;
-    display: ${({ active, isVisible }) => (isVisible && active ? "block" : "none")};
+    display: ${({ active, isVisible }) => (isVisible && active === true ? "block" : "none")};
     width: 45%;
     margin: 0 auto;
 
@@ -20,10 +23,11 @@ const Icon = styled.i`
 
 function BurgerIcon (props, ref) {
     const [width, setWidth] = React.useState(window.innerWidth);
-    const [active, setActive] = React.useState(!props.burgerIsActive);
+    //const [active, setActive] = React.useState(!props.burgerIsActive);
+    const active = !(useSelector(isBurgerActive))
     const breakpoint = 760;
 
-    React.useEffect(() => {setActive(active => !active);}, [props.burgerIsActive]);
+    //React.useEffect(() => {setActive(active => !active);}, [props.burgerIsActive]);
 
     React.useEffect(() => {
         const handleWindowResize = () => setWidth(window.innerWidth)

@@ -1,6 +1,9 @@
 import React, { useState} from 'react';
 import styled from 'styled-components';
 import { AppBlue } from '../theme/Colors';
+import {useDispatch, useSelector} from 'react-redux'
+import { setUser, setPickedItems } from '../actions';
+import {getTheme, getPopupState, getUser, getPickedItems} from '../reducers';
 
 const ItemWrapper = styled.div`
     padding: 0.3rem
@@ -47,16 +50,16 @@ const NumberInput = styled.input`
 `;
 
 function ItemResult (props) {
-    const [pickedItems, setPickedItems] = useState(props.pickedItems);
-    React.useEffect(() => {setPickedItems(pickedItems);}, [pickedItems]);
-
+    //const [pickedItems, setPickedItems] = useState(props.pickedItems);
+    //React.useEffect(() => {setPickedItems(pickedItems);}, [pickedItems]);
+    const pickedItems = useSelector(getPickedItems)
     const handleChange= (e) => {
         const name = e.target.parentElement.children[0].textContent;
         const number = e.target.parentElement.children[1].value;
         const item = {}
         item.name = name;
         item.number = number;
-        let itemToFind = props.pickedItems.find((picked => picked.name === props.item))
+        let itemToFind = pickedItems.find((picked => picked.name === props.item))
         if (itemToFind) {
             item.id = itemToFind.id
         }
@@ -66,7 +69,7 @@ function ItemResult (props) {
     }
     
     const handleValue = (e) => {
-        let itemToFind = props.pickedItems.find((picked => picked.name === props.item))
+        let itemToFind = pickedItems.find((picked => picked.name === props.item))
         if (itemToFind) {
             return itemToFind.number
         }

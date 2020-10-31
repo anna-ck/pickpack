@@ -1,12 +1,41 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+
+import {createStore, applyMiddleware} from 'redux';
+import thunk from 'redux-thunk';
+import {Provider} from 'react-redux'
+
 import './index.css';
 import App from './Components/App';
+import {loadState, saveState} from './localStorage';
 import * as serviceWorker from './serviceWorker';
+
+import {appReducer} from './reducers'
+
+const persistedState = loadState()
+const store = createStore(appReducer, persistedState, applyMiddleware(thunk))
+
+store.subscribe(() => {
+  saveState({
+    currentUser: store.getState().currentUser,
+    pickedItems: store.getState().pickedItems,
+    currentList: store.getState().currentList,
+    theme: store.getState().theme,
+    isPopUpVisible: store.getState().isPopUpVisible,
+    searchResults: store.getState().searchResults,
+    currentSearchList: store.getState().currentSearchList,
+    isBurgerActive: store.getState().isBurgerActive,
+    wasCurrentListModified: store.getState().wasCurrentListModified,
+    isUserBarActive: store.getState().isUserBarActive,
+    idOfCurrentlyChangedList: store.getState().idOfCurrentlyChangedList,
+  })
+})
 
 ReactDOM.render(
   <React.StrictMode>
-    <App />
+    <Provider store = {store}>
+      <App />
+      </Provider>
   </React.StrictMode>,
   document.getElementById('root')
 );

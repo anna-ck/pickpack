@@ -3,8 +3,11 @@ import ItemFinal from './ItemFinal';
 import OpenNewListButton from './OpenNewListButton';
 import ModalWarning from './ModalWarning'
 import styled from 'styled-components';
-import CurrentListContext from '../Contexts/CurrentListContext'
-import CurrentUserContext from '../Contexts/CurrentUserContext';
+//import CurrentListContext from '../Contexts/CurrentListContext'
+//import CurrentUserContext from '../Contexts/CurrentUserContext';
+import {useDispatch, useSelector} from 'react-redux'
+import { denyListModification, setUser, confirmListModification } from '../actions';
+import {getTheme, getPopupState, getUser, getPickedItems, getCurrentList, isCurrentListModified} from '../reducers';
 
 const FinalListWrapper = styled.div`
   @media (max-width: 690px) {
@@ -75,18 +78,23 @@ const Row = styled.table`
 `;
 
 function FinalList (props, ref) {
-  const [pickedItems, setPickedItems] = useState(props.pickedItems) || [];
-  const {currentList} = useContext(CurrentListContext);
-  const [wasCurrentListModified, setWasCurrentListModified] = useState(props.wasCurrentListModified)
+  //const {currentList} = useContext(CurrentListContext);
+  //const [wasCurrentListModified, setWasCurrentListModified] = useState(props.wasCurrentListModified)
   const [listToBeSaved, setListToBeSaved] = useState(false)
+  const wasCurrentListModified = useSelector(isCurrentListModified)
+  //const {currentUser} = useContext(CurrentUserContext);
+  const dispatch = useDispatch()
+  const currentList = useSelector(getCurrentList)
+  const currentUser = useSelector(getUser)
+  const pickedItems = useSelector(getPickedItems)
 
-  const {currentUser} = useContext(CurrentUserContext);
-
+  /*
   useEffect(() => {
     setPickedItems(props.pickedItems);
   }, [setPickedItems, props.pickedItems]);
+  */
 
-  useEffect(() => {setWasCurrentListModified(props.wasCurrentListModified);}, [props.wasCurrentListModified]);
+  //useEffect(() => {setWasCurrentListModified(props.wasCurrentListModified);}, [props.wasCurrentListModified]);
 
   const handleListNameChange = (e) => {
     setListToBeSaved(false)
@@ -95,7 +103,7 @@ function FinalList (props, ref) {
 
   const handleItemModification = () => {
     setListToBeSaved(false)
-    props.onCurrentListModification()
+    dispatch(confirmListModification())
   }
 
   const handleListContentChange = (item) => {
@@ -104,7 +112,7 @@ function FinalList (props, ref) {
 
   const openNewListWithoutSavingCurrent = () => {
     setListToBeSaved(false)
-    setWasCurrentListModified(false)
+    dispatch(denyListModification())
     props.onNewListOpening()
   }
 
@@ -120,7 +128,7 @@ function FinalList (props, ref) {
 
   const saveCurrentListAndOpenNew = () => {
     setListToBeSaved(false)
-    setWasCurrentListModified(false)
+    dispatch(denyListModification())
     props.onSaveAndProceed()
   }
 

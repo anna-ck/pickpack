@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react';
 import ItemResult from './ItemResult';
 import styled from 'styled-components';
 import suitcase from '../Images/suitcase.png';
+import {useSelector} from 'react-redux';
+import {getSearchResults, getCurrentSearchList} from '../reducers';
 
 const ResultsWrapper = styled.div`
     text-align: center;
@@ -84,7 +86,10 @@ const Img = styled.img`
 
 function BurgerResults (props, ref) {
   const [items, setItems] = useState(props) || [];
-  useEffect(() => {setItems(props);});
+  //useEffect(() => {setItems(props);});
+
+  const searchResults = useSelector(getSearchResults)
+  const currentSearchList = useSelector(getCurrentSearchList)
 
   const Info = () => {
     return (
@@ -98,12 +103,12 @@ function BurgerResults (props, ref) {
   
   return (
       <ResultsWrapper ref={ref}>
-        <ListName>{items.currentSearchList || <Info/>}</ListName>
+        <ListName>{currentSearchList || <Info/>}</ListName>
         <ListWrapper>
-          {items.searchResults.map((item, i) => {
+          {searchResults.map((item, i) => {
               return (
                   <ItemWrapper key={'item_' + i}>
-                      <ItemResult item={item} pickedItems={props.pickedItems} onCheck={props.onCheck}/>
+                      <ItemResult item={item} onCheck={props.onCheck}/>
                   </ItemWrapper>
               )
           })}
