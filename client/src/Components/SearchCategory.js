@@ -1,7 +1,7 @@
-import React, {useEffect} from 'react';
+import React, {useState} from 'react';
 import styled from 'styled-components';
 import {useSelector} from 'react-redux';
-import {getSearchResults, getCurrentSearchList} from '../reducers';
+import {getCurrentSearchList} from '../reducers';
 
 const RowMain = styled.li`
     text-decoration: none;
@@ -60,18 +60,12 @@ const List = styled.ul`
     padding: 0rem 0rem 0rem 1rem;
 `;
 
-function SearchCategory (props) {
-    const [items, setItems] = React.useState(props.items);
-    const [lists, setLists] = React.useState(props.lists);
-    //const [currentSearchList, setCurrentSearchList] = React.useState(props.currentSearchList)
+function SearchCategory ({items, lists, onClick}) {
     const currentSearchList = useSelector(getCurrentSearchList)
-    const [open, setOpen] = React.useState(false);
-    
-    //useEffect(() => {setCurrentSearchList(props.currentSearchList);}, [props])
-    useEffect(() => {setOpen(open)}, [props])
+    const [open, setOpen] = useState(false);
 
     const handleChoice =  (listName) => {
-        props.onClick(listName);
+        onClick(listName);
     };
 
     return (

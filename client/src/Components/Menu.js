@@ -1,9 +1,9 @@
-import React from 'react';
+import React, {useState} from 'react';
 import SearchMenu from '../Components/SearchMenu';
 import BurgerMenu from '../Components/BurgerMenu';
 
 function Menu (props, ref) {
-    const [width, setWidth] = React.useState(window.innerWidth);
+    const [width, setWidth] = useState(window.innerWidth);
     const breakpoint = 760;
     React.useEffect(() => {
         const handleWindowResize = () => setWidth(window.innerWidth)

@@ -1,13 +1,11 @@
-import React, { useState, useEffect, useContext } from 'react';
+import React, { useState } from 'react';
 import ItemFinal from './ItemFinal';
 import OpenNewListButton from './OpenNewListButton';
 import ModalWarning from './ModalWarning'
 import styled from 'styled-components';
-//import CurrentListContext from '../Contexts/CurrentListContext'
-//import CurrentUserContext from '../Contexts/CurrentUserContext';
 import {useDispatch, useSelector} from 'react-redux'
-import { denyListModification, setUser, confirmListModification } from '../actions';
-import {getTheme, getPopupState, getUser, getPickedItems, getCurrentList, isCurrentListModified} from '../reducers';
+import { denyListModification, confirmListModification } from '../actions';
+import {getUser, getPickedItems, getCurrentList, isCurrentListModified} from '../reducers';
 
 const FinalListWrapper = styled.div`
   @media (max-width: 690px) {
@@ -77,24 +75,13 @@ const Row = styled.table`
     width: 100%;
 `;
 
-function FinalList (props, ref) {
-  //const {currentList} = useContext(CurrentListContext);
-  //const [wasCurrentListModified, setWasCurrentListModified] = useState(props.wasCurrentListModified)
+function FinalList (props) {
   const [listToBeSaved, setListToBeSaved] = useState(false)
   const wasCurrentListModified = useSelector(isCurrentListModified)
-  //const {currentUser} = useContext(CurrentUserContext);
   const dispatch = useDispatch()
   const currentList = useSelector(getCurrentList)
   const currentUser = useSelector(getUser)
   const pickedItems = useSelector(getPickedItems)
-
-  /*
-  useEffect(() => {
-    setPickedItems(props.pickedItems);
-  }, [setPickedItems, props.pickedItems]);
-  */
-
-  //useEffect(() => {setWasCurrentListModified(props.wasCurrentListModified);}, [props.wasCurrentListModified]);
 
   const handleListNameChange = (e) => {
     setListToBeSaved(false)
@@ -155,4 +142,4 @@ function FinalList (props, ref) {
   )
 }
 
-export default React.forwardRef(FinalList);
+export default FinalList;

@@ -117,7 +117,6 @@ function LoginPanel () {
         }
         AuthenticationApi.login(credentials)
         .then((response) => {
-            //sessionStorage.setItem("user", JSON.stringify(response));
             dispatch(setUser(response))
             loginRef.current.value = '';
             passwordRef.current.value = '';
@@ -131,13 +130,13 @@ function LoginPanel () {
     return (
         <LoginPageWrapper>
             <LoginWindow>
-            <Text>Welcome to <br/><span>Pick&Pack</span></Text>
+            <Text>Welcome to <br/><span>Pick&amp;Pack</span></Text>
                     <Input ref={loginRef} type='text' placeholder="Username" />
                     <Input ref={passwordRef} type='password' placeholder='Password' />
                 <LoginButton onClick={handleSubmit}>Log in</LoginButton>
                 <Message>{message ? message : null}</Message>
-                <RegisterButton onClick={() => history.push('/register')}>Not on Pick&Pack yet?  <span>Sign up</span></RegisterButton>
-                <ReturnButton onClick={() => history.push('/')}>Use Pick&Pack as an anonymous user</ReturnButton>
+                <RegisterButton onClick={() => history.push('/register')}>Not on Pick&amp;Pack yet?  <span>Sign up</span></RegisterButton>
+                <ReturnButton onClick={() => history.push('/')}>Use Pick&amp;Pack as an anonymous user</ReturnButton>
             </LoginWindow>
         </LoginPageWrapper>
     )

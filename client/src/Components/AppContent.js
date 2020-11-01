@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef, useContext }  from 'react';
+import React, { useRef }  from 'react';
 import { useHistory } from "react-router-dom";
 import {useDispatch, useSelector} from 'react-redux'
 
@@ -17,12 +17,9 @@ import styled from 'styled-components';
 import { AppSalmon, AppBlue } from '../theme/Colors';
 import { v4 as uuidv4 } from 'uuid';
 
-//import CurrentUserContext from '../Contexts/CurrentUserContext'
-//import CurrentListContext from '../Contexts/CurrentListContext';
-
 import handleSearchResultsApi from '../api/fetchSearchResults';
 
-import { setPickedItems, addPickedItem, deletePickedItem, updatePickedItem, setSearchResults, setCurrentSearchList, setBurger, setCurrentList, confirmListModification, denyListModification, setUserBar, setIdOfCurrentlyChangedList } from '../actions';
+import { setPickedItems, addPickedItem, deletePickedItem, updatePickedItem, setSearchResults, setCurrentSearchList, setBurger, setCurrentList, confirmListModification, denyListModification, setUserBar, setIdOfCurrentlyChangedList, setInitialState } from '../actions';
 import {getUser, getPickedItems, getCurrentList, isCurrentListModified, isUserBarVisible, getIdOfCurrentlyChangedList} from '../reducers';
 
 const SaveListButton = React.lazy(() => import('./SaveListButton'));
@@ -212,16 +209,6 @@ const ButtonsWrapper = styled.div`
 
 function AppContent(props) {
 
-    //const [pickedItems, setPickedItems] =  useState([]) || [];
-    //const [searchResults, setSearchResults] = useState([]);
-    //const [currentSearchList, setCurrentSearchList] = useState('');
-    //const [isActive, setIsActive] = useState(true);
-    //const {currentUser} = useContext(CurrentUserContext);
-    //const [currentList, setCurrentList] = useState({listName: '', id: ''});
-    //const [wasCurrentListModified, setWasCurrentListModified] = useState(false)
-    //const [isUserBarActive, setUserBarActive] = useState(false)
-    //const [isModalWarningVisible, setModalWarningVisible] = useState(null);
-
     const menuRef = useRef(0);
     const resultsRef = useRef(0);
     const finalListRef = useRef();
@@ -237,77 +224,51 @@ function AppContent(props) {
     const isUserBarActive = useSelector(isUserBarVisible)
     const idOfListBeingCurrentlyModified = useSelector(getIdOfCurrentlyChangedList)
 
-    /*
-    useEffect (() => {
-      //const pickedItemsFromStorage = JSON.parse(sessionStorage.getItem('pickedItems')) || []
-      //const currentListFromStorage = JSON.parse(sessionStorage.getItem('currentList')) || {listName: '', id: ''}
-      dispatch(setPickedItems(pickedItemsFromStorage))
-      dispatch(setCurrentList(currentListFromStorage))
-    }, [currentUser]);
-    */
-
     const changePickedItems = (item) => {
       if (item.number !== '0') {
         const indexOfItemToUpdate = pickedItems.findIndex((pickedItem) => pickedItem.name === item.name);
         if (indexOfItemToUpdate > -1) {
             if (item.number !== 0) {
-              //let newPickedItems = [...pickedItems];
-              //let newItem = {...newPickedItems[indexOfItemToUpdate]}
-              //newItem.number = item.number
-              //newItem.description = item.description || ''
-              //newPickedItems[indexOfItemToUpdate] = newItem;
               dispatch(updatePickedItem(item))
-              //sessionStorage.setItem("pickedItems", JSON.stringify(pickedItems))
             }
             else {
-              //const newPickedItems = [...pickedItems.filter((picked => picked.name !== item.name))]
               dispatch(deletePickedItem(item))
-              //sessionStorage.setItem("pickedItems", JSON.stringify(pickedItems))
             }
         }
         else {
           item.id = uuidv4()
           item.description = ''
-          //const newPickedItems = [...pickedItems, item]
           dispatch(addPickedItem(item))
-          //sessionStorage.setItem("pickedItems", JSON.stringify(pickedItems))
-          //setWasCurrentListModified(true)
           dispatch(confirmListModification())
         }
       }
       else {
-        //const newPickedItems = [...pickedItems.filter((picked => picked.name !== item.name))]
         dispatch(deletePickedItem(item))
-        //sessionStorage.setItem("pickedItems", JSON.stringify(pickedItems))
-
       }
-  }
+    }
 
     const searchResults = (listName) => {
         handleSearchResultsApi.getItemsByListName(listName)
         .then((result) => {
-        const items = result[0].items
-        dispatch(setSearchResults(items))
-        dispatch(setCurrentSearchList(listName))
-        if (window.innerWidth < 760) {
-          openBurger()
-        }
-       }
-       )
+          const items = result[0].items
+          dispatch(setSearchResults(items))
+          dispatch(setCurrentSearchList(listName))
+          if (window.innerWidth < 760) {
+            openBurger()
+          }
+       })
     };
 
     const openBurger = () => {
       resultsRef.current.style.display === 'none' || resultsRef.current.style.display === '' ? resultsRef.current.style.display = 'block' : resultsRef.current.style.display = 'none';
       menuRef.current.style.display === '' ||  menuRef.current.style.display === 'block' ? menuRef.current.style.display = 'none' : menuRef.current.style.display = 'block';
       dispatch(setBurger())
-      //setIsActive(!isActive)
     }
 
     const handleAuthChange = () => {
-      props.onAuthChange();
+      dispatch(setInitialState())
       if (currentUser) {
         history.push("/");
-        dispatch(setUserBar(false))
       }
       else {
         history.push("/login");
@@ -322,7 +283,6 @@ function AppContent(props) {
         props.onSave()
         dispatch(denyListModification())
         dispatch(setCurrentList({listName: name, id: id}))
-        //sessionStorage.setItem("currentList", JSON.stringify({listName: name, id: id}))
       }
     }
 
@@ -333,16 +293,12 @@ function AppContent(props) {
 
     const handleCurrentListNameChange = (name) => {
       dispatch(setCurrentList({listName: name, id: currentList.id}))
-      //setCurrentList({listName: name, id: currentList.id})
       dispatch(confirmListModification())
-      //sessionStorage.setItem("currentList", JSON.stringify({listName: name, id: currentList.id}))
     }
 
     const openNewList = () => {
       dispatch(setPickedItems([]))
       dispatch(setCurrentList({listName: '', id: ''}))
-      //sessionStorage.setItem("currentList", JSON.stringify({listName: '', id: ''}))
-      //sessionStorage.removeItem("pickedItems");
       dispatch(denyListModification())
     }
 
@@ -354,8 +310,6 @@ function AppContent(props) {
         handleListSaving()
       }
       dispatch(setCurrentList({listName: '', id: ''}))
-      //sessionStorage.setItem("currentList", JSON.stringify({listName: '', id: ''}))
-      //sessionStorage.removeItem("pickedItems");
       dispatch(denyListModification())
     }
 
@@ -370,46 +324,25 @@ function AppContent(props) {
       const listToReturn = savedLists.find(list => list.id === idOfListBeingCurrentlyModified)
       dispatch(setPickedItems(listToReturn.items))
       dispatch(setCurrentList({listName: listToReturn.listName, id: listToReturn.id}))
-      //setCurrentList({listName: listToReturn.listName, id: listToReturn.id})
-      //sessionStorage.setItem("pickedItems", JSON.stringify(listToReturn.items))
-      //sessionStorage.setItem("currentList", JSON.stringify({listName: listToReturn.listName, id: listToReturn.id}))
       dispatch(denyListModification())
       dispatch(setUserBar(false))
       dispatch(setIdOfCurrentlyChangedList(null))
     }
 
     const openSavedList = async () => {
-      //const savedLists = currentUser.savedLists
-      //const listToReturn = savedLists.find(list => list.id === isModalWarningVisible)
-      //setPickedItems(listToReturn.items)
-      //setCurrentList({listName: listToReturn.listName, id: listToReturn.id})
-      //sessionStorage.setItem("pickedItems", JSON.stringify(listToReturn.items))
-      //sessionStorage.setItem("currentList", JSON.stringify({listName: listToReturn.listName, id: listToReturn.id}))
-      
       const savedLists = currentUser.savedLists
       const listToReturn = savedLists.find(list => list.id === idOfListBeingCurrentlyModified)
       dispatch(setPickedItems(listToReturn.items))
       dispatch(setCurrentList({listName: listToReturn.listName, id: listToReturn.id}))
-      //sessionStorage.setItem("pickedItems", JSON.stringify(listToReturn.items))
-      //sessionStorage.setItem("currentList", JSON.stringify({listName: listToReturn.listName, id: listToReturn.id}))
       dispatch(denyListModification())
       dispatch(setUserBar(false))
       dispatch(setIdOfCurrentlyChangedList(null))
-
-      //setCurrentList({listName: '', id: ''})
-      //sessionStorage.setItem("currentList", JSON.stringify({listName: '', id: ''}))
-      //sessionStorage.removeItem("pickedItems");
-      //setWasCurrentListModified(false)
-      //setUserBarActive(false)
-      //setModalWarningVisible(null)
     }
 
     const handleListDeleting = () => {
       props.onDelete()
       dispatch(denyListModification())
       dispatch(setCurrentList({listName: '', id: ''}))
-      //sessionStorage.setItem("currentList", JSON.stringify({listName: '', id: ''}))
-      //sessionStorage.removeItem("pickedItems");
     }
 
     const toggleUserBarState = () => {

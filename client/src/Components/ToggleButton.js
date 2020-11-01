@@ -50,7 +50,6 @@ const NightIcon=styled.i`
 function ToggleButton() {
 
   const dispatch = useDispatch()
-
   const theme = useSelector(getTheme)
 
     return (

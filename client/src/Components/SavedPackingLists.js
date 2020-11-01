@@ -1,10 +1,9 @@
-import React, { useContext, useState }  from 'react';
-//import CurrentUserContext from '../Contexts/CurrentUserContext';
+import React from 'react';
 import styled from 'styled-components';
 import { AppSalmon } from '../theme/Colors';
 import {useDispatch, useSelector} from 'react-redux'
-import { setUser, setIdOfCurrentlyChangedList, setPickedItems, setCurrentList, setUserBar } from '../actions';
-import {getTheme, getPopupState, getUser, isCurrentListModified, getCurrentList, isUserBarVisible, getPickedItems, getIdOfCurrentlyChangedList} from '../reducers';
+import { setIdOfCurrentlyChangedList, setPickedItems, setCurrentList, setUserBar } from '../actions';
+import { getUser, isCurrentListModified, getCurrentList, isUserBarVisible, getPickedItems, getIdOfCurrentlyChangedList} from '../reducers';
 
 const Button = styled.button`
 width: 100%;
@@ -42,15 +41,12 @@ font-size: 1rem;
 
 
 
-function SavedLists ({savedLists }) {
+function SavedLists () {
 
     const dispatch = useDispatch()
     const currentUser = useSelector(getUser)
-    const pickedItems = useSelector(getPickedItems)
     const currentList = useSelector(getCurrentList)
     const wasCurrentListModified = useSelector(isCurrentListModified)
-    const isUserBarActive = useSelector(isUserBarVisible)
-    const idOfListBeingCurrentlyModified = useSelector(getIdOfCurrentlyChangedList)
 
     const changeCurrentList = (e) => {
         const listId = e.currentTarget.value
@@ -63,9 +59,6 @@ function SavedLists ({savedLists }) {
             const listToReturn = savedLists.find(list => list.id === listId)
             dispatch(setPickedItems(listToReturn.items))
             dispatch(setCurrentList({listName: listToReturn.listName, id: listToReturn.id}))
-            //setCurrentList({listName: listToReturn.listName, id: listToReturn.id})
-            //sessionStorage.setItem("pickedItems", JSON.stringify(listToReturn.items))
-            //sessionStorage.setItem("currentList", JSON.stringify({listName: listToReturn.listName, id: listToReturn.id}))
             dispatch(setUserBar(false))
           }
         }
@@ -87,12 +80,11 @@ function SavedLists ({savedLists }) {
 
 function SavedPackingLists () {
 
-    //const {currentUser} = useContext(CurrentUserContext);
     const currentUser = useSelector(getUser)
 
     return (
         <SavedListsWrapper>
-        {currentUser.savedLists.length >= 1 ? <SavedLists /> : <Text >You have no saved lists yet</Text>}
+            {currentUser.savedLists.length >= 1 ? <SavedLists /> : <Text >You have no saved lists yet</Text>}
         </SavedListsWrapper>
     )
 }

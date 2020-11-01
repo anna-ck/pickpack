@@ -3,9 +3,8 @@ import Autocomplete from './Autocomplete'
 import styled from 'styled-components'
 import { AppSalmon, AppBlue } from '../theme/Colors';
 import handleSearchResultsApi from '../api/fetchSearchResults'
-import {useDispatch, useSelector} from 'react-redux'
-import { setUser, setPickedItems } from '../actions';
-import {getTheme, getPopupState, getUser, getPickedItems} from '../reducers';
+import {useSelector} from 'react-redux'
+import {getPickedItems} from '../reducers';
 
 const SearchContainer = styled.div`
     width: 90%;

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import ItemResult from './ItemResult';
 import styled from 'styled-components';
 import suitcase from '../Images/suitcase.png';
@@ -74,8 +74,6 @@ const Info = () => {
 }
 
 function SearchResults (props, ref) {
-  //const [searchResults, setsearchResults] = useState(props.searchResults) || [];
-  //useEffect(() => {setsearchResults(props.searchResults);});
 
   const searchResults = useSelector(getSearchResults)
   const currentSearchList = useSelector(getCurrentSearchList)

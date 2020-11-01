@@ -81,9 +81,7 @@ export const fetchCurrentUser = (currentUser) => (dispatch) => {
 export const addListToUserAccount = (pickedItems, currentUser, currentList, accessToken) => (dispatch) => {
     HandleSavedListsApi.addList(pickedItems, currentUser, currentList)
       .then((response) => {
-        //const updatedUser = response
         response.accessToken = accessToken
-        //sessionStorage.setItem("user", JSON.stringify(response));
         dispatch(setUser(response))
       })
       .catch((error) => {
@@ -94,9 +92,7 @@ export const addListToUserAccount = (pickedItems, currentUser, currentList, acce
 export const updateListInUserAccount = (pickedItems, currentUser, currentList, accessToken) => (dispatch) => {
     HandleSavedListsApi.updateList(pickedItems, currentUser, currentList)
       .then((response) => {
-        //const updatedUser = response
         response.accessToken = accessToken
-        //sessionStorage.setItem("user", JSON.stringify(response));
         dispatch(setUser(response))
       })
       .catch((error) => {
@@ -106,12 +102,11 @@ export const updateListInUserAccount = (pickedItems, currentUser, currentList, a
 
 export const removeListFromUserAccount = (pickedItems, currentUser, currentList, accessToken) => (dispatch) => {
     HandleSavedListsApi.deleteList(currentUser, currentList)
-    .then((response) => {
-    response.accessToken = accessToken
-    //sessionStorage.setItem("user", JSON.stringify(response));
-    dispatch(setUser(response))
-    })
-    .catch((error) => {
-    console.log(error.message)
-    })
+       .then((response) => {
+          response.accessToken = accessToken
+          dispatch(setUser(response))
+       })
+       .catch((error) => {
+          console.log(error.message)
+       })
 }

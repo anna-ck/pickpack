@@ -1,9 +1,7 @@
-import React, {useContext} from 'react';
-//import CurrentUserContext from '../Contexts/CurrentUserContext';
+import React from 'react';
 import styled from 'styled-components';
-import {useDispatch, useSelector} from 'react-redux'
-import { setUser } from '../actions';
-import {getTheme, getPopupState, getUser} from '../reducers';
+import {useSelector} from 'react-redux'
+import {getUser} from '../reducers';
 
 const DivHeader = styled.div`
     text-align: center;
@@ -45,7 +43,6 @@ const SmallHeader = styled.p`
 `;
 
 function Header() {
-    //const {currentUser} = useContext(CurrentUserContext);
     const currentUser = useSelector(getUser)
     return (
         <DivHeader currentUser={currentUser}>

@@ -1,10 +1,9 @@
-import React, { useState, useEffect }  from 'react';
+import React, { useEffect }  from 'react';
 import { BrowserRouter as Router, Switch, Route} from "react-router-dom";
-import { useHistory } from "react-router-dom";
 import {useDispatch, useSelector} from 'react-redux'
 
 import {ThemeProvider} from "styled-components";
-import GlobalStyle from '../theme/globalStyles';
+import GlobalStyle from '../theme/GlobalStyles';
 import { lightTheme, darkTheme } from "../theme/Themes";
 
 import ToggleButton from '../Components/ToggleButton';
@@ -12,22 +11,12 @@ import AppContent from '../Components/AppContent';
 import LoginPanel from '../Components/LoginPanel';
 import RegistrationPanel from '../Components/RegistrationPanel';
 
-import AuthenticationApi from '../api/fetchAuthentication';
-import HandleSavedListsApi from '../api/fetchSavedLists';
-
-//import CurrentUserContext from '../Contexts/CurrentUserContext';
 import PopUpInfo from './PopUpInfo';
-import { setPickedItems, setPopup, setUser, setInitialState, fetchCurrentUser, addListToUserAccount, updateListInUserAccount, removeListFromUserAccount } from '../actions';
+import { setPopup, setInitialState, fetchCurrentUser, addListToUserAccount, updateListInUserAccount, removeListFromUserAccount } from '../actions';
 import {getTheme, getPopupState, getUser, getPickedItems, getCurrentList} from '../reducers';
 
 
 function App() {
-
-    //const [theme, setTheme] = useState('light');
-    //const [currentUser, setCurrentUser] = useState(null)
-    //const [isPopupVisible, setPopupVisible] = useState(false)
-
-    //const history = useHistory();
 
     const dispatch = useDispatch()
     const theme = useSelector(getTheme)
@@ -37,20 +26,9 @@ function App() {
     const currentList = useSelector(getCurrentList)
 
     useEffect(() => {
-      //const user = JSON.parse(sessionStorage.getItem('user'))
       if (currentUser) {
         dispatch(fetchCurrentUser(currentUser))}
       }, []);
-
-    const handleAuthChange = () => { 
-      //sessionStorage.removeItem("pickedItems");
-      //sessionStorage.removeItem("currentList");
-      //if (currentUser) {
-        //sessionStorage.removeItem("user");
-        dispatch(setInitialState())
-      //}
-
-    }
 
     const addCurrentListToSavedLists = () => {
       const accessToken = currentUser.accessToken
@@ -69,8 +47,7 @@ function App() {
 
     const handlePopUpWindow = () => {
       dispatch(setPopup())
-      //sessionStorage.removeItem("user");
-      handleAuthChange()
+      dispatch(setInitialState())
     }
 
     return (
@@ -80,8 +57,8 @@ function App() {
         <Router>
         <Switch>
           <Route exact path="/">
-                  <AppContent onAuthChange={handleAuthChange} onSave={addCurrentListToSavedLists} onEdit={editCurrentSavedList} onDelete={deleteCurrentSavedList}/>
-                  {isPopupVisible && (<PopUpInfo onClose={handlePopUpWindow}/>)}
+                <AppContent onSave={addCurrentListToSavedLists} onEdit={editCurrentSavedList} onDelete={deleteCurrentSavedList}/>
+                {isPopupVisible && (<PopUpInfo onClose={handlePopUpWindow}/>)}
           </Route>
           <Route path="/login">
                 <LoginPanel/>

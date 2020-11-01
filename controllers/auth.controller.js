@@ -72,7 +72,7 @@ login = (req, res) => {
         }
   
         let token = jwt.sign({ id: user.id }, config.secret, {
-          expiresIn: 3000 // 
+          expiresIn: 86400 
         });
   
         res.status(200).send({

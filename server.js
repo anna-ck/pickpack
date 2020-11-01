@@ -61,7 +61,7 @@ app.post('/users/:login', function(req, res) {
         return;
     }
     res.send(obj);
-})
+  })
 })
 
 
@@ -76,7 +76,7 @@ app.put('/users/:login', function(req, res) {
         return;
     }
     res.send(obj);
-})
+  })
 })
 
 app.delete('/users/:login', function(req, res) {
@@ -88,17 +88,8 @@ app.delete('/users/:login', function(req, res) {
         return;
     }
     res.send(obj);
+  })
 })
-})
-
-/*app.get('/users/:login', function(req, res) {
-  User.find({login: 'anna'}, function(err, result) {
-    if (err) throw err;
-    res.send(result);
-  });
-}
-)
-*/
 
 app.get('/items', function(req, res) {
   Items.aggregate([

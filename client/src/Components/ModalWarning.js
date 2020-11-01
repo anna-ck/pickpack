@@ -1,7 +1,7 @@
 import React, {useEffect} from 'react';
 import ReactDOM from 'react-dom';
 import styled from 'styled-components';
-import { ModalBlue, ModalBlueLight } from '../theme/Colors';
+import { ModalBlue } from '../theme/Colors';
 
 const ModalBackground= styled.div`
     width: 100vw;

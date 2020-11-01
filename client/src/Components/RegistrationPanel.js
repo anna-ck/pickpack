@@ -1,7 +1,7 @@
-import React, {useRef, useState, useEffect} from 'react';
+import React, {useRef, useState} from 'react';
 import { useHistory } from "react-router-dom";
 import styled from 'styled-components';
-import { AppBlue, AppSalmon } from '../theme/Colors';
+import { AppSalmon } from '../theme/Colors';
 
 import AuthenticationApi from '../api/fetchAuthentication';
 
@@ -126,7 +126,7 @@ function RegistrationPanel (props) {
 
         <RegisterPageWrapper>
             <RegisterWindow>
-            <Text>Sign up to<br/><span>Pick&Pack</span></Text>
+            <Text>Sign up to<br/><span>Pick&amp;Pack</span></Text>
                     <Input ref={loginRef} type='text' placeholder="Username" />
                     <Input ref={emailRef} type='text' placeholder="Email" />
                     <Input ref={passwordRef} type='password' placeholder='Password'/>

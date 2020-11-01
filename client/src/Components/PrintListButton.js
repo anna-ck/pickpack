@@ -1,6 +1,6 @@
-import React, { useContext } from 'react';
+import React from 'react';
 import styled from 'styled-components';
-import { AppSalmon, AppBlue } from '../theme/Colors';
+import { AppSalmon } from '../theme/Colors';
 
 const StyledButton = styled.button`
 width: 9rem;

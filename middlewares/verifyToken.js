@@ -15,7 +15,7 @@ const verifyToken = (req, res, next) => {
         return res.status(401).send({ message: "Unauthorized!" });
       }
       else {
-        res.send({message: 'token is valid'})
+        res.send({message: 'Token is valid'})
       }
       next();
     });

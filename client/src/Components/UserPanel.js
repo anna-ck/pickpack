@@ -1,9 +1,7 @@
-import React, {useContext} from 'react';
+import React from 'react';
 import styled from 'styled-components';
-//import CurrentUserContext from '../Contexts/CurrentUserContext';
-import {useDispatch, useSelector} from 'react-redux'
-import { setUser } from '../actions';
-import {getTheme, getPopupState, getUser} from '../reducers';
+import {useSelector} from 'react-redux'
+import {getUser} from '../reducers';
 import { AppSalmon, AppBlue } from '../theme/Colors';
 
 const SavedPackingLists = React.lazy(() => import('./SavedPackingLists'))
@@ -60,7 +58,6 @@ const ToggleUserButton = styled.button`
 `;
 
 function UserPanel(props) {
-    //const {currentUser} = useContext(CurrentUserContext);
     const currentUser = useSelector(getUser)
     return (
         <Greeting>

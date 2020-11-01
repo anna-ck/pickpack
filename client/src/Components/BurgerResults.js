@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import ItemResult from './ItemResult';
 import styled from 'styled-components';
 import suitcase from '../Images/suitcase.png';
@@ -85,8 +85,6 @@ const Img = styled.img`
 `;
 
 function BurgerResults (props, ref) {
-  const [items, setItems] = useState(props) || [];
-  //useEffect(() => {setItems(props);});
 
   const searchResults = useSelector(getSearchResults)
   const currentSearchList = useSelector(getCurrentSearchList)
