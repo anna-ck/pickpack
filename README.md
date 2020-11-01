@@ -1,7 +1,7 @@
-# PickPack
+# Pick&Pack
 
 ## General info
-PickPack is my biggest project so far. It was initially created to start learning React, however additional features such as database connection, 
+Pick&Pack is my biggest project so far. It was initially created to start learning React, however additional features such as database connection, 
 authorization and authentication were added to it over time. The purpose of the app is to create and manage personal travel packing checklists using proposed 
 or one's own ideas. It is possible to customize the application using light/dark mode toggle button.
 
