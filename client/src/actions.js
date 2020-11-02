@@ -92,7 +92,9 @@ export const addListToUserAccount = (pickedItems, currentUser, currentList, acce
 export const updateListInUserAccount = (pickedItems, currentUser, currentList, accessToken) => (dispatch) => {
     HandleSavedListsApi.updateList(pickedItems, currentUser, currentList)
       .then((response) => {
+        console.log(response)
         response.accessToken = accessToken
+        console.log(response)
         dispatch(setUser(response))
       })
       .catch((error) => {

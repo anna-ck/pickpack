@@ -32,11 +32,12 @@ function App() {
 
     const addCurrentListToSavedLists = () => {
       const accessToken = currentUser.accessToken
+      console.log(accessToken)
       dispatch(addListToUserAccount(pickedItems, currentUser, currentList, accessToken))
     }
 
     const editCurrentSavedList = () => {
-      const accessToken = currentUser.accessTokenl
+      const accessToken = currentUser.accessToken
       dispatch(updateListInUserAccount(pickedItems, currentUser, currentList, accessToken))
     }
 
