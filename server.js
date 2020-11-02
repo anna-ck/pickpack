@@ -1,4 +1,5 @@
 const express = require('express');
+require('dotenv').config()
 const path = require('path');
 const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
@@ -15,8 +16,6 @@ app.listen(PORT, () => {
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cookieParser());
-const dotenv = require('dotenv');
-dotenv.config();
 const { checkDuplicates, verifyToken } = require('./middlewares');
 const controller = require('./controllers/auth.controller');
 

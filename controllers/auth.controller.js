@@ -1,4 +1,6 @@
-const config = require("../config/auth.config");
+//const config = require("../config/auth.config");
+require('dotenv').config()
+const config = process.env.SECRET;
 const db = require("../models");
 const User = db.user;
 const jwt = require("jsonwebtoken");
@@ -71,7 +73,7 @@ login = (req, res) => {
           });
         }
   
-        let token = jwt.sign({ id: user.id }, config.secret, {
+        let token = jwt.sign({ id: user.id }, config, {
           expiresIn: 86400 
         });
   
