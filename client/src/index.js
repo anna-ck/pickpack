@@ -8,7 +8,7 @@ import {Provider} from 'react-redux'
 import './index.css';
 import App from './Components/App';
 import {loadState, saveState} from './localStorage';
-//import * as serviceWorker from './serviceWorker';
+import * as serviceWorker from './serviceWorker';
 
 import {appReducer} from './reducers'
 
@@ -44,6 +44,6 @@ ReactDOM.render(
 // unregister() to register() below. Note this comes with some pitfalls.
 // Learn more about service workers: https://bit.ly/CRA-PWA
 
-//serviceWorker.unregister();
+serviceWorker.unregister();
 
 document.cookie = 'cookie1=value1; SameSite=Lax';
