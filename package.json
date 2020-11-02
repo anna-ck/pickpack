@@ -25,5 +25,9 @@
   },
   "devDependencies": {
     "concurrently": "^4.0.1"
-  }
+  },
+  "main": "index.js",
+  "repository": "https://github.com/anna-ck/pickpack.git",
+  "author": "AnnaCK <anna.czekajlo.kozlowska@gmail.com>",
+  "license": "MIT"
 }
