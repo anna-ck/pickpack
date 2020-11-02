@@ -3,7 +3,7 @@ import { BrowserRouter as Router, Switch, Route} from "react-router-dom";
 import {useDispatch, useSelector} from 'react-redux'
 
 import {ThemeProvider} from "styled-components";
-import GlobalStyle from '../theme/GlobalStyles';
+import GlobalStyle from '../Components/GlobalStyle';
 import { lightTheme, darkTheme } from "../theme/Themes";
 
 import ToggleButton from '../Components/ToggleButton';
