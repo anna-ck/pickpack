@@ -1,4 +1,5 @@
 const express = require('express');
+const path = require('path');
 const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
 const cors = require("cors");
@@ -20,6 +21,12 @@ const { checkDuplicates, verifyToken } = require('./middlewares');
 const controller = require('./controllers/auth.controller');
 
 const db = require("./models");
+
+app.use(express.static(path.join(__dirname, 'client/build')));
+
+app.get('*', (req, res) => {
+  res.sendFile(path.join(__dirname+'/client/build/index.html'));
+});
 
 db.mongoose
   .connect(process.env.DB_CONNECT, {
@@ -44,10 +51,6 @@ app.use(function(req, res, next) {
   );
   next();
 });
-
-if (process.env.NODE_ENV === 'production') {
-  app.use(express.static('client/build'));
-}
 
 app.post('/register', checkDuplicates, controller.register)
 app.post('/login', controller.login)
@@ -125,7 +128,3 @@ app.get('/items/:listName', function(req, res) {
   });
 }
 )
-
-app.get('*', (req, res) => {
-  res.sendFile(path.join(__dirname, './client/build/index.html'));
-});
