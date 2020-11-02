@@ -2,7 +2,8 @@
   "name": "pickpack",
   "version": "1.0.0",
   "scripts": {
-    "start": "node server.js"
+    "start": "node index.js",
+    "heroku-postbuild": "cd client && yarn && yarn run build"
   },
   "dependencies": {
     "bcrypt": "^5.0.0",
