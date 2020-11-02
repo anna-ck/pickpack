@@ -45,6 +45,10 @@ app.use(function(req, res, next) {
   next();
 });
 
+if (process.env.NODE_ENV === 'production') {
+  app.use(express.static('client/build'));
+}
+
 app.post('/register', checkDuplicates, controller.register)
 app.post('/login', controller.login)
 
@@ -121,3 +125,7 @@ app.get('/items/:listName', function(req, res) {
   });
 }
 )
+
+app.get('*', (req, res) => {
+  res.sendFile(path.join(__dirname, './client/build/index.html'));
+});
