@@ -90,8 +90,9 @@ const Content = styled.div`
   width: 100%;
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  justify-content: space-between;
   align-items: center;
+  height: 100vh;
   margin-left: ${({ currentUser }) => (currentUser ? '13rem' : '0rem')};
 
   @media (max-width: 760px) {
@@ -109,7 +110,7 @@ const MainContent = styled.div`
   }
 `;
 
-const ContentLeft = styled.div`
+const ContentSearch = styled.div`
   display: flex;
   flex-direction: column;
   flex: 50%;
@@ -140,7 +141,7 @@ const ContentLeft = styled.div`
   }
 `;
 
-const ContentLeftTop = styled.div`
+const ContentSearchInput = styled.div`
   max-width: 100%;
   align-items: center;
   justify-content: center;
@@ -159,14 +160,14 @@ const ContentLeftTop = styled.div`
   }
 `;
 
-const ContentLeftBottom = styled.div`
+const ContentSearchResults = styled.div`
   max-width: 100%;
   display: inline-flex;
   flex-direction: row;
   align-content: space-between;
 `;
 
-const ContentRight = styled.div`
+const ContentFinal = styled.div`
   width: 50%;
   padding: 0rem;
   margin: 0rem 1.5rem 0rem 0.75rem;
@@ -362,24 +363,24 @@ function AppContent(props) {
           <Content currentUser={currentUser} isActive={!isUserBarActive}>
               <Header/>
               <MainContent>
-                <ContentLeft>
-                  <ContentLeftTop>
+                <ContentSearch>
+                  <ContentSearchInput>
                     <SearchInput onAdd={changePickedItems}/>
-                  </ContentLeftTop>
+                  </ContentSearchInput>
                   <BurgerIcon onClick={openBurger}></BurgerIcon>
-                  <ContentLeftBottom>
+                  <ContentSearchResults>
                     <Menu ref={menuRef} handleChoice={searchResults} />
                     <Results ref={resultsRef} onCheck={changePickedItems} />
-                  </ContentLeftBottom>
-                </ContentLeft>
-                <ContentRight ref={finalListRef}>
+                  </ContentSearchResults>
+                </ContentSearch>
+                <ContentFinal ref={finalListRef}>
                   <FinalList onChange={changePickedItems} onCurrentListNameChange={handleCurrentListNameChange} onNewListOpening={openNewList} onSaveAndProceed={saveCurrentListAndOpenNewList}/>
                   <ButtonsWrapper>
                     <React.Suspense fallback={'...'}><SaveListButton onSave={handleListSaving} onEdit={handleListEditing}/></React.Suspense>
                     <React.Suspense fallback={'...'}><DeleteListButton onClick={handleListDeleting}/></React.Suspense>
                     <React.Suspense fallback={'...'}><PrintListButton/></React.Suspense>
                   </ButtonsWrapper>
-                </ContentRight>
+                </ContentFinal>
               </MainContent>
               <Footer/>
           </Content>

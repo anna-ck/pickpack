@@ -62,7 +62,7 @@ const Tip= styled.p`
 
 const Input = styled.input`
     background-color: ${({ theme }) => theme.headerFinal};
-    width: 11rem;
+    width: 14rem;
     border:none;
     text-align: center;
     font-size: 1.3rem;
