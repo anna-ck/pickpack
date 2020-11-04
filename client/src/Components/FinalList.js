@@ -123,7 +123,7 @@ function FinalList (props) {
     <FinalListWrapper>
       {currentUser ? <OpenNewListButton onClick={handleListSaving}>Create new list</OpenNewListButton> : null }
       <Header>
-          <Input value={currentList.listName} placeholder='Add list name' maxLength='12' onChange={handleListNameChange}/>
+          <Input value={currentList.listName} placeholder='Add list name' maxLength='20' onChange={handleListNameChange}/>
           <Tip>Tip: you can change the number of items and describe them</Tip>
       </Header>
       <List currentUser={currentUser}>

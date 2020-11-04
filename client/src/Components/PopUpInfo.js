@@ -21,7 +21,7 @@ const PopUpContent= styled.div`
     border: 6px solid ${ModalBlue};
     border-radius: 7px;
     padding: 1rem;
-    width: 50%;
+    width: 40%;
     display: flex;
     flex-direction: column;
     align-items: center;

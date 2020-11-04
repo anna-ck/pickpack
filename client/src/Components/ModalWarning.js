@@ -21,7 +21,7 @@ const ModalContent= styled.div`
     border: 6px solid ${ModalBlue};
     border-radius: 7px;
     padding: 1rem;
-    width: 50%;
+    width: 40%;
 
     @media (max-width: 1000px) {
       width: 70%;
@@ -70,7 +70,7 @@ const Buttons= styled.div`
 `;
 
 const Button = styled.button`
-    background-color: white;
+    background-color: ${({ warning }) => (warning ? 'tomato' : 'seagreen')};
     font-size: 0.8rem;
     border: 2px solid grey;
     border-radius: 4px;
@@ -80,7 +80,7 @@ const Button = styled.button`
     padding: 0.5rem;
 
     &:hover {
-      background-color: ${({ warning }) => (warning ? 'tomato' : 'seagreen')};
+      background-color: white;
       color: white;
     }
     
