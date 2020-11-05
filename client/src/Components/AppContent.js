@@ -312,6 +312,7 @@ function AppContent(props) {
       }
       dispatch(setCurrentList({listName: '', id: ''}))
       dispatch(denyListModification())
+      dispatch(setPickedItems([]))
     }
 
     const saveCurrentListAndOpenSavedList = async () => {
