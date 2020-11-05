@@ -53,7 +53,15 @@ function ItemResult (props) {
 
     const handleChange= (e) => {
         const name = e.target.parentElement.children[0].textContent;
-        const number = e.target.parentElement.children[1].value;
+        let number = e.target.parentElement.children[1].value;
+        if (number.length >= 3) {
+            number.slice(0, 2)
+            return number
+        }
+        if (number.length < 1) {
+            number = 0
+            return number
+        }
         const item = {}
         item.name = name;
         item.number = number;
@@ -80,7 +88,7 @@ function ItemResult (props) {
         <ItemWrapper>
             <Item>
                 <Name>{props.item}</Name>
-                <NumberInput type='number' min={0} max={100} value={handleValue()} onChange={handleChange}/>
+                <NumberInput type='number' min='0' max='99' value={handleValue()} onChange={handleChange}/>
             </Item>
         </ItemWrapper>
     )
