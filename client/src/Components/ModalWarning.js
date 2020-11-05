@@ -70,9 +70,10 @@ const Buttons= styled.div`
 `;
 
 const Button = styled.button`
-    background-color: ${({ warning }) => (warning ? 'tomato' : 'seagreen')};
+    color: ${({ warning }) => (warning ? 'tomato' : 'seagreen')};
+    background-color: white;
     font-size: 0.8rem;
-    border: 2px solid grey;
+    border: 1px solid ${ModalBlue};
     border-radius: 4px;
     width: 10rem;
     height: 3rem;
@@ -80,8 +81,8 @@ const Button = styled.button`
     padding: 0.5rem;
 
     &:hover {
-      background-color: white;
-      color: white;
+      opacity: 0.9;
+      background-color: gainsboro;
     }
     
     @media (max-width: 1050px) {
@@ -107,7 +108,7 @@ function ModalWarning (props) {
       <ModalBackground>
         <ModalContent>
           <ButtonX onClick={props.onCloseModalWarning}>x</ButtonX>
-          <Text>You have unsaved changes on your packing list. <br/>{props.textMain} without saving changes will cause data loss.</Text>
+          <Text>You have unsaved changes on your packing list. {props.textMain} without saving changes will cause data loss.</Text>
           <Buttons>
             <Button onClick={props.onSaveAndConfirm} warning={false}>{props.textSave}</Button>
             <Button onClick={props.onConfirmWithoutSaving} warning={true}>{props.textDoNotSave}</Button>
