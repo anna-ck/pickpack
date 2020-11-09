@@ -92,7 +92,7 @@ const Content = styled.div`
   flex-direction: column;
   justify-content: space-between;
   align-items: center;
-  height: 100vh;
+  min-height: 100vh;
   margin-left: ${({ currentUser }) => (currentUser ? '13rem' : '0rem')};
 
   @media (max-width: 760px) {
