@@ -58,10 +58,6 @@ function ItemResult (props) {
             number.slice(0, 2)
             return number
         }
-        if (number.length < 1) {
-            number = 0
-            return number
-        }
         const item = {}
         item.name = name;
         item.number = number;

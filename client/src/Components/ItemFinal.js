@@ -103,6 +103,9 @@ function ItemFinal (props) {
   }
 
   const handlePlus = () => {
+    if (+item.number === 99) {
+      return
+    }
     setItem({...item, number: +item.number + 1})
     props.onItemModification()
   }
