@@ -345,6 +345,7 @@ function AppContent(props) {
       props.onDelete()
       dispatch(denyListModification())
       dispatch(setCurrentList({listName: '', id: ''}))
+      dispatch(setPickedItems([]))
     }
 
     const toggleUserBarState = () => {

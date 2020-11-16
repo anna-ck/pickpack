@@ -18,17 +18,17 @@ const StyledButton = styled.button`
     }
 `;
 
-function DeleteListButton (props) {
+function DeleteListButton ({onClick}) {
     const currentUser = useSelector(getUser)
     const currentList = useSelector(getCurrentList)
 
-    const Button = (props) => {
+    const Button = ({onClick}) => {
         return (
-            <StyledButton onClick={props.onClick}>Delete current list</StyledButton>
+            <StyledButton onClick={onClick}>Delete current list</StyledButton>
         )
     }
     return (
-        currentUser ? currentList.id ? <Button onClick={props.onClick} /> : null : null
+        currentUser ? currentList.id ? <Button onClick={onClick} /> : null : null
     )
 }
 
