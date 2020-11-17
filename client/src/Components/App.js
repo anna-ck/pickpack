@@ -6,12 +6,12 @@ import {ThemeProvider} from "styled-components";
 import GlobalStyle from '../Components/GlobalStyle';
 import { lightTheme, darkTheme } from "../theme/Themes";
 
-import ToggleButton from '../Components/ToggleButton';
-import AppContent from '../Components/AppContent';
-import LoginPanel from '../Components/LoginPanel';
-import RegistrationPanel from '../Components/RegistrationPanel';
+import ToggleButton from './ToggleButton/ToggleButton';
+import {MainPage} from './MainPage';
+import {LoginPage} from './LoginPage';
+import {RegistrationPage} from '../Components/RegisterPage';
 
-import PopUpInfo from './PopUpInfo';
+import {PopUpInfo} from './PopUpInfo';
 import { setPopup, setInitialState, fetchCurrentUser, addListToUserAccount, updateListInUserAccount, removeListFromUserAccount } from '../actions';
 import {getTheme, getPopupState, getUser, getPickedItems, getCurrentList} from '../reducers';
 
@@ -58,14 +58,14 @@ function App() {
         <Router>
         <Switch>
           <Route exact path="/">
-                <AppContent onSave={addCurrentListToSavedLists} onEdit={editCurrentSavedList} onDelete={deleteCurrentSavedList}/>
+                <MainPage onSave={addCurrentListToSavedLists} onEdit={editCurrentSavedList} onDelete={deleteCurrentSavedList}/>
                 {isPopupVisible && (<PopUpInfo onClose={handlePopUpWindow}/>)}
           </Route>
           <Route path="/login">
-                <LoginPanel/>
+                <LoginPage/>
           </Route>
           <Route path="/register">
-                <RegistrationPanel/>
+                <RegistrationPage/>
           </Route>
         </Switch>
         </Router>
