@@ -8,6 +8,11 @@ export const Greeting = styled.div`
     display: flex;
     flex-direction: row;
     align-items: center;
+
+    @media print {
+        display: none;
+        visibility:hidden
+    }
 `;
 
 export const Message= styled.h4`
