@@ -44,11 +44,11 @@ app.use(function(req, res, next) {
   next();
 });
 
-app.get('*', (req,res) =>{
-  res.sendFile(path.join(__dirname+'/client/build/index.html'));
-});
-
 app.post('/register', checkDuplicates, controller.register)
 app.post('/login', controller.login)
 app.use('/users', userRouter);
 app.use('/items', itemsRouter);
+
+app.get('*', (req,res) =>{
+  res.sendFile(path.join(__dirname+'/client/build/index.html'));
+});
