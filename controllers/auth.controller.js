@@ -1,4 +1,3 @@
-//const config = require("../config/auth.config");
 require('dotenv').config()
 const config = process.env.SECRET;
 const db = require("../models");
