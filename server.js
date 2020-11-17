@@ -3,24 +3,20 @@ require('dotenv').config()
 const path = require('path');
 const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
-const cors = require("cors");
-let corsOptions = {
-  origin: "http://localhost:8081"
-};
-
 const app = express();
 const PORT = process.env.PORT || 8080;
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}.`);
 });
+
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cookieParser());
-const { checkDuplicates, verifyToken } = require('./middlewares');
+const { checkDuplicates } = require('./middlewares');
 const controller = require('./controllers/auth.controller');
-
 const db = require("./models");
-
+const userRouter = require("./API/userRouter")
+const itemsRouter = require("./API/itemsRouter")
 app.use(express.static(path.join(__dirname, 'client/build')));
 
 
@@ -48,83 +44,11 @@ app.use(function(req, res, next) {
   next();
 });
 
-app.post('/register', checkDuplicates, controller.register)
-app.post('/login', controller.login)
-
-app.get('/users/:login', verifyToken)
-
-app.post('/users/:login', function(req, res) {
-  const login = req.params.login
-  const listName = req.body.name
-  const listContent = req.body.items
-  const listId = req.body.id
-  User.findOneAndUpdate({login: login}, {$push:{savedLists: {listName: listName, items: listContent, id: listId}}}, {new: true}, (err, obj) => {
-    if (err) {
-        console.log("Something wrong when updating data!");
-        return;
-    }
-    res.send(obj);
-  })
-})
-
-
-app.put('/users/:login', function(req, res) {
-  const login = req.params.login
-  const listName = req.body.name
-  const listContent = req.body.items
-  const listId = req.body.id
-  User.findOneAndUpdate({'login': login, 'savedLists.id': listId}, {'$set': {'savedLists.$.items': listContent, 'savedLists.$.listName': listName}}, {new: true}, (err, obj) => {
-    if (err) {
-        console.log("Something wrong when updating data!");
-        return;
-    }
-    res.send(obj);
-  })
-})
-
-app.delete('/users/:login', function(req, res) {
-  const login = req.params.login
-  const listId = req.body.id
-  User.findOneAndUpdate({'login': login}, {'$pull': {'savedLists': {id: listId}}}, {new: true}, (err, obj) => {
-    if (err) {
-        console.log("Something wrong when updating data!");
-        return;
-    }
-    res.send(obj);
-  })
-})
-
-app.get('/items', function(req, res) {
-  Items.aggregate([
-    { "$group": {
-      "_id": null,
-      "items": { "$push": "$items" }
-    }},
-    { "$project": {
-      "_id": 0,
-      "items": {
-        "$reduce": {
-          "input": "$items",
-          "initialValue": [],
-          "in": { "$concatArrays": ["$$this", "$$value"] }
-        }
-      }
-    }}], function(err, result) {
-      if (err) throw err;
-      res.send(result);
-    })
-}
-)
-
-app.get('/items/:listName', function(req, res) {
-  const listName = req.params.listName
-  Items.find({name: listName}, function(err, result) {
-    if (err) throw err;
-    res.send(result);
-  });
-}
-)
-
 app.get('*', (req,res) =>{
   res.sendFile(path.join(__dirname+'/client/build/index.html'));
 });
+
+app.post('/register', checkDuplicates, controller.register)
+app.post('/login', controller.login)
+app.use('/users', userRouter);
+app.use('/items', itemsRouter);
