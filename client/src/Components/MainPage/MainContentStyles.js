@@ -74,6 +74,12 @@ export const Content = styled.div`
     margin: 0;
     display: ${({ isActive }) => (isActive ? 'flex' : 'none')};
   }
+
+  @media print {
+    height: auto;
+    align-items: flex-start;
+    justify-content: flex-start
+  }
 `;
 
 export const MainContentDiv = styled.div`

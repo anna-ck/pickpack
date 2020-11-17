@@ -7,13 +7,13 @@ import {Provider} from 'react-redux'
 
 import './index.css';
 import App from './Components/App';
-import {loadState, saveState} from './localStorage';
+import {loadState, saveState} from './sessionStorage';
 import * as serviceWorker from './serviceWorker';
 
-import {appReducer} from './reducers'
+import {rootReducer} from './reducers/index'
 
 const persistedState = loadState()
-const store = createStore(appReducer, persistedState, applyMiddleware(thunk))
+const store = createStore(rootReducer, persistedState, applyMiddleware(thunk))
 
 store.subscribe(() => {
   saveState({
