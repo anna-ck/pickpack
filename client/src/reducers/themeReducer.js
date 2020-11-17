@@ -20,3 +20,7 @@ export default function themeReducer (state = 'light', action) {
             return state
     }
 }
+
+export const getTheme = (state) => {
+    return state
+}

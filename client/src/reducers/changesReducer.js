@@ -1,5 +1,3 @@
-
-
 export default function changesReducer(state = false, action) {
     switch (action.type) {
         case 'CURRENTLISTMODIFICATION_CONFIRM': {
@@ -17,4 +15,8 @@ export default function changesReducer(state = false, action) {
         default:
             return state;
     }
+}
+
+export const isCurrentListModified = (state) => {
+    return state
 }

@@ -1,5 +1,3 @@
-
-
 export default function currentSearchListReducer(state = '', action) {
     switch (action.type) {
         case 'CURRENTSEARCHLIST_SET': {
@@ -14,4 +12,8 @@ export default function currentSearchListReducer(state = '', action) {
         default:
             return state;
     }
+}
+
+export const getSearchResults = (state) => {
+    return state
 }

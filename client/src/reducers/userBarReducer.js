@@ -1,5 +1,4 @@
 
-
 export default function userBarReducer(state = false, action) {
     switch (action.type) {
         case 'USERBAR_SET': {
@@ -14,4 +13,8 @@ export default function userBarReducer(state = false, action) {
         default:
             return state;
     }
+}
+
+export const isUserBarVisible = (state) => {
+    return state
 }

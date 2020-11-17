@@ -34,3 +34,7 @@ export default function pickedItemsReducer(state = [], action) {
             return state;
     }
 }
+
+export const getPickedItems = (state) => {
+    return state
+}

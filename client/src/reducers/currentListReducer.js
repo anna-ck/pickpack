@@ -1,5 +1,3 @@
-
-
 export default function currentListReducer(state = { listName: '', id: '' }, action) {
     switch (action.type) {
         case 'CURRENTLIST_SET': {
@@ -14,4 +12,8 @@ export default function currentListReducer(state = { listName: '', id: '' }, act
         default:
             return state;
     }
+}
+
+export const getCurrentList = (state) => {
+    return state
 }

@@ -1,5 +1,3 @@
-
-
 export default function burgerReducer(state = true, action) {
     switch (action.type) {
         case 'BURGER_UPDATE': {
@@ -14,4 +12,8 @@ export default function burgerReducer(state = true, action) {
         default:
             return state;
     }
+}
+
+export const isBurgerActive = (state) => {
+    return state
 }

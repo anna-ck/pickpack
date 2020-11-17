@@ -12,3 +12,7 @@ export default function userReducer(state = null, action) {
             return state;
     }
 }
+
+export const getUser = (state) => {
+    return state
+}

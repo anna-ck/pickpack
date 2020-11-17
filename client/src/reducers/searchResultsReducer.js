@@ -1,5 +1,3 @@
-
-
 export default function searchResultsReducer(state = [], action) {
     switch (action.type) {
         case 'SEARCHRESULTS_CHANGE': {
@@ -14,4 +12,8 @@ export default function searchResultsReducer(state = [], action) {
         default:
             return state;
     }
+}
+
+export const getSearchResults = (state) => {
+    return state
 }

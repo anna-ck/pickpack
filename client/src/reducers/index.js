@@ -1,14 +1,14 @@
-import burgerReducer from './burgerReducer';
-import changedListReducer from './changedListReducer';
-import changesReducer from './changesReducer';
-import currentListReducer from './currentListReducer';
-import currentSearchListReducer from './currentSearchListReducer';
-import pickedItemsReducer from './pickedItemsReducer';
-import popUpReducer from './popUpReducer'
-import searchResultsReducer from './searchResultsReducer';
-import themeReducer from './themeReducer'
-import userBarReducer from './userBarReducer';
-import userReducer from './userReducer';
+import burgerReducer, * as burgerSelectors from './burgerReducer';
+import changedListReducer, * as changedListSelectors from './changedListReducer';
+import changesReducer,* as changesSelectors from './changesReducer';
+import currentListReducer, * as currentListSelectors from './currentListReducer';
+import currentSearchListReducer, * as currentSearchListSelectors from './currentSearchListReducer';
+import pickedItemsReducer, * as pickedItemsSelectors from './pickedItemsReducer';
+import popUpReducer, * as popUpSelectors from './popUpReducer'
+import searchResultsReducer, * as searchResultsSelectors from './searchResultsReducer';
+import themeReducer, * as themeSelectors from './themeReducer'
+import userBarReducer, * as userBarSelectors from './userBarReducer';
+import userReducer, * as userSelectors from './userReducer';
 
 export function rootReducer (state = {}, action) {
     return {
@@ -26,47 +26,14 @@ export function rootReducer (state = {}, action) {
     }
 }
 
-
-export const getTheme = (state) => {
-    return state.theme
-}
-
-export const getPopupState = (state) => {
-    return state.isPopUpVisible
-}
-
-export const getUser = (state) => {
-    return state.currentUser
-}
-
-export const getPickedItems = (state) => {
-    return state.pickedItems
-}
-
-export const getSearchResults = (state) => {
-    return state.searchResults
-}
-
-export const getCurrentSearchList = (state) => {
-    return state.currentSearchList
-}
-
-export const isBurgerActive = (state) => {
-    return state.isBurgerActive
-}
-
-export const getCurrentList = (state) => {
-    return state.currentList
-}
-
-export const isCurrentListModified = (state) => {
-    return state.wasCurrentListModified
-}
-
-export const isUserBarVisible = (state) => {
-    return state.isUserBarActive
-}
-
-export const getIdOfCurrentlyChangedList = (state) => {
-    return state.idOfCurrentlyChangedList
-}
+export const getTheme = (state) => themeSelectors.getTheme(state.theme)
+export const getPopupState = (state) => popUpSelectors.getPopupState(state.isPopUpVisible)
+export const getUser = (state) => userSelectors.getUser(state.currentUser)
+export const getPickedItems = (state) => pickedItemsSelectors.getPickedItems(state.pickedItems)
+export const getCurrentSearchList = (state) => currentSearchListSelectors.getSearchResults(state.currentSearchList)
+export const isBurgerActive = (state) => burgerSelectors.isBurgerActive(state.isBurgerActive)
+export const getCurrentList = (state) => currentListSelectors.getCurrentList(state.currentList)
+export const isCurrentListModified = (state) => changesSelectors.isCurrentListModified(state.isCurrentListModified)
+export const isUserBarVisible = (state) => userBarSelectors.isUserBarVisible(state.isUserBarActive)
+export const getIdOfCurrentlyChangedList = (state) => changedListSelectors.getIdOfCurrentlyChangedList(state.idOfCurrentlyChangedList)
+export const getSearchResults = (state) => searchResultsSelectors.getSearchResults(state.searchResults)

@@ -13,3 +13,7 @@ export default function popUpReducer(state = false, action) {
             return state;
     }
 }
+
+export const getPopupState = (state) => {
+    return state
+}
