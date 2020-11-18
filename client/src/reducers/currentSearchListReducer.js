@@ -14,6 +14,8 @@ export default function currentSearchListReducer(state = '', action) {
     }
 }
 
-export const getSearchResults = (state) => {
+
+export const getCurrentSearchList = (state) => {
     return state
 }
+
